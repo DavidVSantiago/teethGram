@@ -1,10 +1,5 @@
-import { CPO_D, CEO_D } from "./data_structures/IndexesData.js";
 
-/* 
-    valeu - representa o modelo de nomeclatura 
-    typeName - representa o indice (CPO ou CEO)
-*/
-export function updateLabel(value, typeName) {
+function updateLabel(value, typeName) {
   let labelsArray = getAllLabels();
 
   let teethIndex;

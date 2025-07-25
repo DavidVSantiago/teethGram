@@ -148,4 +148,29 @@
     margin-top: 5vw;
     font-size: 4vw;
   }
+
+  .rodape {
+  margin-top: 50vw;
+  gap: 3vw;
+  padding: 1vw;
+
+}
+
+.rodape-text {
+  gap: 2vw;
+  padding: 1vw;
+}
+
+.rodape-text p {
+  font-size: 4vw;
+}
+
+.rodape-logo {
+  width: 100%;
+  
+  gap: 4vw;
+  .img-rodape{
+    max-width: 100%;
+  }
+}
 }

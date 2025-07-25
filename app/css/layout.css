@@ -158,9 +158,12 @@ main {
   margin: 16px 0;
 }
 
-.section-histogram-render-superior,
+
 .section-histogram-render-inferior {
-  margin: 30px 0;
+  margin: 0;
+}
+.section-histogram-render-superior {
+  margin: 0;
 }
 
 .box-histogram-render {
@@ -186,6 +189,8 @@ main {
 
 .label-histogram-render {
   font-size: 16px;
+  margin-bottom: -20px;
+  margin-top: -20px;
 }
 
 .box-histogram-btn {
@@ -208,6 +213,48 @@ footer {
   background-color: var(--var-cor2);
   color: var(--var-cor3);
   box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.37);
+}
+
+.rodape {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  height: auto;
+  padding: 12px;
+  color: #1c166b;
+}
+
+.rodape-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  width: 100%;
+}
+
+.rodape-text p {
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.rodape-logo {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  width: 50%;
+  
+  gap: 12px;
+  .img-rodape{
+    max-width: 60%;
+  }
 }
 
 /*Mensagem de Error*/

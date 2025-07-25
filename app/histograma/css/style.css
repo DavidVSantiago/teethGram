@@ -73,11 +73,11 @@ body {
       }
 
       & .legendaP {
-        background-color: #1a1a1a;
+        background-color: #414141;
       }
 
       & .legendaO {
-        background-color: #414141;
+        background-color: #1a1a1a;
       }
 
       & .legendaTotal {
@@ -170,11 +170,11 @@ body {
           }
           & .valueP {
             width: 100%;
-            background-color: #1a1a1a;
+            background-color: #414141;
           }
           & .valueO {
             width: 100%;
-            background-color: #414141;
+            background-color: #1a1a1a;
           }
         }
       }

@@ -1,11 +1,9 @@
-import { CPO_D, CEO_D } from "./data_structures/IndexesData.js";
-
 const blockTopRight = document.getElementById("input-block-top-right");
 const blockTopLeft = document.getElementById("input-block-top-left");
 const blockBottomRight = document.getElementById("input-block-bottom-right");
 const blockBottomLeft = document.getElementById("input-block-bottom-left");
 
-export function createInputsByIndex(typeName, radioEscolhido) {
+function createInputsByIndex(typeName, radioEscolhido) {
   blockTopRight.innerHTML = " ";
   blockTopLeft.innerHTML = " ";
   blockBottomRight.innerHTML = " ";

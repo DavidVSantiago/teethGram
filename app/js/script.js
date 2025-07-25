@@ -1,7 +1,310 @@
-import { createInputsByIndex } from "./GeneratorInputs.js";
-import { createInputsByIndexMultiple } from "./MultipleInputGenerators.js";
-import { updateLabel } from "./LabelModifier.js";
-import { CPO_D, CEO_D } from "./data_structures/IndexesData.js";
+class TriData {
+  constructor() {
+    this.fieldC = "$";
+    this.fieldP = "$";
+    this.fieldO = "$";
+    this.labelFieldC = "C";
+    this.labelFieldP = "P";
+    this.labelFieldO = "O";
+  }
+}
+
+class Index {
+  constructor(size) {
+    this.dataList = new Array(size);
+    this.triDataList = [];
+
+    for (let i = 0; i < size; i++) {
+      this.triDataList.push(new TriData());
+    }
+  }
+  getDataList() {
+    return this.dataList;
+  }
+  getIndexFdiList() {
+    return this.indexFDI;
+  }
+  getIndexAdaList() {
+    return this.indexADA;
+  }
+
+  setData(valor, index) {
+    this.dataList[index] = parseFloat(valor);
+  }
+}
+
+class CPO_D extends Index {
+  constructor() {
+    super(32);
+    this.indexFdiList = [
+      18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28, 38, 37,
+      36, 35, 34, 33, 32, 31, 41, 42, 43, 44, 45, 46, 47, 48,
+    ];
+    this.indexAdaList = [
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+      22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+    ];
+  }
+}
+
+class CEO_D extends Index {
+  constructor() {
+    super(20);
+    this.indexFdiList = [
+      55, 54, 53, 52, 51, 61, 62, 63, 64, 65, 75, 74, 73, 72, 71, 81, 82, 83,
+      84, 85,
+    ];
+    this.indexAdaList = [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J",
+      "K",
+      "L",
+      "M",
+      "N",
+      "O",
+      "P",
+      "Q",
+      "R",
+      "S",
+      "T",
+    ];
+  }
+}
+
+
+function updateLabel(value, typeName) {
+  let labelsArray = getAllLabels();
+
+  let teethIndex;
+
+  if (typeName === "cpo") {
+    teethIndex = new CPO_D();
+  } else if (typeName === "ceo") {
+    teethIndex = new CEO_D();
+  }
+
+  if (value === "fdi") {
+    labelFDI(labelsArray, teethIndex);
+  } else if (value === "ada") {
+    labelADA(labelsArray, teethIndex);
+  }
+}
+
+// respoável por add um novo valor ao label com os padrões fdi
+function labelFDI(labelsArray, teethIndex) {
+  for (let i = 0; i < teethIndex.dataList.length; i++) {
+    labelsArray[i].textContent = teethIndex.indexFdiList[i];
+  }
+}
+
+// respoável por add um novo valor ao label com os padrões ada
+function labelADA(labelsArray, teethIndex) {
+  for (let i = 0; i < teethIndex.dataList.length; i++) {
+    labelsArray[i].textContent = teethIndex.indexAdaList[i];
+  }
+}
+
+// função criar um array com todos os labels
+function getAllLabels() {
+  let labels = document.querySelectorAll(".label-name");
+
+  return Array.from(labels);
+}
+
+
+const blockTopRight2 = document.getElementById("input-block-top-right");
+const blockTopLeft2 = document.getElementById("input-block-top-left");
+const blockBottomRight2 = document.getElementById("input-block-bottom-right");
+const blockBottomLeft2 = document.getElementById("input-block-bottom-left");
+
+function createInputsByIndexMultiple(typeName, radioEscolhido) {
+  blockTopRight2.innerHTML = " ";
+  blockTopLeft2.innerHTML = " ";
+  blockBottomRight2.innerHTML = " ";
+  blockBottomLeft2.innerHTML = " ";
+
+  let indexInstance;
+
+  if (typeName === "cpo") {
+    indexInstance = new CPO_D();
+  } else if (typeName === "ceo") {
+    indexInstance = new CEO_D();
+  }
+
+  createInputs(indexInstance, radioEscolhido);
+}
+
+function createInputs(indexInstance, radioEscolhido) {
+  const { dataList, triDataList } = indexInstance;
+
+  for (let i = 0; i < dataList.length; i++) {
+    const inputSection = document.createElement("div");
+    inputSection.classList.add("input-mult");
+
+    const inputTitle = document.createElement("div");
+    inputTitle.classList.add("title-input-mult");
+    inputTitle.classList.add("label-name");
+    inputTitle.textContent = indexInstance.indexFdiList[i];
+    inputSection.appendChild(inputTitle);
+
+    const inputMultValues = document.createElement("div");
+    inputMultValues.classList.add("mult-values");
+    inputSection.appendChild(inputMultValues);
+
+    createMultivaluedValues(inputMultValues, triDataList[i], radioEscolhido);
+
+    // divição dos inputs por grupos (Superior e Inferior)
+    if (i < dataList.length / 2) {
+      var dataListNumber = dataList.length / 2 / 2;
+
+      if (i < dataListNumber) {
+        blockTopRight2.appendChild(inputSection);
+      } else if ((i) => dataListNumber) {
+        blockTopLeft2.appendChild(inputSection);
+      }
+    } else {
+      var dataListNumber = (dataList.length * 75) / 100;
+
+      if (i < dataListNumber) {
+        blockBottomRight2.appendChild(inputSection);
+      } else if ((i) => dataListNumber) {
+        blockBottomLeft2.appendChild(inputSection);
+      }
+    }
+  }
+}
+
+function createMultivaluedValues(inputMultValues, triData, radioEscolhido) {
+  const labels = [triData.labelFieldC, triData.labelFieldP, triData.labelFieldO];
+  const fields = [triData.fieldC, triData.fieldP, triData.fieldO];
+
+  labels.forEach((labelText, index) => {
+    const valueDiv = document.createElement("div");
+    valueDiv.classList.add("value");
+
+    const labelElement = document.createElement("label");
+    labelElement.textContent = labelText;
+    valueDiv.appendChild(labelElement);
+
+    const inputElement = document.createElement("input");
+    inputElement.type = "number";
+    inputElement.value = fields[index];
+    inputElement.min = "0";
+    inputElement.step = "0.01";
+
+    if (radioEscolhido === "media") {
+      inputElement.max = "1";
+    } else {
+      inputElement.max = "100";
+    }
+
+    inputElement.classList.add("input-field");
+
+    // Limitador manual de valor ao digitar
+    inputElement.addEventListener("input", function () {
+      const val = parseFloat(this.value);
+      if (radioEscolhido === "media" && val > 1) {
+        this.value = 1;
+      } else if (radioEscolhido !== "media" && val > 100) {
+        this.value = 100;
+      }
+    });
+
+    valueDiv.appendChild(inputElement);
+
+    inputMultValues.appendChild(valueDiv);
+  });
+}
+
+const blockTopRight = document.getElementById("input-block-top-right");
+const blockTopLeft = document.getElementById("input-block-top-left");
+const blockBottomRight = document.getElementById("input-block-bottom-right");
+const blockBottomLeft = document.getElementById("input-block-bottom-left");
+
+function createInputsByIndex(typeName, radioEscolhido) {
+  blockTopRight.innerHTML = " ";
+  blockTopLeft.innerHTML = " ";
+  blockBottomRight.innerHTML = " ";
+  blockBottomLeft.innerHTML = " ";
+
+  let dataList, indexFdiList;
+
+  if (typeName === "cpo") {
+    ({ dataList, indexFdiList } = new CPO_D()); //Destructuring (Desestruturação de Objetos)
+  } else if (typeName === "ceo") {
+    ({ dataList, indexFdiList } = new CEO_D()); //Destructuring (Desestruturação de Objetos)
+  }
+
+  createInputs2(dataList, indexFdiList, radioEscolhido);
+}
+
+function createInputs2(dataList, indexFdiList, radioEscolhido) {
+  for (let i = 0; i < dataList.length; i++) {
+    // crianção da div
+    const inputSection = document.createElement("div");
+    inputSection.classList.add("input-section");
+
+    //criação do label
+    const label = document.createElement("label");
+    label.classList.add("label-name");
+    label.textContent = indexFdiList[i];
+    inputSection.appendChild(label);
+
+    //criação do input(number)
+    const input = document.createElement("input");
+    input.type = "number";
+    input.min = "0";
+    input.step = "0.01";
+
+    if (radioEscolhido === "media") {
+      input.max = "1";
+    } else {
+      input.max = "100";
+    }
+
+    input.classList.add("input-field");
+
+    // Limitador manual de valor ao digitar
+    input.addEventListener("input", function () {
+      const val = parseFloat(this.value);
+      if (radioEscolhido === "media" && val > 1) {
+        this.value = 1;
+      } else if (radioEscolhido !== "media" && val > 100) {
+        this.value = 100;
+      }
+    });
+
+    inputSection.appendChild(input);
+
+    // divição dos inputs por grupos (Superior e Inferior)
+    if (i < dataList.length / 2) {
+      var dataListNumber = dataList.length / 2 / 2;
+
+      if (i < dataListNumber) {
+        blockTopRight.appendChild(inputSection);
+      } else if ((i) => dataListNumber) {
+        blockTopLeft.appendChild(inputSection);
+      }
+    } else {
+      var dataListNumber = (dataList.length * 75) / 100;
+
+      if (i < dataListNumber) {
+        blockBottomRight.appendChild(inputSection);
+      } else if ((i) => dataListNumber) {
+        blockBottomLeft.appendChild(inputSection);
+      }
+    }
+  }
+}
+
 
 // Instâncias de CPO_D e CEO_D
 const cpo_d = new CPO_D();
@@ -77,12 +380,12 @@ cpoBtn.addEventListener("click", () =>
   updateSection(
     "Dentes Permanentes",
     "cpo",
-    "TOTAL POR COMPENENTES (CPO)",
+    "TOTAL POR COMPONENTES (CPO)",
     "cpo"
   )
 );
 ceoBtn.addEventListener("click", () =>
-  updateSection("Dentes Decíduos", "ceo", "TOTAL POR COMPENENTES (ceo)", "ceo")
+  updateSection("Dentes Decíduos", "ceo", "TOTAL POR COMPONENTES (ceo)", "ceo")
 );
 
 // Eventos na seção de formulário e entrada
@@ -318,7 +621,7 @@ function histogramMulti() {
     espaco_inferior.style.width = "100%";
     espaco_inferior.style.maxWidth = "500px";
     espaco_inferior.style.minWidth = "300px";
-    espaco_inferior.style.height = "500px";l
+    espaco_inferior.style.height = "500px";
     espaco_inferior.textContent = " ";
 
     console.log("Campos preenchidos");

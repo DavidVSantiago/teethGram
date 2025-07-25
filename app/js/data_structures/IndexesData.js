@@ -33,7 +33,7 @@ class Index {
   }
 }
 
-export class CPO_D extends Index {
+class CPO_D extends Index {
   constructor() {
     super(32);
     this.indexFdiList = [
@@ -47,7 +47,7 @@ export class CPO_D extends Index {
   }
 }
 
-export class CEO_D extends Index {
+class CEO_D extends Index {
   constructor() {
     super(20);
     this.indexFdiList = [

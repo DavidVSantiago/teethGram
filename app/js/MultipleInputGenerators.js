@@ -1,15 +1,15 @@
-import { CPO_D, CEO_D } from "./data_structures/IndexesData.js";
 
-const blockTopRight = document.getElementById("input-block-top-right");
-const blockTopLeft = document.getElementById("input-block-top-left");
-const blockBottomRight = document.getElementById("input-block-bottom-right");
-const blockBottomLeft = document.getElementById("input-block-bottom-left");
 
-export function createInputsByIndexMultiple(typeName, radioEscolhido) {
-  blockTopRight.innerHTML = " ";
-  blockTopLeft.innerHTML = " ";
-  blockBottomRight.innerHTML = " ";
-  blockBottomLeft.innerHTML = " ";
+const blockTopRight2 = document.getElementById("input-block-top-right");
+const blockTopLeft2 = document.getElementById("input-block-top-left");
+const blockBottomRight2 = document.getElementById("input-block-bottom-right");
+const blockBottomLeft2 = document.getElementById("input-block-bottom-left");
+
+function createInputsByIndexMultiple(typeName, radioEscolhido) {
+  blockTopRight2.innerHTML = " ";
+  blockTopLeft2.innerHTML = " ";
+  blockBottomRight2.innerHTML = " ";
+  blockBottomLeft2.innerHTML = " ";
 
   let indexInstance;
 
@@ -46,17 +46,17 @@ function createInputs(indexInstance, radioEscolhido) {
       var dataListNumber = dataList.length / 2 / 2;
 
       if (i < dataListNumber) {
-        blockTopRight.appendChild(inputSection);
+        blockTopRight2.appendChild(inputSection);
       } else if ((i) => dataListNumber) {
-        blockTopLeft.appendChild(inputSection);
+        blockTopLeft2.appendChild(inputSection);
       }
     } else {
       var dataListNumber = (dataList.length * 75) / 100;
 
       if (i < dataListNumber) {
-        blockBottomRight.appendChild(inputSection);
+        blockBottomRight2.appendChild(inputSection);
       } else if ((i) => dataListNumber) {
-        blockBottomLeft.appendChild(inputSection);
+        blockBottomLeft2.appendChild(inputSection);
       }
     }
   }
