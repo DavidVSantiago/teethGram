@@ -334,13 +334,13 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .histogram-legend-box-total,
 .histogram-legend-box-c {
-  background-color: #000000;
+  background-color: #6261fb;
 }
 .histogram-legend-box-p {
-  background-color: #1a1a1a;
+  background-color: #ff6360;
 }
 .histogram-legend-box-o {
-  background-color: #414141;
+  background-color: #68b766;
 }
 
 .form-distribuicao {
