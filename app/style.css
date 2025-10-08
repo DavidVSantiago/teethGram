@@ -1,0 +1,30 @@
+/* =========================
+   FORMULÁRIO (SELETORES)
+   ========================= */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    /* alinha itens horizontalmente */
+    justify-items: center;
+    align-items: center;
+    /* distribui espaço */
+    gap: 15px;
+    /* espaçamento entre colunas */
+    margin-bottom: 20px;
+
+    div {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 5px;
+        
+        width: 100%;
+        /* cada coluna ocupa espaço igual */
+    }
+}
+
+.btn-row{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}

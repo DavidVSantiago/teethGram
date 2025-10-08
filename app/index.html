@@ -4,8 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-phone.css">
 </head>
 <body>
-    
+    <!-- ========== CARD PRINCIPAL ========== -->
+  <div class="card">
+    <h2>Dentes Permanentes</h2>
+
+    <!-- ========== SUB-CARD COM FILTROS E BOTÕES ========== -->
+    <div class="sub-card">
+      <div class="form-row">
+        <div>
+          <label>Índice</label>
+          <select id="indexSelect">
+            <option value="CPO-D">CPO-D</option>
+            <option value="ceo-d">ceo-d</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Distribuição</label>
+          <select id="distSelect">
+            <option value="TOTAL">TOTAL</option>
+            <option value="COMPONENTE">TOTAL POR COMPONENTE</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Classificação dos Dentes</label>
+          <select id="toothClassificationSelect">
+            <option>FDI</option>
+            <option>ADA</option>
+          </select>
+        </div>
+
+        <!-- Participantes + clipe no mesmo bloco -->
+        <div>
+          <label>Total de Participantes</label>
+          <div class="participants-input">
+            <input type="number" id="participantsInput" min="0" value="0">
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button id="downloadBtn" type="button">Baixar Planilha</button>
+        <button id="selectFileBtn" type="button">Selecionar Arquivo</button>
+      </div>
+      
+    </div> <!-- .sub-card -->
+
+    <!-- input file oculto -->
+    <input type="file" id="hiddenFileInput"
+           style="position:absolute; left:-9999px; width:0; height:0; overflow:hidden;"
+           aria-hidden="true" tabindex="-1">
+
+    <!-- container vazio: JS renderiza aqui -->
+    <div class="teeth-container" id="permanentTeethContainer"></div>
+
+    <div class="bottom-row">
+      <div class="distribution">
+        <span class="distribution-title">Modo de Distribuição</span>
+        <label><input type="radio" name="dist"> Média</label>
+        <label><input type="radio" name="dist"> Percentual</label>
+      </div>
+      <button class="btn-generate">Gerar Histograma</button>
+    </div>
+
+  </div> <!-- .card -->
 </body>
 </html>
