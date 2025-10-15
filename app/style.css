@@ -1,30 +1,156 @@
 /* =========================
+   ESTILOS GERAIS
+   ========================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #ffffff;
+  display: grid;
+  place-items: center; /* centraliza o card no meio da tela */
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* =========================
+   CARD PRINCIPAL
+   ========================= */
+.card {
+  background: #f8f9fb;
+  width: 75vw;
+  padding: 2.5vw;
+  border-radius: 1vw;
+  box-shadow: 0 0.2vw 0.6vw rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 2vw;
+}
+
+.card h2 {
+  text-align: center;
+  margin: 0;
+  font-size: 1.8vw;
+  color: #222;
+}
+
+/* =========================
+   SUB-CARD (Filtros e Botões)
+   ========================= */
+.sub-card {
+  background: #ffffff;
+  border: 0.1vw solid #ddd;
+  border-radius: 0.8vw;
+  padding: 1.5vw;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 1.5vw;
+}
+
+/* =========================
    FORMULÁRIO (SELETORES)
    ========================= */
 .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    /* alinha itens horizontalmente */
-    justify-items: center;
-    align-items: center;
-    /* distribui espaço */
-    gap: 15px;
-    /* espaçamento entre colunas */
-    margin-bottom: 20px;
-
-    div {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        gap: 5px;
-        
-        width: 100%;
-        /* cada coluna ocupa espaço igual */
-    }
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2vw;
+  margin-bottom: 1vw;
 }
 
-.btn-row{
-    display: flex;
-    justify-content: center;
-    gap: 15px;
+.form-row > div {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 0.5vw;
+  width: 100%;
+}
+
+label {
+  font-size: 1vw;
+  color: #333;
+}
+
+select,
+input[type="number"] {
+  width: 100%;
+  padding: 0.6vw;
+  border-radius: 0.5vw;
+  border: 0.1vw solid #ccc;
+  font-size: 0.9vw;
+}
+
+/* =========================
+   BOTÕES
+   ========================= */
+.btn-row {
+  display: grid;
+  grid-template-columns: repeat(2, 12vw);
+  justify-content: center;
+  gap: 1vw;
+}
+
+/* estilo global de todos os botões */
+button {
+  background: #3b82f6; /* azul padrão */
+  color: #fff;
+  border: none;
+  border-radius: 0.5vw;
+  padding: 0.9vw 1.8vw;
+  cursor: pointer;
+  font-size: 1vw;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background: #2563eb; /* azul mais escuro no hover */
+}
+
+/* =========================
+   PARTE DE BAIXO (Distribuição + Botão)
+   ========================= */
+.bottom-row {
+  border-top: 0.1vw solid #ddd;
+  padding-top: 2vw;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 2vw;
+}
+
+.distribution {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 0.6vw;
+}
+
+.distribution-title {
+  font-size: 1vw;
+  font-weight: bold;
+  color: #222;
+}
+
+.distribution label {
+  font-size: 0.9vw;
+  color: #333;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.4vw;
+}
+
+/* botão gerar histograma com mesmo estilo dos outros */
+.btn-generate {
+  justify-self: end;
+  background: #3b82f6;
+  padding: 0.9vw 2vw;
+  border-radius: 0.5vw;
+  color: #fff;
+  border: none;
+  font-size: 1vw;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-generate:hover {
+  background: #2563eb;
 }
