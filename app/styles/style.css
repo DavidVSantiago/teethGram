@@ -1,0 +1,539 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+
+:root {
+	/*
+  ==========================================================================
+    Design System: Cores
+  ==========================================================================
+  */
+	/* --- Cores de Marca (Brand Colors) --- */
+	--color-brand-primary: #3b82f6;
+	--color-brand-primary-hover: #2563eb;
+	--color-brand-secondary: #538cf5;
+	--color-brand-secondary-highlight: #105dec;
+
+	/* --- Cores de Texto --- */
+	--color-text-base: #333;
+	--color-text-heading: #222;
+	--color-text-inverted: #ffffff;
+	--color-text-component: #1e3a8a;
+	--color-text-input: #111;
+
+	/* --- Cores de Fundo (Superfície) --- */
+	--color-surface-page: #ffffff;
+	--color-surface-card: #f8f9fb;
+	--color-surface-component: #eff6ff;
+	--color-surface-component-alt: #dbeafe;
+
+	/* --- Cores de Borda --- */
+	--color-border-light: #ddd;
+	--color-border-medium: #ccc;
+	--color-border-dark: #dcdcdc;
+	--color-border-input: #ececec;
+	--color-border-component: #dbeafe;
+
+	/*
+  ==========================================================================
+    Design System: Tipografia
+  ==========================================================================
+  */
+	--font-family-base: 'Source Sans 3', sans-serif;
+
+	/* --- Escala de Fonte (rem) --- */
+	--font-size-xs: 0.875rem; /* 14px */
+	--font-size-sm: 1rem; /* 16px */
+	--font-size-base: 1.125rem; /* 18px */
+	--font-size-md: 1.25rem; /* 20px */
+	--font-size-lg: 1.5rem; /* 24px */
+	--font-size-xl: 2rem; /* 32px */
+	--font-size-xxl: 3rem; /* 48px */
+
+	--font-weight-normal: 400;
+	--font-weight-bold: 700;
+
+	/*
+  ==========================================================================
+    Design System: Espaçamento e Tamanhos
+  ==========================================================================
+  */
+	--spacing-xxs: 0.25rem; /* 4px */
+	--spacing-xs: 0.5rem; /* 8px */
+	--spacing-sm: 1rem; /* 16px */
+	--spacing-md: 1.5rem; /* 24px */
+	--spacing-lg: 2rem; /* 32px */
+	--spacing-xl: 4rem; /* 64px */
+	--spacing-xxl: 7.5rem; /* 120px */
+
+	/*
+  ==========================================================================
+    Design System: Efeitos e Outros
+  ==========================================================================
+  */
+	--border-radius-sm: 4px;
+	--border-radius-md: 8px;
+	--border-radius-lg: 16px;
+
+	--shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.09);
+	--shadow-md: 0 4px 10px rgba(0, 0, 0, 0.14);
+	--shadow-lg: 0 0.2vw 0.6vw rgba(0, 0, 0, 0.1);
+	--shadow-highlight: 1px 1px 50px rgba(16, 93, 236, 0.2);
+
+	--transition-fast: all 0.2s ease;
+}
+
+/*
+==========================================================================
+  Estilos Globais e Reset
+==========================================================================
+*/
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: var(--font-family-base);
+	background: var(--color-surface-page);
+	color: var(--color-text-base);
+	font-size: var(--font-size-base);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--spacing-xxl);
+}
+
+button {
+	padding: var(--spacing-xs) var(--spacing-sm);
+	border: none;
+	border-radius: var(--border-radius-sm);
+	color: var(--color-text-inverted);
+	background: var(--color-brand-primary);
+	font-family: var(--font-family-base);
+	font-size: var(--font-size-sm);
+	cursor: pointer;
+	transition: var(--transition-fast);
+
+	&:hover {
+		background: var(--color-brand-primary-hover);
+	}
+}
+
+/* Espaçamento entre o número e as setinhas do input */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+	margin-left: var(--spacing-xs);
+}
+
+/*
+==========================================================================
+  Componente: Header
+==========================================================================
+*/
+header.hero {
+	width: 97%;
+	padding: 150px 48px 150px 100px;
+	color: var(--color-text-inverted);
+	background-color: var(--color-brand-secondary);
+	border-bottom-left-radius: 200px;
+
+	display: flex;
+	justify-content: center;
+	align-self: flex-end;
+
+	.hero__content {
+		width: 100%;
+		max-width: 1440px;
+
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--spacing-xl);
+	}
+
+	.hero__text-wrapper {
+		width: 60%;
+		max-width: 700px;
+
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-md);
+
+		h1 {
+			font-size: var(--font-size-xxl);
+			font-weight: var(--font-weight-bold);
+		}
+
+		p {
+			font-size: var(--font-size-md);
+		}
+	}
+}
+
+/*
+==========================================================================
+  Layout Principal: Card
+==========================================================================
+*/
+.card {
+	width: 75vw;
+	padding: 2.5vw;
+	background: var(--color-surface-card);
+	border-radius: var(--border-radius-lg);
+	box-shadow: var(--shadow-lg);
+
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	gap: 3vw;
+
+	h2 {
+		color: var(--color-text-heading);
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-bold);
+		text-align: center;
+	}
+}
+
+.sub-card {
+	padding: 1.5vw;
+	background: var(--color-surface-page);
+	border: 1px solid var(--color-border-light);
+	border-radius: var(--border-radius-md);
+
+	display: grid;
+	grid-template-rows: auto auto;
+	gap: 1.5vw;
+}
+
+/*
+==========================================================================
+  Componente: Formulário
+==========================================================================
+*/
+.form-row {
+	margin-bottom: 1vw;
+
+	display: grid;
+	grid-template-columns: 1fr repeat(1, 2fr) repeat(2, 1fr);
+	gap: 1.2vw;
+
+	div {
+		width: 100%;
+
+		display: grid;
+		grid-template-rows: auto auto;
+		gap: var(--spacing-xs);
+
+		#participantsInput {
+			text-align: right;
+		}
+	}
+
+	label {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-base);
+	}
+
+	select,
+	input[type='number'] {
+		width: 100%;
+		padding: var(--spacing-xs);
+		font-size: var(--font-size-xs);
+		border: 1px solid var(--color-border-medium);
+		border-radius: var(--border-radius-sm);
+	}
+}
+
+.btn-row {
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+	justify-content: center;
+	gap: 12vw;
+}
+
+/*
+=========================================
+  Componente: Linha Inferior (Distribuição)
+=========================================
+*/
+.bottom-row {
+	padding-top: 1.5vw;
+	border-top: 1px solid var(--color-border-light);
+
+	display: grid;
+	grid-template-columns: 1fr auto;
+	align-items: center;
+	gap: var(--spacing-lg);
+
+	.distribution {
+		border: none;
+
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: var(--spacing-lg);
+
+		.distribution-title {
+			font-size: var(--font-size-base);
+			font-weight: var(--font-weight-bold);
+			color: var(--color-text-heading);
+
+			display: contents;
+		}
+
+		label {
+			font-size: var(--font-size-base);
+			color: var(--color-text-base);
+
+			display: flex;
+			align-items: center;
+			gap: var(--spacing-xs);
+		}
+	}
+
+	.btn-generate {
+		justify-self: end;
+	}
+}
+
+/*
+=========================================
+  Componente: Dentes
+=========================================
+*/
+.teeth-container {
+	margin-bottom: var(--spacing-md);
+
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	gap: var(--spacing-md);
+
+	.teeth-group {
+		width: 45%;
+		min-width: 280px;
+		text-align: center;
+
+		h4 {
+			margin-bottom: var(--spacing-sm);
+			font-size: var(--font-size-md);
+		}
+	}
+
+	.labels-row {
+		padding: var(--spacing-xs) 0;
+
+		display: flex;
+		justify-content: space-evenly;
+
+		p {
+			width: 120px;
+			font-size: var(--font-size-base);
+			text-align: center;
+		}
+	}
+
+	.teeth-row {
+		margin-top: var(--spacing-sm);
+
+		display: flex;
+		justify-content: space-evenly;
+		gap: var(--spacing-sm);
+	}
+
+	.teeth-col {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--spacing-md);
+	}
+}
+
+/* --- Variação: Dente Total --- */
+.tooth {
+	background: var(--color-surface-page);
+	border: 1px solid var(--color-border-dark);
+	border-radius: var(--border-radius-sm);
+	box-shadow: var(--shadow-sm);
+	overflow: hidden;
+
+	display: flex;
+	align-items: center;
+
+	.label-content {
+		padding: var(--spacing-sm);
+		background: var(--color-brand-primary);
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.tooth-number {
+			font-size: var(--font-size-base);
+			font-weight: var(--font-weight-bold);
+			color: var(--color-text-inverted);
+		}
+	}
+
+	.tooth-input {
+		width: 100px;
+		height: 100%;
+		padding: var(--spacing-xs);
+		background: var(--color-surface-page);
+		border: none;
+		border-left: 1px solid var(--color-border-input);
+		font-size: var(--font-size-lg);
+		text-align: right;
+		outline: none;
+	}
+}
+
+/* --- Variação: Dente Componente --- */
+.tooth-component {
+	width: 220px;
+	color: var(--color-text-inverted);
+	background: linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-primary-hover));
+	border-radius: var(--border-radius-md);
+	box-shadow: var(--shadow-md);
+	overflow: hidden;
+	transition: var(--transition-fast);
+
+	display: flex;
+	flex-direction: column;
+
+	&:hover {
+		transform: translateY(-4px);
+	}
+
+	.tooth-header {
+		padding: var(--spacing-xs);
+		font-weight: var(--font-weight-bold);
+		font-size: var(--font-size-md);
+	}
+
+	.tooth-body {
+		width: 100%;
+		padding: var(--spacing-xs);
+		background: var(--color-surface-page);
+
+		display: flex;
+		justify-content: space-around;
+		gap: var(--spacing-xs);
+
+		.box {
+			background: var(--color-surface-component);
+			border: 1px solid var(--color-border-component);
+			border-radius: var(--border-radius-sm);
+
+			display: flex;
+			flex: 1;
+
+			input.component-input {
+				width: 100%;
+				height: 100%;
+				padding: var(--spacing-xs) 0;
+				background: transparent;
+				border: none;
+				text-align: center;
+				font-size: var(--font-size-md);
+				color: var(--color-text-input);
+				outline: none;
+			}
+		}
+	}
+
+	.tooth-footer {
+		width: 100%;
+		padding: var(--spacing-xs) 0;
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text-component);
+		background: var(--color-surface-component-alt);
+
+		display: flex;
+		justify-content: space-around;
+
+		label {
+			font-size: var(--font-size-sm);
+		}
+	}
+}
+
+/*
+==========================================================================
+  Componente: Footer
+==========================================================================
+*/
+footer {
+	width: 97%;
+	padding: 100px 48px 20px 100px;
+	color: var(--color-text-inverted);
+	background-color: var(--color-brand-secondary);
+	border-top-right-radius: 200px;
+	box-shadow: var(--shadow-highlight);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	align-self: flex-start;
+
+	.footer__content {
+		width: 100%;
+		max-width: 1440px;
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--spacing-sm);
+	}
+
+	.footer__text {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-lg);
+
+		h3 {
+			font-size: var(--font-size-xl);
+			text-align: center;
+		}
+
+		p {
+			width: 100%;
+			align-self: center;
+		}
+
+		h4 {
+			font-size: var(--font-size-md);
+		}
+	}
+
+	.footer__logos {
+		margin: var(--spacing-sm) 0;
+
+		display: flex;
+		align-items: center;
+		align-self: center;
+		gap: 150px;
+
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+	}
+
+	.footer__download-link {
+		margin: var(--spacing-md) 0;
+		padding: var(--spacing-xs) var(--spacing-lg);
+		text-decoration: none;
+		font-weight: var(--font-weight-normal);
+		color: var(--color-brand-primary-hover);
+		background-color: var(--color-surface-page);
+		border-radius: var(--border-radius-sm);
+	}
+
+	.footer__copyright {
+		font-size: var(--font-size-xs);
+	}
+}
