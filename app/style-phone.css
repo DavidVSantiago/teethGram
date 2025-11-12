@@ -1,19 +1,49 @@
-/* =========================
-   ESTILOS PARA CELULARES
-   ========================= */
+
 @media (max-width: 800px) {
 
-  body {
-    padding: 4vw;
-    place-items: start; /* evita que o card fique cortado em telas muito pequenas */
+  /* --- HERO RESPONSIVO --- */
+  .hero {
+    grid-template-columns: 1fr; /* texto e imagem empilhados */
+    text-align: center;
+    padding: 8vw 6vw;
+    border-bottom-left-radius: 35vw; /* curva mais suave em telas menores */
+    gap: 6vw;
   }
 
-  /* CARD PRINCIPAL */
+  .hero__text-wrapper {
+    padding-left: 0; /* remove o padding lateral */
+    max-width: 100%;
+    justify-items: center;
+  }
+
+  .hero__text-wrapper h1 {
+    font-size: 6vw;
+  }
+
+  .hero__text-wrapper p {
+    font-size: 3.5vw;
+    line-height: 1.6;
+  }
+
+  .hero__image-wrapper {
+    margin-right: 0;
+  }
+
+  .hero__image-wrapper img {
+    width: 45vw; /* aumenta um pouco a imagem */
+  }
+
+  /* --- CARD PRINCIPAL --- */
+  body {
+    padding: 4vw;
+    place-items: start;
+  }
+
   .card {
     width: 100%;
     padding: 5vw;
     border-radius: 3vw;
-    box-shadow: none; /* simplifica em telas pequenas */
+    box-shadow: none;
     gap: 4vw;
   }
 
@@ -21,16 +51,16 @@
     font-size: 5vw;
   }
 
-  /* SUB-CARD */
+  /* --- SUB-CARD --- */
   .sub-card {
     padding: 4vw;
     border-radius: 2vw;
     gap: 3vw;
   }
 
-  /* FORMULÁRIO (SELETORES) */
+  /* --- FORMULÁRIO --- */
   .form-row {
-    grid-template-columns: 1fr; /* cada campo em uma linha */
+    grid-template-columns: 1fr;
     gap: 3vw;
   }
 
@@ -45,9 +75,9 @@
     border-radius: 1.5vw;
   }
 
-  /* BOTÕES */
+  /* --- BOTÕES --- */
   .btn-row {
-    grid-template-columns: 1fr; /* empilha os botões */
+    grid-template-columns: 1fr;
     gap: 3vw;
   }
 
@@ -57,7 +87,7 @@
     border-radius: 2vw;
   }
 
-  /* PARTE DE BAIXO */
+  /* --- PARTE INFERIOR --- */
   .bottom-row {
     grid-template-columns: 1fr;
     gap: 4vw;

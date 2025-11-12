@@ -8,13 +8,40 @@
     <link rel="stylesheet" href="style-phone.css">
 </head>
 <body>
-    <!-- ========== CARD PRINCIPAL ========== -->
+  
+ <!-- ==========================
+       SEÇÃO HERO (CABEÇALHO)
+       ========================== -->
+  <header class="hero">
+    <div class="hero__text-wrapper">
+      <h1>TeethGram</h1>
+      <p>
+        Ferramenta voltada para o auxílio de pesquisadores e gestores em saúde bucal
+        para distribuir os componentes da experiência de cárie dentária por
+        elementos dentários de forma ilustrativa.
+      </p>
+    </div>
+
+    <div class="hero__image-wrapper">
+      <img src="/_OLD/app/img/img3.png" alt="hero" width="350" height="350" loading="lazy" />
+    </div>
+  </header>
+
+  <!-- ==========================
+       CARD PRINCIPAL
+       ========================== -->
   <div class="card">
     <h2>Dentes Permanentes</h2>
 
-    <!-- ========== SUB-CARD COM FILTROS E BOTÕES ========== -->
+    <!-- ==========================
+         SUB-CARD (FILTROS E BOTÕES)
+         ========================== -->
     <div class="sub-card">
+
+      <!-- === LINHA DE FORMULÁRIOS === -->
       <div class="form-row">
+
+        <!-- Campo: Índice -->
         <div>
           <label>Índice</label>
           <select id="indexSelect">
@@ -23,6 +50,7 @@
           </select>
         </div>
 
+        <!-- Campo: Distribuição -->
         <div>
           <label>Distribuição</label>
           <select id="distSelect">
@@ -31,6 +59,7 @@
           </select>
         </div>
 
+        <!-- Campo: Classificação dos Dentes -->
         <div>
           <label>Classificação dos Dentes</label>
           <select id="toothClassificationSelect">
@@ -39,40 +68,54 @@
           </select>
         </div>
 
-        <!-- Participantes + clipe no mesmo bloco -->
+        <!-- Campo: Total de Participantes -->
         <div>
           <label>Total de Participantes</label>
           <div class="participants-input">
             <input type="number" id="participantsInput" min="0" value="0">
           </div>
         </div>
-      </div>
 
+      </div> <!-- .form-row -->
+
+      <!-- === LINHA DE BOTÕES === -->
       <div class="btn-row">
         <button id="downloadBtn" type="button">Baixar Planilha</button>
         <button id="selectFileBtn" type="button">Selecionar Arquivo</button>
       </div>
-      
+
     </div> <!-- .sub-card -->
 
-    <!-- input file oculto -->
+    <!-- ==========================
+         INPUT DE ARQUIVO OCULTO
+         ========================== -->
     <input type="file" id="hiddenFileInput"
            style="position:absolute; left:-9999px; width:0; height:0; overflow:hidden;"
            aria-hidden="true" tabindex="-1">
 
-    <!-- container vazio: JS renderiza aqui -->
+    <!-- ==========================
+         CONTAINER DE DENTES (GERADO VIA JS)
+         ========================== -->
     <div class="teeth-container" id="permanentTeethContainer"></div>
 
+    <!-- ==========================
+         RODAPÉ DO CARD (MODO E BOTÃO)
+         ========================== -->
     <div class="bottom-row">
       <div class="distribution">
         <span class="distribution-title">Modo de Distribuição</span>
         <label><input type="radio" name="dist"> Média</label>
         <label><input type="radio" name="dist"> Percentual</label>
       </div>
+
       <button class="btn-generate">Gerar Histograma</button>
     </div>
 
   </div> <!-- .card -->
+
+  <!-- ==========================
+       SCRIPT PRINCIPAL
+       ========================== -->
   <script src="index.js"></script>
 </body>
 </html>

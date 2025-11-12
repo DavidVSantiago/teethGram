@@ -15,9 +15,59 @@ body {
 }
 
 /* =========================
+   HERO SECTION (HEADER)
+   ========================= */
+.hero {
+  background: linear-gradient( #3b82f6, #2563eb);
+  color: #fff;
+  display: grid; 
+  grid-template-columns: 1fr 0.5fr; /* duas colunas: texto | imagem */
+  align-items: center;
+  justify-content: space-between;
+  padding: 2vw 3vw;
+  border-bottom-left-radius: 15vw;
+  gap: 3vw; /* espaçamento entre as colunas */
+}
+
+/* Texto à esquerda */
+.hero__text-wrapper {
+  padding-left: 4vw;
+  display: grid; /* permite alinhamento e espaçamento interno */
+  grid-template-rows: auto auto;
+  gap: 0.5vw;
+  max-width: 90%; /* para evitar que o texto encoste demais */
+}
+
+.hero__text-wrapper h1 {
+  font-size: 2.3vw; 
+  font-weight: bold;
+  margin: 0; 
+}
+
+.hero__text-wrapper p {
+  font-size: 1.1vw;
+  line-height: 1.5;
+  color: #f0f0f0;
+}
+
+/* Imagem à direita */
+.hero__image-wrapper {
+  display: grid;
+  place-items: center; /* centraliza dentro da célula do grid */
+  margin-right: 3vw; /* leve afastamento da borda direita */
+}
+
+.hero__image-wrapper img {
+  width: 21vw;
+  height: auto;
+  object-fit: contain;
+}
+
+/* =========================
    CARD PRINCIPAL
    ========================= */
 .card {
+  margin-top: 3vw; 
   background: #f8f9fb;
   width: 75vw;
   padding: 2.5vw;
