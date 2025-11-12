@@ -1,0 +1,86 @@
+/* =========================
+   ESTILOS PARA CELULARES
+   ========================= */
+@media (max-width: 800px) {
+
+  body {
+    padding: 4vw;
+    place-items: start; /* evita que o card fique cortado em telas muito pequenas */
+  }
+
+  /* CARD PRINCIPAL */
+  .card {
+    width: 100%;
+    padding: 5vw;
+    border-radius: 3vw;
+    box-shadow: none; /* simplifica em telas pequenas */
+    gap: 4vw;
+  }
+
+  .card h2 {
+    font-size: 5vw;
+  }
+
+  /* SUB-CARD */
+  .sub-card {
+    padding: 4vw;
+    border-radius: 2vw;
+    gap: 3vw;
+  }
+
+  /* FORMULÁRIO (SELETORES) */
+  .form-row {
+    grid-template-columns: 1fr; /* cada campo em uma linha */
+    gap: 3vw;
+  }
+
+  label {
+    font-size: 3.5vw;
+  }
+
+  select,
+  input[type="number"] {
+    font-size: 3.5vw;
+    padding: 2.5vw;
+    border-radius: 1.5vw;
+  }
+
+  /* BOTÕES */
+  .btn-row {
+    grid-template-columns: 1fr; /* empilha os botões */
+    gap: 3vw;
+  }
+
+  button {
+    font-size: 3.5vw;
+    padding: 3vw;
+    border-radius: 2vw;
+  }
+
+  /* PARTE DE BAIXO */
+  .bottom-row {
+    grid-template-columns: 1fr;
+    gap: 4vw;
+  }
+
+  .distribution {
+    gap: 2vw;
+  }
+
+  .distribution-title {
+    font-size: 3.8vw;
+  }
+
+  .distribution label {
+    font-size: 3.5vw;
+    gap: 1vw;
+  }
+
+  .btn-generate {
+    justify-self: center;
+    width: 100%;
+    font-size: 3.5vw;
+    padding: 3vw;
+    border-radius: 2vw;
+  }
+}
