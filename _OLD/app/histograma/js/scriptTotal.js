@@ -3,11 +3,13 @@ class HistogramTotal {
     // Dados do gráfico
     this._dataSerie = dataSerie; // Array de valores numéricos
     this._dataLabel = dataLabel; // Array com os rótulos
-    
+
     // TODO - gambiarra para resolver poblema nos labels - corrigir depois
-    if(position==="bottom"){
-      this._dataLabel.reverse();
+    if (position === "bottom") {
+      this._dataLabel = [...this._dataLabel].reverse();
+      this._dataSerie = [...this._dataSerie].reverse();
     }
+
 
     this.position = position; // Posição do gráfico: normal ou invertido
     this._distribuicao = distribuicao; // Tipo de visualização:  "media" ou "percentual"
@@ -114,9 +116,8 @@ class HistogramTotal {
 
       // Ajusta a altura da barra proporcionalmente ao valor em dataSerie
       // (valor atual / valor máximo) * 100 para converter em porcentagem
-      valueBar.style.height = `${
-        (this._dataSerie[i] / maxDataSerieValue) * 100
-      }%`;
+      valueBar.style.height = `${(this._dataSerie[i] / maxDataSerieValue) * 100
+        }%`;
 
       // Insere o segmento preenchido dentro do contêiner da barra
       bar.appendChild(valueBar);

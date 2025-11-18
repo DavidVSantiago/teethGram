@@ -285,16 +285,17 @@ input[type="number"]::-webkit-outer-spin-button {
 .histogram-legend {
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: center;
   flex-direction: column;
   gap: 4px;
-
+  
   width: 100%;
   padding: 8px;
 }
 
 .histogram-legend p {
-  font-size: 14px;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .histogram-legend-section {
@@ -308,21 +309,21 @@ input[type="number"]::-webkit-outer-spin-button {
   display: none;
   align-items: start;
   justify-content: center;
-  flex-direction: column;
+  flex-direction: row;
 
-  gap: 12px;
+  gap: 50px;
 }
 
 .histogram-legend-text {
-  font-size: 12px;
+  font-size: 17px;
   font-weight: bold;
   margin-bottom: 0;
 }
 
 .histogram-legend-box {
-  width: 14px;
-  height: 14px;
-  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
 }
 
 .histogram-legend-box-cpo {
@@ -334,13 +335,13 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .histogram-legend-box-total,
 .histogram-legend-box-c {
-  background-color: #6261fb;
-}
-.histogram-legend-box-p {
   background-color: #ff6360;
 }
-.histogram-legend-box-o {
+.histogram-legend-box-p {
   background-color: #68b766;
+}
+.histogram-legend-box-o {
+  background-color: #6261fb;
 }
 
 .form-distribuicao {

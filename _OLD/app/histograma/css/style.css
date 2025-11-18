@@ -69,15 +69,17 @@ body {
       }
 
       & .legendaC {
-        background-color: #6261fb;
+        background-color: #ff6360;
+        
       }
 
       & .legendaP {
-        background-color: #ff6360;
+        background-color: #68b766;
       }
 
       & .legendaO {
-        background-color: #68b766;
+        background-color: #6261fb;
+        
       }
 
       & .legendaTotal {
@@ -166,15 +168,17 @@ body {
 
           & .valueC {
             width: 100%;
-            background-color: #6261fb;
+            background-color: #ff6360;
+            
           }
           & .valueP {
             width: 100%;
-            background-color: #ff6360;
+            background-color: #68b766;
           }
           & .valueO {
             width: 100%;
-            background-color: #68b766;
+            background-color: #6261fb;
+            
           }
         }
       }

@@ -5,10 +5,11 @@ class HistogramMulti {
     this._dataLabel = dataLabel; // Array com os rótulos
 
     // TODO - gambiarra para resolver poblema nos labels - corrigir depois
-    if(position==="bottom"){
-      this._dataLabel.reverse();
+    if (position === "bottom") {
+      this._dataLabel = [...this._dataLabel].reverse();
+      this._dataSerie = [...this._dataSerie].reverse();
     }
-    
+
     this.position = position; // Posição do gráfico: normal ou invertido
     this._distribuicao = distribuicao; // Tipo de visualização:  "media" ou "percentual"
 
