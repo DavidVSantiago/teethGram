@@ -4,8 +4,169 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-phone.css">
 </head>
 <body>
-    
+
+ <!-- ==========================
+       SEÇÃO HERO (CABEÇALHO)
+       ========================== -->
+  <header class="hero">
+    <div class="hero__text-wrapper">
+      <h1>TeethGram</h1>
+      <p>
+        Ferramenta voltada para o auxílio de pesquisadores e gestores em saúde bucal
+        para distribuir os componentes da experiência de cárie dentária por
+        elementos dentários de forma ilustrativa.
+      </p>
+    </div>
+
+    <div class="hero__image-wrapper">
+      <img src="/_OLD/app/img/img3.png" alt="hero" width="350" height="350" loading="lazy" />
+    </div>
+  </header>
+
+  <!-- ==========================
+       CARD PRINCIPAL
+       ========================== -->
+  <div class="card">
+    <h2>Dentes Permanentes</h2> <!--TODO- Esse titulo deve mudar de acordo com a opção do componente indice-->
+
+    <!-- ==========================
+         SUB-CARD (FILTROS E BOTÕES)
+         ========================== -->
+    <div class="sub-card">
+
+      <!-- === LINHA DE FORMULÁRIOS === -->
+      <div class="form-row">
+
+        <!-- Campo: Índice -->
+        <div>
+          <label>Índice</label>
+          <select id="indexSelect">
+            <option value="CPO-D">CPO-D</option>
+            <option value="ceo-d">ceo-d</option>
+          </select>
+        </div>
+
+        <!-- Campo: Distribuição -->
+        <div>
+          <label>Distribuição</label>
+          <select id="distSelect">
+            <option value="TOTAL">TOTAL</option>
+            <option value="COMPONENTE">TOTAL POR COMPONENTE</option>
+          </select>
+        </div>
+
+        <!-- Campo: Classificação dos Dentes -->
+        <div>
+          <label>Classificação dos Dentes</label>
+          <select id="toothClassificationSelect">
+            <option>FDI</option>
+            <option>ADA</option>
+          </select>
+        </div>
+
+        <!-- Campo: Total de Participantes -->
+        <div>
+          <label>Total de Participantes</label>
+          <div class="participants-input">
+            <input type="number" id="participantsInput" min="0" value="0">
+          </div>
+        </div>
+
+      </div> <!-- .form-row -->
+
+      <!-- === LINHA DE BOTÕES === -->
+      <div class="btn-row">
+        <button id="downloadBtn" onclick="downloadBtn()" type="button">Baixar Planilha</button>
+        <button id="selectFileBtn" onclick="selectFileBtn()" type="button">Selecionar Arquivo</button>
+      </div>
+
+    </div> <!-- .sub-card -->
+
+    <!-- ==========================
+         INPUT DE ARQUIVO OCULTO
+         ========================== -->
+    <!-- <input type="file" id="hiddenFileInput"
+           style="position:absolute; left:-9999px; width:0; height:0; overflow:hidden;"
+           aria-hidden="true" tabindex="-1">  -->
+
+    <!-- ==========================
+         CONTAINER DE DENTES (GERADO VIA JS)
+         ========================== -->
+    <div class="teeth-container" id="permanentTeethContainer">
+      <!--TODO - Criar dinamicamente aqui os formulários de acordo com as opções selecionadas-->
+    </div>
+
+    <!-- ==========================
+         RODAPÉ DO CARD (MODO E BOTÃO)
+         ========================== -->
+    <div class="generate-row">
+      <div class="distribution">
+        <span class="distribution-title">Modo de Distribuição</span>
+        <label><input type="radio" name="dist"> Média</label>
+        <label><input type="radio" name="dist"> Percentual</label>
+      </div>
+
+      <button class="btn-generate" id="generateBtn" onclick="generateBtn()">Gerar Histograma</button>
+    </div>
+
+  </div> <!-- .card -->
+
+  <footer>
+			<div class="footer__content">
+				<div class="footer__text">
+					<h3>Sistema de geração de histograma de condições dentárias</h3>
+
+					<p>
+						Desenvolvido pelo Departamento de Ciência e Tecnologia (DCT) para o projeto de extensão "Programa Sorrir" e Grupo de Pesquisa
+						"Saúde | Bucal Coletiva/UESB/CNPq", vinculado ao Departamento de Saúde I (DSI) - Universidade Estadual do Sudoeste da Bahia.
+					</p>
+
+					<div class="footer__logos">
+						<img src="/_OLD/app/img/logo-uesb.png" alt="Logo da UESB" width="100" height="auto" />
+						<img src="/_OLD/app/img/logo-sorrir.png" alt="Logo do Programa Sorrir" width="200" />
+						<img src="/_OLD/app/img/logo-projeto.png" alt="Logo do Projeto" width="100" height="auto" />
+					</div>
+
+					<div>
+						<h4>Autores</h4>
+
+						<p>
+							Manoelito Ferreira Silva Júnior (idealizador), Marília Jesus Batista de Brito Mota (idealizadora), Haroldo José Mendes
+							(idealizador), Dominique Muniz da Silva (programador), Eduardo Caetano de Souza Júnior (programador), Almir David Valente
+							Santiago (prof. Orientador).
+						</p>
+					</div>
+
+					<div>
+						<h4>Como citar:</h4>
+
+						<p>
+							Silva-Júnior M. F., Brito-Mota M. J. B., Mendes H. J., Silva D. M., Souza-Júnior E. C., Santiago A. D. V. TeethGram. Jequié,
+							17 de Setembro de 2025. Disponível em: https://algol.dev/tools/teethgram/. Acessado em [data].
+						</p>
+					</div>
+				</div>
+
+				<a
+					href="/iframes/tools/teethgram/guia-teethgram.pdf"
+					download="guia-teethgram.pdf"
+					target="_blank"
+					class="btn btn--light footer__download-link"
+				>
+					Baixe aqui o manual do usuário
+				</a>
+
+				<p class="footer__copyright">&copy; 2025 Teethgram. Todos os direitos reservados. v2 beta</p>
+			</div>
+		</footer>
+
+  <!-- ==========================
+       SCRIPT PRINCIPAL
+       ========================== -->
+  <script src="index.js"></script>
 </body>
 </html>
