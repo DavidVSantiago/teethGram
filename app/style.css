@@ -131,7 +131,14 @@ body {
   }
 
   /* =========================
-     PARTE DE BAIXO
+     FORMULÁRIOS
+     ========================= */
+  .form-container{
+    /* TODO (william) implmentar todos os estilos dos formularios gerados */      
+  }
+
+  /* =========================
+     LINHA DE GERAÇÃO DO HISTOGRAMA
      ========================= */
   .generate-row {
     border-top: 0.1vw solid #ddd;

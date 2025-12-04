@@ -82,6 +82,10 @@
       gap: 3vw;
     }
 
+    .form-container{
+      /* TODO (william) implmentar todos os estilos dos formularios gerados */      
+    }
+
     .generate-row {
       grid-template-columns: 1fr;
       gap: 4vw;

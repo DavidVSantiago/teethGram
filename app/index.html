@@ -6,6 +6,8 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style-phone.css">
+    <script src="index.js" defer></script>
+    <script src="formularios/forms.js" defer></script>
 </head>
 <body>
 
@@ -87,16 +89,9 @@
     </div> <!-- .sub-card -->
 
     <!-- ==========================
-         INPUT DE ARQUIVO OCULTO
-         ========================== -->
-    <!-- <input type="file" id="hiddenFileInput"
-           style="position:absolute; left:-9999px; width:0; height:0; overflow:hidden;"
-           aria-hidden="true" tabindex="-1">  -->
-
-    <!-- ==========================
          CONTAINER DE DENTES (GERADO VIA JS)
          ========================== -->
-    <div class="teeth-container" id="permanentTeethContainer">
+    <div class="form-container" id="form-container">
       <!--TODO - Criar dinamicamente aqui os formulários de acordo com as opções selecionadas-->
     </div>
 
@@ -164,9 +159,5 @@
 			</div>
 		</footer>
 
-  <!-- ==========================
-       SCRIPT PRINCIPAL
-       ========================== -->
-  <script src="index.js"></script>
 </body>
 </html>
