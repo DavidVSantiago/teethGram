@@ -2,164 +2,252 @@
    RESPONSIVIDADE
    ========================= */
 @media (max-width: 600px) {
-  body {
-    padding: 4vw;
-    place-items: start;
-  }
+	body {
+		padding: 4vw;
+		place-items: start;
+	}
 
-  button {
-    font-size: 3.5vw;
-    padding: 3vw;
-    border-radius: 2vw;
-  }
+	button {
+		font-size: 3.5vw;
+		padding: 3vw;
+		border-radius: 2vw;
+	}
 
-  .hero {
-    grid-template-columns: 1fr;
-    text-align: center;
-    padding: 8vw 6vw;
-    border-bottom-left-radius: 35vw;
-    gap: 6vw;
+	.hero {
+		grid-template-columns: 1fr;
+		text-align: center;
+		padding: 8vw 6vw;
+		border-bottom-left-radius: 35vw;
+		gap: 6vw;
 
-    .hero__text-wrapper {
-      padding-left: 0;
-      max-width: 100%;
-      justify-items: center;
+		.hero__text-wrapper {
+			padding-left: 0;
+			max-width: 100%;
+			justify-items: center;
 
-      h1 {
-        font-size: 6vw;
-      }
+			h1 {
+				font-size: 6vw;
+			}
 
-      p {
-        font-size: 3.5vw;
-        line-height: 1.6;
-      }
-    }
+			p {
+				font-size: 3.5vw;
+				line-height: 1.6;
+			}
+		}
 
-    .hero__image-wrapper {
-      margin-right: 0;
+		.hero__image-wrapper {
+			margin-right: 0;
 
-      img {
-        width: 45vw;
-      }
-    }
-  }
+			img {
+				width: 45vw;
+			}
+		}
+	}
 
-  .card {
-    width: 100%;
-    padding: 5vw;
-    border-radius: 3vw;
-    box-shadow: none;
-    gap: 4vw;
+	.card {
+		width: 100%;
+		padding: 5vw;
+		border-radius: 3vw;
+		box-shadow: none;
+		gap: 4vw;
 
-    h2 {
-      font-size: 5vw;
-    }
+		h2 {
+			font-size: 5vw;
+		}
 
-    .sub-card {
-      padding: 4vw;
-      border-radius: 2vw;
-      gap: 3vw;
+		.sub-card {
+			padding: 4vw;
+			border-radius: 2vw;
+			gap: 3vw;
 
-      .form-row {
-        grid-template-columns: 1fr;
-        gap: 3vw;
-      }
+			.form-row {
+				grid-template-columns: 1fr;
+				gap: 3vw;
+			}
 
-      label {
-        font-size: 3.5vw;
-      }
+			label {
+				font-size: 3.5vw;
+			}
 
-      select,
-      input[type="number"] {
-        font-size: 3.5vw;
-        padding: 2.5vw;
-        border-radius: 1.5vw;
-      }
-    }
+			select,
+			input[type='number'] {
+				font-size: 3.5vw;
+				padding: 2.5vw;
+				border-radius: 1.5vw;
+			}
+		}
 
-    .btn-row {
-      grid-template-columns: 1fr;
-      gap: 3vw;
-    }
+		.btn-row {
+			grid-template-columns: 1fr;
+			gap: 3vw;
+		}
 
-    .form-container{
-      /* TODO (william) implmentar todos os estilos dos formularios gerados */      
-    }
+		.form-container {
+			padding: 2vw 0;
 
-    .generate-row {
-      grid-template-columns: 1fr;
-      gap: 4vw;
-    }
+			/* flex-direction: column; */
+			gap: 6vw;
 
-    .distribution {
-      gap: 2vw;
+			.teeth-group {
+				width: 100%;
+				min-width: auto;
 
-      .distribution-title {
-        font-size: 3.8vw;
-      }
+				h4 {
+					font-size: 5vw;
+					margin-bottom: 3vw;
+				}
 
-      label {
-        font-size: 3.5vw;
-        gap: 1vw;
-      }
-    }
+				.labels-row {
+					padding: 2vw 0;
 
-    .btn-generate {
-      justify-self: center;
-      width: 100%;
-      font-size: 3.5vw;
-      padding: 3vw;
-      border-radius: 2vw;
-    }
-  }
+					p {
+						width: 25vw;
+						font-size: 3.5vw;
+					}
+				}
 
-   footer {
-    padding: 8vw 0;
+				.teeth-row {
+					flex-direction: row;
+					gap: 2vw;
+				}
 
-    .footer__content {
-      width: 90vw;
-      font-size: 4vw;
-      gap: 6vw;
+				.teeth-col {
+					gap: 3vw;
+				}
+			}
 
-      .footer__text {
-        display: flex;
-        flex-direction: column;
-        gap: 4vw;
+			/* Responsivo: Dente Total */
+			.tooth {
+				border-radius: 1.5vw;
+				border-width: 0.3vw;
 
-        h3 {
-          font-size: 5vw;
-        }
+				.label-content {
+					padding: 2vw;
+					width: 12vw;
 
-        p {
-          font-size: 3.5vw;
-          line-height: 1.5;
-        }
+					.tooth-number {
+						font-size: 3.5vw;
+					}
+				}
 
-        h4 {
-          font-size: 4vw;
-        }
+				.tooth-input {
+					width: 18vw;
+					padding: 2vw;
+					font-size: 4vw;
+					border-left-width: 0.3vw;
+				}
+			}
 
-        .footer__logos {
-          flex-direction: column;
-          gap: 6vw;
+			/* Responsivo: Dente Componente */
+			.tooth-component {
+				width: 44vw;
+				border-radius: 2vw;
+				border-width: 0.2vw;
 
-          img {
-            width: 40vw;
-            max-height: none;
-          }
-        }
-      }
+				.tooth-header {
+					padding: 1.5vw;
+					font-size: 4vw;
+				}
 
-      .footer__download-link {
-        font-size: 3.5vw;
-        padding: 3vw 5vw;
-        border-radius: 3vw;
-      }
+				.tooth-body {
+					padding: 2vw 1vw;
+					gap: 0.8vw;
 
-      .footer__copyright {
-        font-size: 3.2vw;
-        padding-top: 4vw;
-      }
-    }
-  }
+					.box input.component-input {
+						width: 100%;
+						padding: 1vw 0;
+						border-width: 0.3vw;
+						border-radius: 1vw;
+						font-size: 3.5vw;
+						font-weight: bold;
+					}
+				}
+
+				.tooth-footer {
+					padding: 1.5vw 0;
+					border-top-width: 0.2vw;
+
+					label {
+						font-size: 3vw;
+					}
+				}
+			}
+		}
+
+		.generate-row {
+			grid-template-columns: 1fr;
+			gap: 4vw;
+		}
+
+		.distribution {
+			gap: 2vw;
+
+			.distribution-title {
+				font-size: 3.8vw;
+			}
+
+			label {
+				font-size: 3.5vw;
+				gap: 1vw;
+			}
+		}
+
+		.btn-generate {
+			justify-self: center;
+			width: 100%;
+			font-size: 3.5vw;
+			padding: 3vw;
+			border-radius: 2vw;
+		}
+	}
+
+	footer {
+		padding: 8vw 0;
+
+		.footer__content {
+			width: 90vw;
+			font-size: 4vw;
+			gap: 6vw;
+
+			.footer__text {
+				display: flex;
+				flex-direction: column;
+				gap: 4vw;
+
+				h3 {
+					font-size: 5vw;
+				}
+
+				p {
+					font-size: 3.5vw;
+					line-height: 1.5;
+				}
+
+				h4 {
+					font-size: 4vw;
+				}
+
+				.footer__logos {
+					flex-direction: column;
+					gap: 6vw;
+
+					img {
+						width: 40vw;
+						max-height: none;
+					}
+				}
+			}
+
+			.footer__download-link {
+				font-size: 3.5vw;
+				padding: 3vw 5vw;
+				border-radius: 3vw;
+			}
+
+			.footer__copyright {
+				font-size: 3.2vw;
+				padding-top: 4vw;
+			}
+		}
+	}
 }
