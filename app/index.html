@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style-phone.css">
     <script src="index.js" defer></script>
     <script src="formularios/forms.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js" defer></script>
 </head>
 <body>
 
@@ -57,6 +58,9 @@
           <label>Distribuição</label>
           <select id="distSelect">
             <option value="TOTAL">TOTAL</option>
+            <option value="componente_c">COMPONENTE C</option>
+						<option value="componente_p">COMPONENTE P</option>
+						<option value="componente_o">COMPONENTE O</option>
             <option value="COMPONENTE">TOTAL POR COMPONENTE</option>
           </select>
         </div>
@@ -158,6 +162,5 @@
 				<p class="footer__copyright">&copy; 2025 Teethgram. Todos os direitos reservados. v2 beta</p>
 			</div>
 		</footer>
-
 </body>
 </html>
