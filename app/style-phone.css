@@ -274,4 +274,45 @@
 			}
 		}
 	}
+
+	/* ========= MODAL DE RESPOSTA ========= */
+	.modal-overlay .modal-conteudo {
+		width: 85vw;
+		padding: 5vw;
+		border-radius: 2vw;
+
+		gap: 5vw;
+
+		.modal-icone {
+			width: 12vw;
+			height: 12vw;
+			font-size: 10vw;
+			border-width: 0.8vw;
+		}
+
+		#modal-titulo {
+			font-size: 5vw;
+		}
+
+		.modal-corpo {
+			font-size: 3.5vw;
+
+			gap: 1vw;
+
+			.alerta-comparativo {
+				padding: 3vw;
+				border-radius: 1.5vw;
+			}
+
+			.alerta-dica {
+				font-size: 3vw;
+			}
+		}
+
+		.modal-botao {
+			font-size: 4.5vw;
+			padding: 2vw 8vw;
+			border-radius: 1.5vw;
+		}
+	}
 }

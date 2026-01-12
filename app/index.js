@@ -27,6 +27,15 @@ const DESCRICAO_TIPO_FORMULARIO = {
 	[TIPO_FORMULARIO.CPOD_TOTAL]: 'cpod-total',
 };
 
+/**
+ * Mapeamento de identificadores dos formulários para os Usuários.
+ * Traduz o valor numérico do TIPO_FORMULARIO para o nome que será mostrado para o Usuário.
+ */
+const NOMES_EXIBICAO_FORMULARIO = {
+	[TIPO_FORMULARIO.CEOD_POR_COMPONENTE]: 'ceo-d (Por Componente)',
+	[TIPO_FORMULARIO.CEOD_TOTAL]: 'ceo-d (Total)',
+	[TIPO_FORMULARIO.CPOD_POR_COMPONENTE]: 'CPO-D (Por Componente)',
+	[TIPO_FORMULARIO.CPOD_TOTAL]: 'CPO-D (Total)',
 };
 
 /**
@@ -159,6 +168,19 @@ function processarArquivoSelecionado(file) {
 
 		// Comparação de segurança: Planilha vs Seleção na Tela
 		if (tipoFormularioNaPlanilha !== tipoFormularioNaTela) {
+			const nomeTela = NOMES_EXIBICAO_FORMULARIO[tipoFormularioNaTela];
+			const nomePlanilha = NOMES_EXIBICAO_FORMULARIO[tipoFormularioNaPlanilha];
+
+			const conteudoHtml = `
+				<p>A planilha carregada não corresponde ao formulário selecionado.</p>
+				<div class="alerta-comparativo">
+					<span><b>Tela:</b> <strong>${nomeTela}</strong></span>
+					<span><b>Planilha:</b> <strong class="valor-planilha">${nomePlanilha}</strong></span>
+				</div>
+				<p class="alerta-dica">Certifique-se de carregar o arquivo correto para o índice selecionado.</p>
+			`;
+
+			exibirAlerta('Erro de Compatibilidade', conteudoHtml);
 			return;
 		}
 
@@ -320,8 +342,20 @@ function identificarTipoPlanilha(dadosMatriz) {
 	}
 }
 
+/**
+ * Exibe o modal personalizado centralizado na tela.
+ */
+function exibirAlerta(titulo, htmlConteudo) {
+	const modal = document.getElementById('janela-modal');
+	document.getElementById('modal-titulo').textContent = titulo;
+	document.getElementById('modal-mensagem').innerHTML = htmlConteudo;
 
-    return null;
+	modal.style.display = 'flex';
 }
 
+/**
+ * Esconde o modal.
+ */
+function fecharModal() {
+	document.getElementById('janela-modal').style.display = 'none';
 }
