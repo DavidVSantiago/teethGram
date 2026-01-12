@@ -1,122 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style-phone.css">
-    <script src="index.js" defer></script>
-    <script src="formularios/forms.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js" defer></script>
-</head>
-<body>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>TeethGram - Ferramenta de Saúde Bucal</title>
 
- <!-- ==========================
-       SEÇÃO HERO (CABEÇALHO)
-       ========================== -->
-  <header class="hero">
-    <div class="hero__text-wrapper">
-      <h1>TeethGram</h1>
-      <p>
-        Ferramenta voltada para o auxílio de pesquisadores e gestores em saúde bucal
-        para distribuir os componentes da experiência de cárie dentária por
-        elementos dentários de forma ilustrativa.
-      </p>
-    </div>
+		<!-- Links para a estilização -->
+		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="style-phone.css" />
 
-    <div class="hero__image-wrapper">
-      <img src="/_OLD/app/img/img3.png" alt="hero" width="350" height="350" loading="lazy" />
-    </div>
-  </header>
+		<!-- Links para os scripts -->
+		<script src="index.js" defer></script>
+		<script src="formularios/forms.js" defer></script>
+		<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js" defer></script>
+	</head>
+	<body>
+		<!-- ========= SEÇÃO HERO (CABEÇALHO) ========= -->
+		<header class="cabecalho-apresentacao">
+			<div class="container-texto">
+				<h1>TeethGram</h1>
 
-  <!-- ==========================
-       CARD PRINCIPAL
-       ========================== -->
-  <div class="card">
-    <h2>Dentes Permanentes</h2> <!--TODO- Esse titulo deve mudar de acordo com a opção do componente indice-->
+				<p>
+					Ferramenta voltada para o auxílio de pesquisadores e gestores em saúde bucal para distribuir os componentes da experiência de
+					cárie dentária por elementos dentários de forma ilustrativa.
+				</p>
+			</div>
 
-    <!-- ==========================
-         SUB-CARD (FILTROS E BOTÕES)
-         ========================== -->
-    <div class="sub-card">
+			<div class="container-imagem">
+				<img src="imagens/imagem-hero.png" alt="Ilustração TeethGram" width="350" height="350" loading="lazy" />
+			</div>
+		</header>
 
-      <!-- === LINHA DE FORMULÁRIOS === -->
-      <div class="form-row">
+		<!-- ========= CARD PRINCIPAL ========= -->
+		<main class="cartao-principal">
+			<h2 id="titulo-secao-dinamico">Dentes Permanentes</h2>
 
-        <!-- Campo: Índice -->
-        <div>
-          <label>Índice</label>
-          <select id="indexSelect">
-            <option value="CPO-D">CPO-D</option>
-            <option value="ceo-d">ceo-d</option>
-          </select>
-        </div>
+			<!-- ========= SESSÃO DE FILTROS ========= -->
+			<section class="sub-cartao-configuracao">
+				<div class="linha-formulario">
+					<!-- Campo: Índice -->
+					<div class="campo-grupo">
+						<label for="selecao-indice">Índice</label>
 
-        <!-- Campo: Distribuição -->
-        <div>
-          <label>Distribuição</label>
-          <select id="distSelect">
-            <option value="TOTAL">TOTAL</option>
-            <option value="componente_c">COMPONENTE C</option>
-						<option value="componente_p">COMPONENTE P</option>
-						<option value="componente_o">COMPONENTE O</option>
-            <option value="COMPONENTE">TOTAL POR COMPONENTE</option>
-          </select>
-        </div>
+						<select id="selecao-indice">
+							<option value="cpo-d">CPO-D</option>
+							<option value="ceo-d">ceo-d</option>
+						</select>
+					</div>
 
-        <!-- Campo: Classificação dos Dentes -->
-        <div>
-          <label>Classificação dos Dentes</label>
-          <select id="toothClassificationSelect">
-            <option>FDI</option>
-            <option>ADA</option>
-          </select>
-        </div>
+					<!-- Campo: Distribuição -->
+					<div class="campo-grupo">
+						<label for="selecao-distribuicao">Distribuição</label>
 
-        <!-- Campo: Total de Participantes -->
-        <div>
-          <label>Total de Participantes</label>
-          <div class="participants-input">
-            <input type="number" id="participantsInput" min="0" value="0">
-          </div>
-        </div>
+						<select id="selecao-distribuicao">
+							<option value="total">TOTAL</option>
+							<option value="componente-c">COMPONENTE C</option>
+							<option value="componente-p">COMPONENTE P</option>
+							<option value="componente-o">COMPONENTE O</option>
+							<option value="componente">TOTAL POR COMPONENTE</option>
+						</select>
+					</div>
 
-      </div> <!-- .form-row -->
+					<!-- Campo: Classificação dos Dentes -->
+					<div class="campo-grupo">
+						<label for="selecao-classificacao">Classificação dos Dentes</label>
 
-      <!-- === LINHA DE BOTÕES === -->
-      <div class="btn-row">
-        <button id="downloadBtn" onclick="downloadBtn()" type="button">Baixar Planilha</button>
-        <button id="selectFileBtn" onclick="selectFileBtn()" type="button">Selecionar Arquivo</button>
-      </div>
+						<select id="selecao-classificacao">
+							<option value="fdi">FDI</option>
+							<option value="ada">ADA</option>
+						</select>
+					</div>
 
-    </div> <!-- .sub-card -->
+					<!-- Campo: Total de Participantes -->
+					<div class="campo-grupo">
+						<label for="total-participantes">Total de Participantes</label>
 
-    <!-- ==========================
-         CONTAINER DE DENTES (GERADO VIA JS)
-         ========================== -->
-    <div class="form-container" id="form-container">
-      <!--TODO - Criar dinamicamente aqui os formulários de acordo com as opções selecionadas-->
-    </div>
+						<input type="number" id="total-participantes" min="0" value="0" />
+					</div>
+				</div>
 
-    <!-- ==========================
-         RODAPÉ DO CARD (MODO E BOTÃO)
-         ========================== -->
-    <div class="generate-row">
-      <div class="distribution">
-        <span class="distribution-title">Modo de Distribuição</span>
-        <label><input type="radio" name="dist"> Média</label>
-        <label><input type="radio" name="dist"> Percentual</label>
-      </div>
+				<!-- ========= SESSÃO DE BOTÕES ========= -->
+				<div class="linha-botoes">
+					<button id="botao-baixar" onclick="baixarPlanilhaModelo()" type="button">Baixar Planilha</button>
+					<button id="botao-selecionar-arquivo" onclick="selecionarArquivoPlanilha()" type="button">Selecionar Arquivo</button>
+				</div>
+			</section>
 
-      <button class="btn-generate" id="generateBtn" onclick="generateBtn()">Gerar Histograma</button>
-    </div>
+			<!-- ========= SESSÃO DOS FORMULÁRIOS ========= -->
+			<section class="container-formulario-dinamico" id="container-formulario">
+				<!-- Formulários gerados dinamicamente pelo script 'forms.js' -->
+			</section>
 
-  </div> <!-- .card -->
+			<!-- ========= SESSÃO DOS GERAÇÃO DO HISTOGRAMA ========= -->
+			<footer class="linha-processamento">
+				<!-- Campo: Modo de Distribuição -->
+				<fieldset class="grupo-distribuicao">
+					<legend class="titulo-distribuicao">Modo de Distribuição</legend>
 
-  <footer>
-			<div class="footer__content">
-				<div class="footer__text">
+					<div class="radios-distribuicao">
+						<label>
+							<input type="radio" name="modo-distribuicao" value="media" checked />
+							Média
+						</label>
+
+						<label>
+							<input type="radio" name="modo-distribuicao" value="percentual" />
+							Percentual
+						</label>
+					</div>
+				</fieldset>
+
+				<!-- Botão de Geração de Histograma -->
+				<button class="botao-gerar-histograma" id="botao-gerar" onclick="gerarHistograma()">Gerar Histograma</button>
+			</footer>
+		</main>
+
+		<!-- ========= FOOTER ========= -->
+		<footer class="rodape-institucional">
+			<div class="conteudo-rodape">
+				<div class="texto-informativo">
 					<h3>Sistema de geração de histograma de condições dentárias</h3>
 
 					<p>
@@ -124,10 +126,10 @@
 						"Saúde | Bucal Coletiva/UESB/CNPq", vinculado ao Departamento de Saúde I (DSI) - Universidade Estadual do Sudoeste da Bahia.
 					</p>
 
-					<div class="footer__logos">
-						<img src="/_OLD/app/img/logo-uesb.png" alt="Logo da UESB" width="100" height="auto" />
-						<img src="/_OLD/app/img/logo-sorrir.png" alt="Logo do Programa Sorrir" width="200" />
-						<img src="/_OLD/app/img/logo-projeto.png" alt="Logo do Projeto" width="100" height="auto" />
+					<div class="logos-parceiros">
+						<img src="imagens/logo-uesb.png" alt="Logo UESB" width="100" height="auto" />
+						<img src="imagens/logo-sorrir.png" alt="Logo Programa Sorrir" width="200" />
+						<img src="imagens/logo-projeto.png" alt="Logo do Projeto" width="100" height="auto" />
 					</div>
 
 					<div>
@@ -150,17 +152,12 @@
 					</div>
 				</div>
 
-				<a
-					href="/iframes/tools/teethgram/guia-teethgram.pdf"
-					download="guia-teethgram.pdf"
-					target="_blank"
-					class="btn btn--light footer__download-link"
-				>
+				<a href="/iframes/tools/teethgram/guia-teethgram.pdf" download="guia-teethgram.pdf" target="_blank" class="botao-download-manual">
 					Baixe aqui o manual do usuário
 				</a>
 
-				<p class="footer__copyright">&copy; 2025 Teethgram. Todos os direitos reservados. v2 beta</p>
+				<p class="direitos-autorais">&copy; 2025 Teethgram. Todos os direitos reservados. v2 beta</p>
 			</div>
 		</footer>
-</body>
+	</body>
 </html>

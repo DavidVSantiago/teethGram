@@ -1,29 +1,36 @@
-/* =========================
-   RESPONSIVIDADE
-   ========================= */
+/* ========= RESPONSIVIDADE ========= */
 @media (max-width: 600px) {
 	body {
-		padding: 4vw;
 		place-items: start;
 	}
 
 	button {
-		font-size: 3.5vw;
 		padding: 3vw;
+		font-size: 3.5vw;
 		border-radius: 2vw;
 	}
 
-	.hero {
-		grid-template-columns: 1fr;
-		text-align: center;
+	/* --------- Configuração do Input Radio --------- */
+	input[type='radio'] {
+		width: 4vw;
+		height: 4vw;
+	}
+
+	/* ========= SEÇÃO HERO (CABEÇALHO) ========= */
+	.cabecalho-apresentacao {
 		padding: 8vw 6vw;
+		text-align: center;
 		border-bottom-left-radius: 35vw;
+
+		grid-template-columns: 1fr;
 		gap: 6vw;
 
-		.hero__text-wrapper {
-			padding-left: 0;
+		.container-texto {
 			max-width: 100%;
+			padding-left: 0;
+
 			justify-items: center;
+			gap: 3vw;
 
 			h1 {
 				font-size: 6vw;
@@ -35,7 +42,7 @@
 			}
 		}
 
-		.hero__image-wrapper {
+		.container-imagem {
 			margin-right: 0;
 
 			img {
@@ -44,25 +51,32 @@
 		}
 	}
 
-	.card {
+	/* ========= CARD PRINCIPAL ========= */
+	.cartao-principal {
 		width: 100%;
 		padding: 5vw;
 		border-radius: 3vw;
 		box-shadow: none;
-		gap: 4vw;
+
+		gap: 6vw;
 
 		h2 {
 			font-size: 5vw;
 		}
 
-		.sub-card {
+		/* --------- Filtros --------- */
+		.sub-cartao-configuracao {
 			padding: 4vw;
 			border-radius: 2vw;
-			gap: 3vw;
+			gap: 5vw;
 
-			.form-row {
+			.linha-formulario {
 				grid-template-columns: 1fr;
-				gap: 3vw;
+				gap: 5vw;
+
+				.campo-grupo {
+					gap: 3vw;
+				}
 			}
 
 			label {
@@ -71,66 +85,66 @@
 
 			select,
 			input[type='number'] {
-				font-size: 3.5vw;
 				padding: 2.5vw;
+				font-size: 3vw;
 				border-radius: 1.5vw;
 			}
 		}
 
-		.btn-row {
+		/* --------- Botões --------- */
+		.linha-botoes {
 			grid-template-columns: 1fr;
-			gap: 3vw;
+			gap: 2vw;
 		}
 
-		.form-container {
+		/* --------- Formulários --------- */
+		.container-formulario-dinamico {
 			padding: 2vw 0;
-
-			/* flex-direction: column; */
 			gap: 6vw;
 
-			.teeth-group {
+			flex-direction: column;
+
+			.grupo-dentes {
 				width: 100%;
 				min-width: auto;
 
-				h4 {
+				.cabecalho-arco h4 {
+					margin: 5vw 0;
 					font-size: 5vw;
-					margin-bottom: 3vw;
-				}
-
-				.labels-row {
-					padding: 2vw 0;
-
-					p {
-						width: 25vw;
-						font-size: 3.5vw;
-					}
-				}
-
-				.teeth-row {
-					flex-direction: row;
-					gap: 2vw;
-				}
-
-				.teeth-col {
-					gap: 3vw;
 				}
 			}
 
-			/* Responsivo: Dente Total */
-			.tooth {
+			.grade-arcos {
+				gap: 0.1vw;
+			}
+
+			.hemiarco {
+				gap: 3vw;
+
+				.etiqueta-lado {
+					font-size: 4vw;
+				}
+			}
+
+			.coluna-dentes {
+				gap: 2vw;
+			}
+
+			/* --- ESTILO 1: DENTE TOTAL (Card Simples) --- */
+			.cartao-dente-simples {
 				border-radius: 1.5vw;
 				border-width: 0.3vw;
 
-				.label-content {
-					padding: 2vw;
+				.container-numero {
 					width: 12vw;
+					padding: 2vw;
 
-					.tooth-number {
+					.numero-dente {
 						font-size: 3.5vw;
 					}
 				}
 
-				.tooth-input {
+				.entrada-total {
 					width: 18vw;
 					padding: 2vw;
 					font-size: 4vw;
@@ -138,32 +152,33 @@
 				}
 			}
 
-			/* Responsivo: Dente Componente */
-			.tooth-component {
+			/* --- ESTILO 2: DENTE COMPONENTE (Card Detalhado) --- */
+			.componente-dente {
 				width: 44vw;
-				border-radius: 2vw;
+				border-radius: 1.8vw;
 				border-width: 0.2vw;
 
-				.tooth-header {
+				.dente-titulo {
 					padding: 1.5vw;
-					font-size: 4vw;
-				}
 
-				.tooth-body {
-					padding: 2vw 1vw;
-					gap: 0.8vw;
-
-					.box input.component-input {
-						width: 100%;
-						padding: 1vw 0;
-						border-width: 0.3vw;
-						border-radius: 1vw;
-						font-size: 3.5vw;
-						font-weight: bold;
+					h3 {
+						font-size: 4vw;
 					}
 				}
 
-				.tooth-footer {
+				.dente-corpo {
+					padding: 2vw 1vw;
+					gap: 0.8vw;
+
+					.caixa-entrada input.entrada-componente {
+						padding: 1.5vw 0;
+						font-size: 3.5vw;
+						border-width: 0.3vw;
+						border-radius: 1vw;
+					}
+				}
+
+				.dente-legenda {
 					padding: 1.5vw 0;
 					border-top-width: 0.2vw;
 
@@ -174,44 +189,53 @@
 			}
 		}
 
-		.generate-row {
+		/* --------- Geração do Histograma --------- */
+		.linha-processamento {
+			padding-top: 6vw;
+
 			grid-template-columns: 1fr;
-			gap: 4vw;
-		}
+			gap: 8vw;
 
-		.distribution {
-			gap: 2vw;
+			.grupo-distribuicao {
+				justify-content: space-around;
+				gap: 0;
 
-			.distribution-title {
-				font-size: 3.8vw;
+				.titulo-distribuicao {
+					font-size: 3.2vw;
+				}
+
+				.radios-distribuicao {
+					width: 45vw;
+					justify-content: flex-end;
+					gap: 6vw;
+
+					label {
+						font-size: 3vw;
+						gap: 2vw;
+					}
+				}
 			}
 
-			label {
+			.botao-gerar-histograma {
+				width: 90%;
+				padding: 3vw;
 				font-size: 3.5vw;
-				gap: 1vw;
+				border-radius: 1.2vw;
+				justify-self: center;
 			}
-		}
-
-		.btn-generate {
-			justify-self: center;
-			width: 100%;
-			font-size: 3.5vw;
-			padding: 3vw;
-			border-radius: 2vw;
 		}
 	}
 
-	footer {
+	/* ========= FOOTER ========= */
+	.rodape-institucional {
 		padding: 8vw 0;
 
-		.footer__content {
+		.conteudo-rodape {
 			width: 90vw;
-			font-size: 4vw;
+			/* font-size: 4vw; */
 			gap: 6vw;
 
-			.footer__text {
-				display: flex;
-				flex-direction: column;
+			.texto-informativo {
 				gap: 4vw;
 
 				h3 {
@@ -223,30 +247,30 @@
 					line-height: 1.5;
 				}
 
-				h4 {
-					font-size: 4vw;
-				}
-
-				.footer__logos {
+				.logos-parceiros {
 					flex-direction: column;
-					gap: 6vw;
+					gap: 8vw;
 
 					img {
-						width: 40vw;
+						width: 35vw;
 						max-height: none;
 					}
 				}
+
+				h4 {
+					font-size: 4vw;
+				}
 			}
 
-			.footer__download-link {
-				font-size: 3.5vw;
+			.botao-download-manual {
 				padding: 3vw 5vw;
-				border-radius: 3vw;
+				font-size: 3.5vw;
+				border-radius: 1.2vw;
 			}
 
-			.footer__copyright {
-				font-size: 3.2vw;
+			.direitos-autorais {
 				padding-top: 4vw;
+				font-size: 3.2vw;
 			}
 		}
 	}
