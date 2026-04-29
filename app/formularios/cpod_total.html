@@ -3,167 +3,305 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Formulário CPO-D Total</title>
+		<title>Formulário CPO-D Total (Permanentes)</title>
 
 		<link rel="stylesheet" href="style_forms.css" />
 	</head>
-	<body class="teeth-container" id="permanentTeethContainer">
-		<div id="top-arch" class="teeth-group">
-			<h4>Superiores</h4>
-			<div class="labels-row">
-				<p>Direito</p>
-				<p>Esquerdo</p>
-			</div>
-			<div class="teeth-row">
-				<div class="teeth-col">
-					<div class="tooth" id="tooth-18">
-						<div class="label-content"><label for="tooth-18-total" class="tooth-number">18</label></div>
-						<input class="tooth-input" type="number" id="tooth-18-total" name="tooth-18-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-17">
-						<div class="label-content"><label for="tooth-17-total" class="tooth-number">17</label></div>
-						<input class="tooth-input" type="number" id="tooth-17-total" name="tooth-17-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-16">
-						<div class="label-content"><label for="tooth-16-total" class="tooth-number">16</label></div>
-						<input class="tooth-input" type="number" id="tooth-16-total" name="tooth-16-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-15">
-						<div class="label-content"><label for="tooth-15-total" class="tooth-number">15</label></div>
-						<input class="tooth-input" type="number" id="tooth-15-total" name="tooth-15-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-14">
-						<div class="label-content"><label for="tooth-14-total" class="tooth-number">14</label></div>
-						<input class="tooth-input" type="number" id="tooth-14-total" name="tooth-14-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-13">
-						<div class="label-content"><label for="tooth-13-total" class="tooth-number">13</label></div>
-						<input class="tooth-input" type="number" id="tooth-13-total" name="tooth-13-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-12">
-						<div class="label-content"><label for="tooth-12-total" class="tooth-number">12</label></div>
-						<input class="tooth-input" type="number" id="tooth-12-total" name="tooth-12-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-11">
-						<div class="label-content"><label for="tooth-11-total" class="tooth-number">11</label></div>
-						<input class="tooth-input" type="number" id="tooth-11-total" name="tooth-11-total" min="0" maxlength="6" inputmode="numeric" />
+	<body class="container-dentes">
+		<section id="arco-superior" class="grupo-dentes">
+			<header class="cabecalho-arco">
+				<h4>Superiores</h4>
+			</header>
+
+			<div class="grade-arcos">
+				<div class="hemiarco direito">
+					<span class="etiqueta-lado">Direito</span>
+
+					<div class="coluna-dentes">
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-18" class="numero-dente">18</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-18" name="total-18" min="0" inputmode="numeric" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-17" class="numero-dente">17</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-17" name="total-17" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-16" class="numero-dente">16</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-16" name="total-16" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-15" class="numero-dente">15</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-15" name="total-15" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-14" class="numero-dente">14</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-14" name="total-14" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-13" class="numero-dente">13</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-13" name="total-13" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-12" class="numero-dente">12</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-12" name="total-12" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-11" class="numero-dente">11</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-11" name="total-11" min="0" />
+						</article>
 					</div>
 				</div>
 
-				<div class="teeth-col">
-					<div class="tooth" id="tooth-21">
-						<div class="label-content"><label for="tooth-21-total" class="tooth-number">21</label></div>
-						<input class="tooth-input" type="number" id="tooth-21-total" name="tooth-21-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-22">
-						<div class="label-content"><label for="tooth-22-total" class="tooth-number">22</label></div>
-						<input class="tooth-input" type="number" id="tooth-22-total" name="tooth-22-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-23">
-						<div class="label-content"><label for="tooth-23-total" class="tooth-number">23</label></div>
-						<input class="tooth-input" type="number" id="tooth-23-total" name="tooth-23-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-24">
-						<div class="label-content"><label for="tooth-24-total" class="tooth-number">24</label></div>
-						<input class="tooth-input" type="number" id="tooth-24-total" name="tooth-24-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-25">
-						<div class="label-content"><label for="tooth-25-total" class="tooth-number">25</label></div>
-						<input class="tooth-input" type="number" id="tooth-25-total" name="tooth-25-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-26">
-						<div class="label-content"><label for="tooth-26-total" class="tooth-number">26</label></div>
-						<input class="tooth-input" type="number" id="tooth-26-total" name="tooth-26-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-27">
-						<div class="label-content"><label for="tooth-27-total" class="tooth-number">27</label></div>
-						<input class="tooth-input" type="number" id="tooth-27-total" name="tooth-27-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-28">
-						<div class="label-content"><label for="tooth-28-total" class="tooth-number">28</label></div>
-						<input class="tooth-input" type="number" id="tooth-28-total" name="tooth-28-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-				</div>
-			</div>
-		</div>
+				<div class="hemiarco esquerdo">
+					<span class="etiqueta-lado">Esquerdo</span>
 
-		<div id="down-arch" class="teeth-group">
-			<h4>Inferiores</h4>
-			<div class="labels-row">
-				<p>Direito</p>
-				<p>Esquerdo</p>
+					<div class="coluna-dentes">
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-21" class="numero-dente">21</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-21" name="total-21" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-22" class="numero-dente">22</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-22" name="total-22" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-23" class="numero-dente">23</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-23" name="total-23" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-24" class="numero-dente">24</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-24" name="total-24" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-25" class="numero-dente">25</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-25" name="total-25" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-26" class="numero-dente">26</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-26" name="total-26" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-27" class="numero-dente">27</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-27" name="total-27" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-28" class="numero-dente">28</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-28" name="total-28" min="0" />
+						</article>
+					</div>
+				</div>
 			</div>
-			<div class="teeth-row">
-				<div class="teeth-col">
-					<div class="tooth" id="tooth-48">
-						<div class="label-content"><label for="tooth-48-total" class="tooth-number">48</label></div>
-						<input class="tooth-input" type="number" id="tooth-48-total" name="tooth-48-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-47">
-						<div class="label-content"><label for="tooth-47-total" class="tooth-number">47</label></div>
-						<input class="tooth-input" type="number" id="tooth-47-total" name="tooth-47-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-46">
-						<div class="label-content"><label for="tooth-46-total" class="tooth-number">46</label></div>
-						<input class="tooth-input" type="number" id="tooth-46-total" name="tooth-46-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-45">
-						<div class="label-content"><label for="tooth-45-total" class="tooth-number">45</label></div>
-						<input class="tooth-input" type="number" id="tooth-45-total" name="tooth-45-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-44">
-						<div class="label-content"><label for="tooth-44-total" class="tooth-number">44</label></div>
-						<input class="tooth-input" type="number" id="tooth-44-total" name="tooth-44-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-43">
-						<div class="label-content"><label for="tooth-43-total" class="tooth-number">43</label></div>
-						<input class="tooth-input" type="number" id="tooth-43-total" name="tooth-43-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-42">
-						<div class="label-content"><label for="tooth-42-total" class="tooth-number">42</label></div>
-						<input class="tooth-input" type="number" id="tooth-42-total" name="tooth-42-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-41">
-						<div class="label-content"><label for="tooth-41-total" class="tooth-number">41</label></div>
-						<input class="tooth-input" type="number" id="tooth-41-total" name="tooth-41-total" min="0" maxlength="6" inputmode="numeric" />
+		</section>
+
+		<section id="arco-inferior" class="grupo-dentes">
+			<header class="cabecalho-arco">
+				<h4>Inferiores</h4>
+			</header>
+
+			<div class="grade-arcos">
+				<div class="hemiarco direito">
+					<span class="etiqueta-lado">Direito</span>
+
+					<div class="coluna-dentes">
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-48" class="numero-dente">48</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-48" name="total-48" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-47" class="numero-dente">47</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-47" name="total-47" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-46" class="numero-dente">46</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-46" name="total-46" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-45" class="numero-dente">45</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-45" name="total-45" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-44" class="numero-dente">44</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-44" name="total-44" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-43" class="numero-dente">43</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-43" name="total-43" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-42" class="numero-dente">42</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-42" name="total-42" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-41" class="numero-dente">41</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-41" name="total-41" min="0" />
+						</article>
 					</div>
 				</div>
 
-				<div class="teeth-col">
-					<div class="tooth" id="tooth-31">
-						<div class="label-content"><label for="tooth-31-total" class="tooth-number">31</label></div>
-						<input class="tooth-input" type="number" id="tooth-31-total" name="tooth-31-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-32">
-						<div class="label-content"><label for="tooth-32-total" class="tooth-number">32</label></div>
-						<input class="tooth-input" type="number" id="tooth-32-total" name="tooth-32-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-33">
-						<div class="label-content"><label for="tooth-33-total" class="tooth-number">33</label></div>
-						<input class="tooth-input" type="number" id="tooth-33-total" name="tooth-33-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-34">
-						<div class="label-content"><label for="tooth-34-total" class="tooth-number">34</label></div>
-						<input class="tooth-input" type="number" id="tooth-34-total" name="tooth-34-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-35">
-						<div class="label-content"><label for="tooth-35-total" class="tooth-number">35</label></div>
-						<input class="tooth-input" type="number" id="tooth-35-total" name="tooth-35-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-36">
-						<div class="label-content"><label for="tooth-36-total" class="tooth-number">36</label></div>
-						<input class="tooth-input" type="number" id="tooth-36-total" name="tooth-36-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-37">
-						<div class="label-content"><label for="tooth-37-total" class="tooth-number">37</label></div>
-						<input class="tooth-input" type="number" id="tooth-37-total" name="tooth-37-total" min="0" maxlength="6" inputmode="numeric" />
-					</div>
-					<div class="tooth" id="tooth-38">
-						<div class="label-content"><label for="tooth-38-total" class="tooth-number">38</label></div>
-						<input class="tooth-input" type="number" id="tooth-38-total" name="tooth-38-total" min="0" maxlength="6" inputmode="numeric" />
+				<div class="hemiarco esquerdo">
+					<span class="etiqueta-lado">Esquerdo</span>
+
+					<div class="coluna-dentes">
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-31" class="numero-dente">31</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-31" name="total-31" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-32" class="numero-dente">32</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-32" name="total-32" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-33" class="numero-dente">33</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-33" name="total-33" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-34" class="numero-dente">34</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-34" name="total-34" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-35" class="numero-dente">35</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-35" name="total-35" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-36" class="numero-dente">36</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-36" name="total-36" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-37" class="numero-dente">37</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-37" name="total-37" min="0" />
+						</article>
+
+						<article class="cartao-dente-simples">
+							<header class="container-numero">
+								<label for="total-38" class="numero-dente">38</label>
+							</header>
+
+							<input class="entrada-total" type="number" id="total-38" name="total-38" min="0" />
+						</article>
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	</body>
 </html>

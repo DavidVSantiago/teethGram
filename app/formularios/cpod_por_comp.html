@@ -7,323 +7,557 @@
 
 		<link rel="stylesheet" href="style_forms.css" />
 	</head>
-	<body class="teeth-container" id="permanentTeethContainer">
-		<div id="top-arch" class="teeth-group">
-			<h4>Superiores</h4>
-			<div class="labels-row">
-				<p>Direito</p>
-				<p>Esquerdo</p>
-			</div>
-			<div class="teeth-row">
-				<div class="teeth-col">
-					<div class="tooth-component" id="tooth-18">
-						<h3 class="tooth-header">18</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-18" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-18" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-18" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-17">
-						<h3 class="tooth-header">17</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-17" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-17" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-17" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-16">
-						<h3 class="tooth-header">16</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-16" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-16" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-16" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-15">
-						<h3 class="tooth-header">15</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-15" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-15" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-15" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-14">
-						<h3 class="tooth-header">14</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-14" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-14" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-14" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-13">
-						<h3 class="tooth-header">13</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-13" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-13" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-13" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-12">
-						<h3 class="tooth-header">12</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-12" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-12" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-12" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-11">
-						<h3 class="tooth-header">11</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-11" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-11" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-11" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
+	<body class="container-dentes">
+		<section id="arco-superior" class="grupo-dentes">
+			<header class="cabecalho-arco">
+				<h4>Superiores</h4>
+			</header>
+
+			<div class="grade-arcos">
+				<div class="hemiarco direito">
+					<span class="etiqueta-lado">Direito</span>
+
+					<div class="coluna-dentes">
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>18</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-18" min="0" title="Cariado" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-18" min="0" title="Perdido" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-18" min="0" title="Obturado" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-18">C</label>
+								<label for="p-18">P</label>
+								<label for="o-18">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>17</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-17" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-17" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-17" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-17">C</label>
+								<label for="p-17">P</label>
+								<label for="o-17">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>16</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-16" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-16" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-16" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-16">C</label>
+								<label for="p-16">P</label>
+								<label for="o-16">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>15</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-15" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-15" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-15" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-15">C</label>
+								<label for="p-15">P</label>
+								<label for="o-15">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>14</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-14" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-14" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-14" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-14">C</label>
+								<label for="p-14">P</label>
+								<label for="o-14">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>13</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-13" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-13" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-13" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-13">C</label>
+								<label for="p-13">P</label>
+								<label for="o-13">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>12</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-12" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-12" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-12" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-12">C</label>
+								<label for="p-12">P</label>
+								<label for="o-12">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>11</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-11" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-11" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-11" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-11">C</label>
+								<label for="p-11">P</label>
+								<label for="o-11">O</label>
+							</footer>
+						</article>
 					</div>
 				</div>
 
-				<div class="teeth-col">
-					<div class="tooth-component" id="tooth-21">
-						<h3 class="tooth-header">21</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-21" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-21" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-21" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-22">
-						<h3 class="tooth-header">22</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-22" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-22" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-22" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-23">
-						<h3 class="tooth-header">23</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-23" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-23" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-23" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-24">
-						<h3 class="tooth-header">24</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-24" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-24" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-24" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-25">
-						<h3 class="tooth-header">25</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-25" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-25" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-25" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-26">
-						<h3 class="tooth-header">26</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-26" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-26" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-26" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-27">
-						<h3 class="tooth-header">27</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-27" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-27" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-27" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-28">
-						<h3 class="tooth-header">28</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-28" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-28" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-28" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-				</div>
-			</div>
-		</div>
+				<div class="hemiarco esquerdo">
+					<span class="etiqueta-lado">Esquerdo</span>
 
-		<div id="down-arch" class="teeth-group">
-			<h4>Inferiores</h4>
-			<div class="labels-row">
-				<p>Direito</p>
-				<p>Esquerdo</p>
+					<div class="coluna-dentes">
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>21</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-21" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-21" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-21" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-21">C</label>
+								<label for="p-21">P</label>
+								<label for="o-21">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>22</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-22" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-22" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-22" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-22">C</label>
+								<label for="p-22">P</label>
+								<label for="o-22">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>23</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-23" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-23" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-23" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-23">C</label>
+								<label for="p-23">P</label>
+								<label for="o-23">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>24</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-24" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-24" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-24" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-24">C</label>
+								<label for="p-24">P</label>
+								<label for="o-24">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>25</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-25" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-25" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-25" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-25">C</label>
+								<label for="p-25">P</label>
+								<label for="o-25">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>26</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-26" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-26" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-26" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-26">C</label>
+								<label for="p-26">P</label>
+								<label for="o-26">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>27</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-27" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-27" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-27" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-27">C</label>
+								<label for="p-27">P</label>
+								<label for="o-27">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>28</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-28" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-28" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-28" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-28">C</label>
+								<label for="p-28">P</label>
+								<label for="o-28">O</label>
+							</footer>
+						</article>
+					</div>
+				</div>
 			</div>
-			<div class="teeth-row">
-				<div class="teeth-col">
-					<div class="tooth-component" id="tooth-48">
-						<h3 class="tooth-header">48</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-48" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-48" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-48" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-47">
-						<h3 class="tooth-header">47</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-47" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-47" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-47" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-46">
-						<h3 class="tooth-header">46</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-46" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-46" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-46" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-45">
-						<h3 class="tooth-header">45</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-45" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-45" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-45" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-44">
-						<h3 class="tooth-header">44</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-44" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-44" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-44" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-43">
-						<h3 class="tooth-header">43</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-43" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-43" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-43" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-42">
-						<h3 class="tooth-header">42</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-42" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-42" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-42" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-41">
-						<h3 class="tooth-header">41</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-41" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-41" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-41" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
+		</section>
+
+		<section id="arco-inferior" class="grupo-dentes">
+			<header class="cabecalho-arco">
+				<h4>Inferiores</h4>
+			</header>
+
+			<div class="grade-arcos">
+				<div class="hemiarco direito">
+					<span class="etiqueta-lado">Direito</span>
+
+					<div class="coluna-dentes">
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>48</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-48" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-48" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-48" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-48">C</label>
+								<label for="p-48">P</label>
+								<label for="o-48">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>47</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-47" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-47" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-47" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-47">C</label>
+								<label for="p-47">P</label>
+								<label for="o-47">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>46</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-46" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-46" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-46" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-46">C</label>
+								<label for="p-46">P</label>
+								<label for="o-46">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>45</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-45" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-45" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-45" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-45">C</label>
+								<label for="p-45">P</label>
+								<label for="o-45">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>44</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-44" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-44" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-44" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-44">C</label>
+								<label for="p-44">P</label>
+								<label for="o-44">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>43</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-43" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-43" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-43" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-43">C</label>
+								<label for="p-43">P</label>
+								<label for="o-43">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>42</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-42" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-42" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-42" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-42">C</label>
+								<label for="p-42">P</label>
+								<label for="o-42">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>41</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-41" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-41" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-41" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-41">C</label>
+								<label for="p-41">P</label>
+								<label for="o-41">O</label>
+							</footer>
+						</article>
 					</div>
 				</div>
 
-				<div class="teeth-col">
-					<div class="tooth-component" id="tooth-31">
-						<h3 class="tooth-header">31</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-31" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-31" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-31" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-32">
-						<h3 class="tooth-header">32</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-32" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-32" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-32" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-33">
-						<h3 class="tooth-header">33</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-33" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-33" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-33" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-34">
-						<h3 class="tooth-header">34</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-34" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-34" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-34" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-35">
-						<h3 class="tooth-header">35</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-35" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-35" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-35" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-36">
-						<h3 class="tooth-header">36</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-36" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-36" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-36" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-37">
-						<h3 class="tooth-header">37</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-37" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-37" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-37" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
-					</div>
-					<div class="tooth-component" id="tooth-38">
-						<h3 class="tooth-header">38</h3>
-						<div class="tooth-body">
-							<div class="box"><input class="component-input" type="number" id="c-38" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="p-38" min="0" /></div>
-							<div class="box"><input class="component-input" type="number" id="o-38" min="0" /></div>
-						</div>
-						<div class="tooth-footer"><label>C</label><label>P</label><label>O</label></div>
+				<div class="hemiarco esquerdo">
+					<span class="etiqueta-lado">Esquerdo</span>
+
+					<div class="coluna-dentes">
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>31</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-31" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-31" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-31" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-31">C</label>
+								<label for="p-31">P</label>
+								<label for="o-31">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>32</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-32" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-32" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-32" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-32">C</label>
+								<label for="p-32">P</label>
+								<label for="o-32">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>33</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-33" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-33" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-33" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-33">C</label>
+								<label for="p-33">P</label>
+								<label for="o-33">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>34</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-34" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-34" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-34" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-34">C</label>
+								<label for="p-34">P</label>
+								<label for="o-34">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>35</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-35" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-35" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-35" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-35">C</label>
+								<label for="p-35">P</label>
+								<label for="o-35">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>36</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-36" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-36" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-36" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-36">C</label>
+								<label for="p-36">P</label>
+								<label for="o-36">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>37</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-37" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-37" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-37" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-37">C</label>
+								<label for="p-37">P</label>
+								<label for="o-37">O</label>
+							</footer>
+						</article>
+
+						<article class="componente-dente">
+							<header class="dente-titulo"><h3>38</h3></header>
+
+							<div class="dente-corpo">
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="c-38" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="p-38" min="0" /></div>
+								<div class="caixa-entrada"><input class="entrada-componente" type="number" id="o-38" min="0" /></div>
+							</div>
+
+							<footer class="dente-legenda">
+								<label for="c-38">C</label>
+								<label for="p-38">P</label>
+								<label for="o-38">O</label>
+							</footer>
+						</article>
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	</body>
 </html>
