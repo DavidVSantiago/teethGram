@@ -16,8 +16,35 @@
 		height: 4vw;
 	}
 
-	/* ========= SEÇÃO HERO (CABEÇALHO) ========= */
-	.cabecalho-apresentacao {
+	/* ========= CABEÇALHO ========= */
+	.ferramentas-container {
+		padding: 3vw 4vw;
+
+		gap: 4vw;
+
+		.ferramenta-item {
+			.seletor-idioma {
+				padding: 1vw 2vw;
+
+				font-size: 3vw;
+
+				border: 0.1vw solid transparent;
+			}
+
+			.button-troca {
+				width: 8vw;
+				height: 8vw;
+
+				svg {
+					width: 6vw;
+					height: 6vw;
+				}
+			}
+		}
+	}
+
+	/* ========= SEÇÃO HERO ========= */
+	.apresentacao-container {
 		padding: 8vw 6vw;
 		text-align: center;
 		border-bottom-left-radius: 35vw;
@@ -25,7 +52,7 @@
 		grid-template-columns: 1fr;
 		gap: 6vw;
 
-		.container-texto {
+		.apresentacao-texto {
 			max-width: 100%;
 			padding-left: 0;
 
@@ -42,7 +69,7 @@
 			}
 		}
 
-		.container-imagem {
+		.apresentacao-imagem {
 			margin-right: 0;
 
 			img {
@@ -92,9 +119,22 @@
 		}
 
 		/* --------- Botões --------- */
-		.linha-botoes {
-			grid-template-columns: 1fr;
-			gap: 2vw;
+		.botoes-container {
+			gap: 6vw;
+
+			h3 {
+				font-size: 4vw;
+			}
+
+			.linha-botoes {
+				flex-direction: column;
+				align-items: center;
+				gap: 2vw;
+
+				button {
+					width: 100%;
+				}
+			}
 		}
 
 		/* --------- Formulários --------- */

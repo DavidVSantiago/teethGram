@@ -48,7 +48,7 @@ const QTD_COLUNAS_CPOD = 32;
  * Configuração de caminhos para os modelos de planilhas Excel (.xlsx).
  * @constant {string} LOCAL_ARQUIVOS - Pasta raiz dos arquivos de planilha.
  */
-const LOCAL_ARQUIVOS = 'planilhas/';
+const LOCAL_ARQUIVOS = 'assets/planilhas/';
 
 /**
  * Mapeamento dos caminhos específicos para planilhas do índice ceo-d (Decíduos).
@@ -109,7 +109,7 @@ function selecionarArquivoPlanilha() {
 	entradaArquivo.accept = '.xlsx, .xls';
 
 	// Ouve o evento de mudança antes de disparar o clique
-	entradaArquivo.addEventListener('change', e => {
+	entradaArquivo.addEventListener('change', (e) => {
 		const arquivo = e.target.files[0];
 		if (arquivo) {
 			processarArquivoSelecionado(arquivo);
@@ -148,7 +148,7 @@ function processarArquivoSelecionado(file) {
 
 	const leitor = new FileReader();
 
-	leitor.onload = e => {
+	leitor.onload = (e) => {
 		const workbook = XLSX.read(e.target.result, { type: 'array' });
 		const primeiraAba = workbook.Sheets[workbook.SheetNames[0]];
 
@@ -171,22 +171,24 @@ function processarArquivoSelecionado(file) {
 			const nomeTela = NOMES_EXIBICAO_FORMULARIO[tipoFormularioNaTela];
 			const nomePlanilha = NOMES_EXIBICAO_FORMULARIO[tipoFormularioNaPlanilha];
 
-			const conteudoHtml = `
-				<p>A planilha carregada não corresponde ao formulário selecionado.</p>
+			const conteudoHtml = /* html */ `
+				<p>${t.modal.mensagemErro}</p>
+
 				<div class="alerta-comparativo">
-					<span><b>Tela:</b> <strong>${nomeTela}</strong></span>
-					<span><b>Planilha:</b> <strong class="valor-planilha">${nomePlanilha}</strong></span>
+					<span><b>${t.modal.labelTela}</b> <strong>${nomeTela}</strong></span>
+					<span><b>${t.modal.labelPlanilha}</b> <strong class="valor-planilha">${nomePlanilha}</strong></span>
 				</div>
-				<p class="alerta-dica">Certifique-se de carregar o arquivo correto para o índice selecionado.</p>
+				
+				<p class="alerta-dica">${t.modal.dicaErro}</p>
 			`;
 
-			exibirAlerta('Erro de Compatibilidade', conteudoHtml);
+			exibirAlerta(t.modal.tituloErro, conteudoHtml);
 			return;
 		}
 
 		const planilhaFormatada = formataPlanilha(
 			dadosMatriz,
-			tipoFormularioNaPlanilha
+			tipoFormularioNaPlanilha,
 		);
 		console.log('Processamento concluído com sucesso:', planilhaFormatada);
 	};
@@ -207,7 +209,7 @@ function formataPlanilha(dados, tipoFormularioNaPlanilha) {
 	// Mapeia índices das colunas que possuem numeração de dentes
 	const colunasDentes = cabecalho
 		.map((h, i) => (/^\d+$/.test(h) ? i : null))
-		.filter(i => i !== null);
+		.filter((i) => i !== null);
 
 	let totalParticipantes = 0;
 
@@ -230,7 +232,7 @@ function formataPlanilha(dados, tipoFormularioNaPlanilha) {
 
 	if (ehModeloTotal) {
 		const linhaTotal = linhas.find(
-			l => l[0] && String(l[0]).toLowerCase().includes('total')
+			(l) => l[0] && String(l[0]).toLowerCase().includes('total'),
 		);
 		for (const indiceColuna of colunasDentes) {
 			let valor = linhaTotal?.[indiceColuna] ?? '';
@@ -301,15 +303,15 @@ function identificarTipoPlanilha(dadosMatriz) {
 	if (!dadosMatriz || dadosMatriz.length === 0) return null;
 
 	const cabecalho = dadosMatriz[0];
-	const indexCodigo = cabecalho.findIndex(h =>
-		String(h).toLowerCase().includes('código')
+	const indexCodigo = cabecalho.findIndex((h) =>
+		String(h).toLowerCase().includes('código'),
 	);
 
 	if (indexCodigo === -1) return null;
 
 	const colunasNumericas = cabecalho
 		.slice(indexCodigo + 1)
-		.filter(h => /^\d+$/.test(h));
+		.filter((h) => /^\d+$/.test(h));
 	let tipoIndice = null;
 
 	if (colunasNumericas.length === QTD_COLUNAS_CEOD) {
@@ -320,7 +322,7 @@ function identificarTipoPlanilha(dadosMatriz) {
 		return null;
 	}
 
-	const possuiTermosComponente = dadosMatriz.some(linha => {
+	const possuiTermosComponente = dadosMatriz.some((linha) => {
 		const primeiraColuna = String(linha[0]).toLowerCase();
 		return (
 			primeiraColuna.includes('cariado') ||

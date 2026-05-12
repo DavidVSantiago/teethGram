@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
 	<head>
 		<meta charset="UTF-8" />
@@ -6,170 +6,73 @@
 		<title>TeethGram - Ferramenta de Saúde Bucal</title>
 
 		<!-- Links para a estilização -->
-		<link rel="stylesheet" href="style.css" />
-		<link rel="stylesheet" href="style-phone.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/style-phone.css" />
 
 		<!-- Links para os scripts -->
-		<script src="index.js" defer></script>
-		<script src="formularios/forms.js" defer></script>
+		<script src="js/i18n.js" defer></script>
+		<script src="js/view-manager.js" defer></script>
+
+		<!-- <script src="js/forms/form-literal.js" defer></script> -->
+		<script src="js/forms/form-dynamic.js" defer></script>
+		<script src="js/forms/form-controller.js" defer></script>
+
+		<script src="js/main.js" defer></script>
 		<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js" defer></script>
 	</head>
 	<body>
-		<!-- ========= SEÇÃO HERO (CABEÇALHO) ========= -->
-		<header class="cabecalho-apresentacao">
-			<div class="container-texto">
-				<h1>TeethGram</h1>
+		<header class="ferramentas-container">
+			<div class="ferramenta-item acessibilidade">
+				<input type="checkbox" id="toggle-zoom" class="visualmente-oculto checkbox-troca" />
 
-				<p>
-					Ferramenta voltada para o auxílio de pesquisadores e gestores em saúde bucal para distribuir os componentes da experiência de
-					cárie dentária por elementos dentários de forma ilustrativa.
-				</p>
+				<label for="toggle-zoom" class="button-troca" title="Alterar escala">
+					<svg class="icone-padrao" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+						<path
+							fill="currentColor"
+							d="M480 272C480 317.9 465.1 360.3 440 394.7L566.6 521.4C579.1 533.9 579.1 554.2 566.6 566.7C554.1 579.2 533.8 579.2 521.3 566.7L394.7 440C360.3 465.1 317.9 480 272 480C157.1 480 64 386.9 64 272C64 157.1 157.1 64 272 64C386.9 64 480 157.1 480 272zM272 176C258.7 176 248 186.7 248 200L248 248L200 248C186.7 248 176 258.7 176 272C176 285.3 186.7 296 200 296L248 296L248 344C248 357.3 258.7 368 272 368C285.3 368 296 357.3 296 344L296 296L344 296C357.3 296 368 285.3 368 272C368 258.7 357.3 248 344 248L296 248L296 200C296 186.7 285.3 176 272 176z"
+						/>
+					</svg>
+					<svg class="icone-ativo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+						<path
+							fill="currentColor"
+							d="M480 272C480 317.9 465.1 360.3 440 394.7L566.6 521.4C579.1 533.9 579.1 554.2 566.6 566.7C554.1 579.2 533.8 579.2 521.3 566.7L394.7 440C360.3 465.1 317.9 480 272 480C157.1 480 64 386.9 64 272C64 157.1 157.1 64 272 64C386.9 64 480 157.1 480 272zM200 248C186.7 248 176 258.7 176 272C176 285.3 186.7 296 200 296L344 296C357.3 296 368 285.3 368 272C368 258.7 357.3 248 344 248L200 248z"
+						/>
+					</svg>
+				</label>
 			</div>
 
-			<div class="container-imagem">
-				<img src="imagens/imagem-hero.png" alt="Ilustração TeethGram" width="350" height="350" loading="lazy" />
+			<div class="ferramenta-item idioma">
+				<label for="seletor-idioma" class="visualmente-oculto">Selecione o idioma:</label>
+
+				<select id="seletor-idioma" class="seletor-idioma">
+					<option value="pt-br">Português (BR)</option>
+					<option value="en">English</option>
+				</select>
+			</div>
+
+			<div class="ferramenta-item tema">
+				<input type="checkbox" id="toggle-tema" class="visualmente-oculto checkbox-tema" />
+
+				<label for="toggle-tema" class="button-troca">
+					<svg class="icone-sol" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+						<path
+							fill="currentColor"
+							d="M320 32C328.4 32 336.3 36.4 340.6 43.7L396.1 136.3L500.9 110C509.1 108 517.8 110.4 523.7 116.3C529.6 122.2 532 131 530 139.1L503.7 243.8L596.4 299.3C603.6 303.6 608.1 311.5 608.1 319.9C608.1 328.3 603.7 336.2 596.4 340.5L503.7 396.1L530 500.8C532 509 529.6 517.7 523.7 523.6C517.8 529.5 509 532 500.9 530L396.2 503.7L340.7 596.4C336.4 603.6 328.5 608.1 320.1 608.1C311.7 608.1 303.8 603.7 299.5 596.4L243.9 503.7L139.2 530C131 532 122.4 529.6 116.4 523.7C110.4 517.8 108 509 110 500.8L136.2 396.1L43.6 340.6C36.4 336.2 32 328.4 32 320C32 311.6 36.4 303.7 43.7 299.4L136.3 243.9L110 139.1C108 130.9 110.3 122.3 116.3 116.3C122.3 110.3 131 108 139.2 110L243.9 136.2L299.4 43.6L301.2 41C305.7 35.3 312.6 31.9 320 31.9zM320 176C240.5 176 176 240.5 176 320C176 399.5 240.5 464 320 464C399.5 464 464 399.5 464 320C464 240.5 399.5 176 320 176zM320 416C267 416 224 373 224 320C224 267 267 224 320 224C373 224 416 267 416 320C416 373 373 416 320 416z"
+						/>
+					</svg>
+
+					<svg class="icone-lua" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+						<path
+							fill="currentColor"
+							d="M320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576C388.8 576 451.3 548.8 497.3 504.6C504.6 497.6 506.7 486.7 502.6 477.5C498.5 468.3 488.9 462.6 478.8 463.4C473.9 463.8 469 464 464 464C362.4 464 280 381.6 280 280C280 207.9 321.5 145.4 382.1 115.2C391.2 110.7 396.4 100.9 395.2 90.8C394 80.7 386.6 72.5 376.7 70.3C358.4 66.2 339.4 64 320 64z"
+						/>
+					</svg>
+				</label>
 			</div>
 		</header>
 
-		<!-- ========= CARD PRINCIPAL ========= -->
-		<main class="cartao-principal">
-			<h2 id="titulo-secao-dinamico">Dentes Permanentes</h2>
-
-			<!-- ========= SESSÃO DE FILTROS ========= -->
-			<section class="sub-cartao-configuracao">
-				<div class="linha-formulario">
-					<!-- Campo: Índice -->
-					<div class="campo-grupo">
-						<label for="selecao-indice">Índice</label>
-
-						<select id="selecao-indice">
-							<option value="cpo-d">CPO-D</option>
-							<option value="ceo-d">ceo-d</option>
-						</select>
-					</div>
-
-					<!-- Campo: Distribuição -->
-					<div class="campo-grupo">
-						<label for="selecao-distribuicao">Distribuição</label>
-
-						<select id="selecao-distribuicao">
-							<option value="total">TOTAL</option>
-							<option value="componente-c">COMPONENTE C</option>
-							<option value="componente-p">COMPONENTE P</option>
-							<option value="componente-o">COMPONENTE O</option>
-							<option value="componente">TOTAL POR COMPONENTE</option>
-						</select>
-					</div>
-
-					<!-- Campo: Classificação dos Dentes -->
-					<div class="campo-grupo">
-						<label for="selecao-classificacao">Classificação dos Dentes</label>
-
-						<select id="selecao-classificacao">
-							<option value="fdi">FDI</option>
-							<option value="ada">ADA</option>
-						</select>
-					</div>
-
-					<!-- Campo: Total de Participantes -->
-					<div class="campo-grupo">
-						<label for="total-participantes">Total de Participantes</label>
-
-						<input type="number" id="total-participantes" min="0" />
-					</div>
-				</div>
-
-				<!-- ========= SESSÃO DE BOTÕES ========= -->
-				<div class="linha-botoes">
-					<button id="botao-baixar" onclick="baixarPlanilhaModelo()" type="button">Baixar Planilha</button>
-					<button id="botao-selecionar-arquivo" onclick="selecionarArquivoPlanilha()" type="button">Selecionar Arquivo</button>
-				</div>
-			</section>
-
-			<!-- ========= SESSÃO DOS FORMULÁRIOS ========= -->
-			<section class="container-formulario-dinamico" id="container-formulario">
-				<!-- Formulários gerados dinamicamente pelo script 'forms.js' -->
-			</section>
-
-			<!-- ========= SESSÃO DOS GERAÇÃO DO HISTOGRAMA ========= -->
-			<footer class="linha-processamento">
-				<!-- Campo: Modo de Distribuição -->
-				<fieldset class="grupo-distribuicao">
-					<legend class="titulo-distribuicao">Modo de Distribuição</legend>
-
-					<div class="radios-distribuicao">
-						<label>
-							<input type="radio" name="modo-distribuicao" value="media" checked />
-							Média
-						</label>
-
-						<label>
-							<input type="radio" name="modo-distribuicao" value="percentual" />
-							Percentual
-						</label>
-					</div>
-				</fieldset>
-
-				<!-- Botão de Geração de Histograma -->
-				<button class="botao-gerar-histograma" id="botao-gerar" onclick="gerarHistograma()">Gerar Histograma</button>
-			</footer>
-		</main>
-
-		<!-- ========= FOOTER ========= -->
-		<footer class="rodape-institucional">
-			<div class="conteudo-rodape">
-				<div class="texto-informativo">
-					<h3>Sistema de geração de histograma de condições dentárias</h3>
-
-					<p>
-						Desenvolvido pelo Departamento de Ciência e Tecnologia (DCT) para o projeto de extensão "Programa Sorrir" e Grupo de Pesquisa
-						"Saúde | Bucal Coletiva/UESB/CNPq", vinculado ao Departamento de Saúde I (DSI) - Universidade Estadual do Sudoeste da Bahia.
-					</p>
-
-					<div class="logos-parceiros">
-						<img src="imagens/logo-uesb.png" alt="Logo UESB" width="100" height="auto" />
-						<img src="imagens/logo-sorrir.png" alt="Logo Programa Sorrir" width="200" />
-						<img src="imagens/logo-projeto.png" alt="Logo do Projeto" width="100" height="auto" />
-					</div>
-
-					<div>
-						<h4>Autores</h4>
-
-						<p>
-							Manoelito Ferreira Silva Júnior (idealizador), Marília Jesus Batista de Brito Mota (idealizadora), Haroldo José Mendes
-							(idealizador), Dominique Muniz da Silva (programador), Eduardo Caetano de Souza Júnior (programador), Almir David Valente
-							Santiago (prof. Orientador).
-						</p>
-					</div>
-
-					<div>
-						<h4>Como citar:</h4>
-
-						<p>
-							Silva-Júnior M. F., Brito-Mota M. J. B., Mendes H. J., Silva D. M., Souza-Júnior E. C., Santiago A. D. V. TeethGram. Jequié,
-							17 de Setembro de 2025. Disponível em: https://algol.dev/tools/teethgram/. Acessado em [data].
-						</p>
-					</div>
-				</div>
-
-				<a href="/iframes/tools/teethgram/guia-teethgram.pdf" download="guia-teethgram.pdf" target="_blank" class="botao-download-manual">
-					Baixe aqui o manual do usuário
-				</a>
-
-				<p class="direitos-autorais">&copy; 2025 Teethgram. Todos os direitos reservados. v2 beta</p>
-			</div>
-		</footer>
-
-		<!-- Model de Falha de Envio do Arquivo -->
-		<div id="janela-modal" class="modal-overlay">
-			<div class="modal-conteudo">
-				<div class="modal-icone">
-					<span>&times;</span>
-				</div>
-				<h3 id="modal-titulo"></h3>
-				<div id="modal-mensagem" class="modal-corpo"></div>
-				<button onclick="fecharModal()" class="modal-botao">OK</button>
-			</div>
+		<div id="app">
+			<!-- Site carregado dinamicamente -->
 		</div>
 	</body>
 </html>

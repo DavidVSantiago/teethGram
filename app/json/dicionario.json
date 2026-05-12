@@ -1,0 +1,138 @@
+{
+	"pt-br": {
+		"cabecalho": {
+			"descricao": "Ferramenta voltada para o auxílio de pesquisadores e gestores em saúde bucal para distribuir os componentes da experiência de cárie dentária por elementos dentários de forma ilustrativa."
+		},
+		"principal": {
+			"tituloDeciduos": "Dentes Decíduos",
+			"tituloPermanentes": "Dentes Permanentes",
+			"tituloBotoes": "Preenchimento Automático"
+		},
+		"filtros": {
+			"rotuloIndice": "Índice",
+			"rotuloDistribuicao": "Distribuição",
+			"rotuloClassificacao": "Classificação dos Dentes",
+			"rotuloTotalParticipantes": "Total de Participantes",
+			"indice": {
+				"permanentes": "CPO-D",
+				"deciduos": "ceo-d"
+			},
+			"opcoes": {
+				"total": "Total",
+				"componenteC": "Componente cariado (C)",
+				"componenteP": "Componente perdido (P)",
+				"componenteO": "Componente obturado (O)",
+				"totalComponente": "Total distribuido por componente"
+			},
+			"botoes": {
+				"baixar": "Baixar modelo de planilha",
+				"selecionar": "Enviar planilha preenchida"
+			}
+		},
+		"formularios": {
+			"superiores": "Superiores",
+			"inferiores": "Inferiores",
+			"direito": "Direito",
+			"esquerdo": "Esquerdo",
+			"componentes": {
+				"cariado": "C",
+				"perdido": "P",
+				"obturado": "O",
+				"c_deciduo": "c",
+				"e_deciduo": "e",
+				"o_deciduo": "o"
+			}
+		},
+		"processamento": {
+			"modoDistribuicao": "Modo de Distribuição",
+			"media": "Média",
+			"percentual": "Percentual",
+			"botaoGerar": "Gerar Histograma"
+		},
+		"rodape": {
+			"titulo": "Sistema de geração de histograma de condições dentárias",
+			"descricao": "Desenvolvido pelo Departamento de Ciência e Tecnologia (DCT) para o projeto de extensão \"Programa Sorrir\" e Grupo de Pesquisa \"Saúde | Bucal Coletiva/UESB/CNPq\", vinculado ao Departamento de Saúde I (DSI) - Universidade Estadual do Sudoeste da Bahia.",
+			"tituloAutores": "Autores",
+			"descricaoAutores": "Manoelito Ferreira Silva Júnior (idealizador), Marília Jesus Batista de Brito Mota (idealizadora), Haroldo José Mendes (idealizador), Dominique Muniz da Silva (programador), Eduardo Caetano de Souza Júnior (programador), Almir David Valente Santiago (prof. Orientador).",
+			"comoCitar": "Como citar:",
+			"citacao": "Silva-Júnior M. F., Brito-Mota M. J. B., Mendes H. J., Silva D. M., Souza-Júnior E. C., Santiago A. D. V. TeethGram. Jequié, 17 de Setembro de 2025. Disponível em: https://algol.dev/tools/teethgram/. Acessado em [data].",
+			"baixarManual": "Baixe aqui o manual do usuário",
+			"direitosAutorais": "&copy; 2025 Teethgram. Todos os direitos reservados. v2 beta"
+		},
+		"modal": {
+			"tituloErro": "Erro de Compatibilidade",
+			"mensagemErro": "A planilha carregada não corresponde ao formulário selecionado.",
+			"labelTela": "Tela:",
+			"labelPlanilha": "Planilha:",
+			"dicaErro": "Certifique-se de carregar o arquivo correto para o índice selecionado."
+		}
+	},
+	"en": {
+		"cabecalho": {
+			"descricao": "A tool designed to assist researchers and oral health managers in illustrating the distribution of dental caries experience components across dental elements."
+		},
+		"principal": {
+			"tituloDeciduos": "Deciduous Teeth",
+			"tituloPermanentes": "Permanent Teeth",
+			"tituloBotoes": "Auto-populate"
+		},
+		"filtros": {
+			"rotuloIndice": "Index",
+			"rotuloDistribuicao": "Distribution",
+			"rotuloClassificacao": "Tooth Classification",
+			"rotuloTotalParticipantes": "Total Participants",
+			"indice": {
+				"permanentes": "DMTF",
+				"deciduos": "dmtf"
+			},
+			"opcoes": {
+				"total": "Total",
+				"componenteC": "Decayed component (D)",
+				"componenteP": "Missing component (M)",
+				"componenteO": "Filled component (F)",
+				"totalComponente": "Total distributed by component"
+			},
+			"botoes": {
+				"baixar": "Download spreadsheet template",
+				"selecionar": "Upload completed spreadsheet"
+			}
+		},
+		"formularios": {
+			"superiores": "Upper",
+			"inferiores": "Lower",
+			"direito": "Right",
+			"esquerdo": "Left",
+			"componentes": {
+				"cariado": "D",
+				"perdido": "M",
+				"obturado": "F",
+				"c_deciduo": "d",
+				"e_deciduo": "m",
+				"o_deciduo": "f"
+			}
+		},
+		"processamento": {
+			"modoDistribuicao": "Distribution Mode",
+			"media": "Average",
+			"percentual": "Percentage",
+			"botaoGerar": "Generate Histogram"
+		},
+		"rodape": {
+			"titulo": "Dental conditions histogram generation system",
+			"descricao": "Developed by the Department of Science and Technology (DCT) for the extension project \"Programa Sorrir\" and the Research Group \"Saúde | Bucal Coletiva/UESB/CNPq\", linked to the Department of Health I (DSI) - Universidade Estadual do Sudoeste da Bahia.",
+			"tituloAutores": "Authors",
+			"descricaoAutores": "Manoelito Ferreira Silva Júnior (creator), Marília Jesus Batista de Brito Mota (creator), Haroldo José Mendes (creator), Dominique Muniz da Silva (programmer), Eduardo Caetano de Souza Júnior (programmer), Almir David Valente Santiago (advisor).",
+			"comoCitar": "How to cite:",
+			"citacao": "Silva-Júnior M. F., Brito-Mota M. J. B., Mendes H. J., Silva D. M., Souza-Júnior E. C., Santiago A. D. V. TeethGram. Jequié, September 17, 2025. Available at: https://algol.dev/tools/teethgram/. Accessed on [date].",
+			"baixarManual": "Download the user manual here",
+			"direitosAutorais": "&copy; 2025 Teethgram. All rights reserved. v2 beta"
+		},
+		"modal": {
+			"tituloErro": "Compatibility Error",
+			"mensagemErro": "The uploaded spreadsheet does not match the selected form.",
+			"labelTela": "Screen:",
+			"labelPlanilha": "Spreadsheet:",
+			"dicaErro": "Make sure to upload the correct file for the selected index."
+		}
+	}
+}
