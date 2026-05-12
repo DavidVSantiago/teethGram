@@ -20,15 +20,13 @@ body {
 	margin: 0;
 	font-family: Arial, sans-serif;
 	background: #ffffff;
-
-	display: grid;
-	place-items: center;
-	place-content: start;
 }
 
 button {
+	width: max-content;
 	padding: 0.9vw 1.8vw;
 	font-size: 1vw;
+	white-space: nowrap;
 	color: #fff;
 	background: var(--cor-primaria);
 	border: none;
@@ -41,15 +39,139 @@ button {
 	}
 }
 
+.visualmente-oculto {
+	position: absolute;
+
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
+
 /* --------- Configuração do Input Radio --------- */
 input[type='radio'] {
 	width: 1.2vw;
 	height: 1.2vw;
 }
 
-/* ========= SEÇÃO HERO (CABEÇALHO) ========= */
-.cabecalho-apresentacao {
+#app {
+	display: grid;
+	place-items: center;
+	place-content: start;
+}
+
+/* ========= CABEÇALHO ========= */
+.ferramentas-container {
+	width: 100%;
+	padding: 1.5vw 2vw;
+
+	background-color: var(--cor-primaria-dark);
+	border-bottom: 0.1vw solid var(--cor-borda);
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 2vw;
+
+	.ferramenta-item {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.seletor-idioma {
+			padding: 0.5vw 1vw;
+
+			font-size: 0.9vw;
+			font-family: inherit;
+
+			color: var(--cor-texto);
+			background-color: var(--cor-fundo);
+			border: 0.1vw solid transparent;
+			border-radius: 0.5vw;
+			cursor: pointer;
+			outline: none;
+			transition: all 0.2s ease;
+
+			&:hover {
+				background-color: #fff;
+				border-color: var(--cor-primaria);
+			}
+		}
+
+		.button-troca {
+			position: relative;
+
+			width: 2.2vw;
+			height: 2.2vw;
+
+			color: var(--cor-primaria);
+			background-color: var(--cor-fundo);
+			border-radius: 50%;
+			cursor: pointer;
+			transition:
+				background-color 0.3s ease,
+				color 0.3s ease;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			svg {
+				position: absolute;
+
+				width: 1.5vw;
+				height: 1.5vw;
+				transition:
+					opacity 0.3s ease,
+					transform 0.3s ease;
+			}
+
+			.icone-ativo,
+			.icone-lua {
+				opacity: 0;
+				transform: scale(0.5) rotate(-45deg);
+			}
+		}
+
+		/* Quando o Zoom está ativo */
+		.checkbox-troca:checked + .button-troca {
+			.icone-padrao {
+				opacity: 0;
+				transform: scale(0.5) rotate(45deg);
+			}
+
+			.icone-ativo {
+				opacity: 1;
+				transform: scale(1) rotate(0deg);
+			}
+		}
+
+		/* Quando o Tema está ativo */
+		.checkbox-tema:checked + .button-troca {
+			background-color: #333;
+			color: #f1c40f;
+
+			.icone-sol {
+				opacity: 0;
+				transform: scale(0.5) rotate(45deg);
+			}
+
+			.icone-lua {
+				opacity: 1;
+				transform: scale(1) rotate(0deg);
+			}
+		}
+	}
+}
+
+/* ========= SEÇÃO HERO ========= */
+.apresentacao-container {
 	padding: 2vw 10vw;
+
 	color: #fff;
 	background: linear-gradient(var(--cor-primaria), var(--cor-primaria-dark));
 	border-bottom-left-radius: 15vw;
@@ -60,7 +182,7 @@ input[type='radio'] {
 	justify-content: space-between;
 	gap: 3vw;
 
-	.container-texto {
+	.apresentacao-texto {
 		max-width: 90%;
 		padding-left: 4vw;
 
@@ -81,7 +203,7 @@ input[type='radio'] {
 		}
 	}
 
-	.container-imagem {
+	.apresentacao-imagem {
 		margin-right: 3vw;
 
 		display: grid;
@@ -167,11 +289,23 @@ input[type='radio'] {
 	}
 
 	/* --------- Botões --------- */
-	.linha-botoes {
-		display: grid;
-		grid-template-columns: repeat(2, 12vw);
-		justify-content: center;
-		gap: 15vw;
+	.botoes-container {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5vw;
+
+		h3 {
+			text-align: center;
+			font-size: 1.6vw;
+		}
+
+		.linha-botoes {
+			width: 100%;
+
+			display: flex;
+			flex-direction: row;
+			justify-content: space-evenly;
+		}
 	}
 
 	/* --------- Formulários --------- */
