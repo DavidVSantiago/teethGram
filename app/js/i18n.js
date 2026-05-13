@@ -1,17 +1,18 @@
-/**
- * =======================================================================================
- * CONFIGURAÇÕES GLOBAIS DE IDIOMA
- * =======================================================================================
- */
+import {
+	construirPaginaPrincipal,
+	mudarTituloCard,
+	resetarIndicesCarregados,
+	inicializarEventosFormulario,
+} from './view-manager.js';
 
-const CONFIG_I18N = {
+export const CONFIG_I18N = {
 	IDIOMA_PADRAO: 'pt-br',
 	CHAVE_STORAGE: 'language',
 	CAMINHO_DICIONARIO: 'json/dicionario.json',
 };
 
-let dicionarioCompleto = null;
-let t = null;
+export let dicionarioCompleto = null;
+export const t = {};
 
 /**
  * =======================================================================================
@@ -20,9 +21,10 @@ let t = null;
  */
 
 /**
- * Busca o JSON com todas as traduções, caso ainda não tenha sido carregado.
+ * Busca e armazena em memória o JSON contendo todas as traduções da aplicação.
+ * Evita requisições duplicadas caso o dicionário já esteja em cache.
  */
-async function carregarDicionario() {
+export async function carregarDicionario() {
 	if (dicionarioCompleto) return;
 
 	try {
@@ -31,25 +33,34 @@ async function carregarDicionario() {
 
 		dicionarioCompleto = await resposta.json();
 	} catch (erro) {
-		console.error('Falha crítica ao carregar o dicionário de traduções:', erro);
+		console.error('[i18n] Falha crítica ao carregar o dicionário de traduções:', erro);
 	}
 }
 
 /**
- * Altera o idioma da aplicação, atualiza o DOM e preserva o estado da tela (se houver).
- * @param {string} idioma - Sigla do idioma (ex: 'pt-br', 'en')
+ * Altera o idioma atual da aplicação, salva a preferência localmente,
+ * recarrega as traduções e reconstrói a interface preservando o estado dos filtros.
+ *
+ * @param {string} idioma - Sigla do idioma desejado (ex: 'pt-br', 'en').
  */
-async function definirIdioma(idioma) {
+export async function definirIdioma(idioma) {
 	const containerApp = document.getElementById('app');
-	if (!containerApp) return;
+
+	if (!containerApp) {
+		console.warn('[i18n] Container principal "#app" não encontrado no DOM.');
+		return;
+	}
 
 	await carregarDicionario();
 
 	localStorage.setItem(CONFIG_I18N.CHAVE_STORAGE, idioma);
 	document.documentElement.lang = idioma;
 
-	// Define o dicionário global (fallback para pt-br se o idioma não existir)
-	t = dicionarioCompleto[idioma] || dicionarioCompleto[CONFIG_I18N.IDIOMA_PADRAO];
+	const novoDicionario =
+		dicionarioCompleto[idioma] || dicionarioCompleto[CONFIG_I18N.IDIOMA_PADRAO];
+
+	Object.keys(t).forEach((key) => delete t[key]);
+	Object.assign(t, novoDicionario);
 
 	const estadoTela = {
 		indice: document.getElementById('selecao-indice')?.value,
@@ -58,9 +69,7 @@ async function definirIdioma(idioma) {
 	};
 
 	containerApp.innerHTML = construirPaginaPrincipal();
-
-	ultimoIndiceCarregado = null;
-	ultimaDistribuicaoCarregada = null;
+	resetarIndicesCarregados();
 
 	if (estadoTela.indice) {
 		document.getElementById('selecao-indice').value = estadoTela.indice;
@@ -75,21 +84,14 @@ async function definirIdioma(idioma) {
 		document.getElementById('selecao-classificacao').value = estadoTela.classificacao;
 	}
 
-	if (typeof inicializarEventosFormulario === 'function') {
-		inicializarEventosFormulario();
-	}
+	inicializarEventosFormulario();
 }
 
 /**
- * =======================================================================================
- * INICIALIZAÇÃO
- * =======================================================================================
+ * Inicializa o subsistema de internacionalização.
+ * Recupera a preferência salva no storage (ou adota o padrão) e atrela o ouvinte ao seletor de idiomas.
  */
-
-/**
- * Ponto de entrada do sistema de internacionalização.
- */
-function inicializarI18n() {
+export function inicializarI18n() {
 	const idiomaSalvo = localStorage.getItem(CONFIG_I18N.CHAVE_STORAGE) || CONFIG_I18N.IDIOMA_PADRAO;
 	const seletorElemento = document.getElementById('seletor-idioma');
 

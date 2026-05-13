@@ -1,8 +1,14 @@
+import { t } from '../i18n.js';
+
 /**
- * CLASSE RENDERIZADORA
- * Responsável por gerar as estruturas HTML dos formulários odontológicos.
+ * Motor de renderização responsável por gerar as estruturas HTML dos formulários odontológicos.
+ * Fornece métodos estáticos para criar as marcações dinâmicas sem a necessidade de instanciar a classe.
  */
-class FormulariosRenderer {
+export class FormulariosRenderer {
+	/**
+	 * Dicionário estático contendo o mapeamento dos sistemas de numeração dentária
+	 * (FDI e ADA/Universal), segmentados por dentição permanente e decídua.
+	 */
 	static MAPAS = {
 		// prettier-ignore
 		FDI_PERMANENTE: ['18', '17', '16', '15', '14', '13', '12', '11', '21', '22', '23', '24', '25', '26', '27', '28', '38', '37', '36', '35', '34', '33', '32', '31', '41', '42', '43', '44', '45', '46', '47', '48'],
@@ -19,10 +25,16 @@ class FormulariosRenderer {
 
 	/**
 	 * =======================================================================================
-	 * GERADORES DE CARTÕES DE DENTES (HTML)
+	 * GERADORES DE CARTÕES DE DENTES (MÉTODOS INTERNOS)
 	 * =======================================================================================
 	 */
 
+	/**
+	 * Gera o HTML de um cartão de dente simples para a coleta de índice total.
+	 *
+	 * @param {string} numero - Número identificador do dente (FDI ou ADA).
+	 * @returns {string} Marcação HTML do cartão.
+	 */
 	static _gerarCartaoDente(numero) {
 		return /* html */ `
       <article class="cartao-dente-simples">
@@ -35,6 +47,13 @@ class FormulariosRenderer {
     `;
 	}
 
+	/**
+	 * Gera o HTML de um cartão de dente detalhado para a coleta segmentada por componentes.
+	 *
+	 * @param {string} numero - Número identificador do dente (FDI ou ADA).
+	 * @param {Object} config - Objeto contendo os IDs e rótulos traduzidos para os inputs.
+	 * @returns {string} Marcação HTML do cartão com múltiplos inputs.
+	 */
 	static _gerarCartaoDenteComponente(numero, config) {
 		const { rotuloC, rotuloPE, rotuloO, idC, idPE, idO } = config;
 
@@ -65,10 +84,15 @@ class FormulariosRenderer {
 
 	/**
 	 * =======================================================================================
-	 * GERADORES DE ESTRUTURA E ARCOS
+	 * GERADORES DE ESTRUTURA E ARCOS (MÉTODOS INTERNOS)
 	 * =======================================================================================
 	 */
 
+	/**
+	 * Agrupa e retorna os dentes permanentes divididos anatomicamente por quadrantes.
+	 *
+	 * @returns {Object} Objeto contendo arrays de dentes para cada um dos 4 quadrantes.
+	 */
 	static _obterQuadrantesPermanentes() {
 		return {
 			superiorDireito: this.MAPAS.FDI_PERMANENTE.slice(0, 8),
@@ -78,6 +102,11 @@ class FormulariosRenderer {
 		};
 	}
 
+	/**
+	 * Agrupa e retorna os dentes decíduos divididos anatomicamente por quadrantes.
+	 *
+	 * @returns {Object} Objeto contendo arrays de dentes para cada um dos 4 quadrantes.
+	 */
 	static _obterQuadrantesDeciduos() {
 		return {
 			superiorDireito: this.MAPAS.FDI_DECIDUO.slice(0, 5),
@@ -87,6 +116,14 @@ class FormulariosRenderer {
 		};
 	}
 
+	/**
+	 * Monta o grid completo da arcada dentária, distribuindo os cartões de dentes
+	 * pelos quadrantes adequados (Superiores/Inferiores e Direita/Esquerda).
+	 *
+	 * @param {Object} quadrantes - O objeto de quadrantes gerado por `_obterQuadrantes...`.
+	 * @param {Object|null} configComponentes - Opcional. Configurações para renderização por componentes.
+	 * @returns {string} Marcação HTML de toda a estrutura do formulário.
+	 */
 	static _gerarEstruturaArcos(quadrantes, configComponentes = null) {
 		const { superiorDireito, superiorEsquerdo, inferiorDireito, inferiorEsquerdo } = quadrantes;
 
@@ -114,12 +151,12 @@ class FormulariosRenderer {
         <section id="arco-inferior" class="grupo-dentes">
           <header class="cabecalho-arco"><h4>${t.formularios?.inferiores ?? 'Inferiores'}</h4></header>
           <div class="grade-arcos">
-						<div class="hemiarco esquerdo">
+            <div class="hemiarco esquerdo">
               <span class="etiqueta-lado">${t.formularios?.esquerdo ?? 'Esquerdo'}</span>
               <div class="coluna-dentes">${inferiorEsquerdo.map(renderizar).join('')}</div>
             </div>
             
-						<div class="hemiarco direito">
+            <div class="hemiarco direito">
               <span class="etiqueta-lado">${t.formularios?.direito ?? 'Direito'}</span>
               <div class="coluna-dentes">${inferiorDireito.map(renderizar).join('')}</div>
             </div>
@@ -135,14 +172,32 @@ class FormulariosRenderer {
 	 * =======================================================================================
 	 */
 
+	/**
+	 * Renderiza o formulário do índice CPO-D (permanentes) no formato de coleta Total.
+	 *
+	 * @param {string} idioma - Sigla do idioma atual da interface.
+	 * @returns {string} Estrutura HTML final.
+	 */
 	static renderizarCpodTotal(idioma) {
 		return this._gerarEstruturaArcos(this._obterQuadrantesPermanentes());
 	}
 
+	/**
+	 * Renderiza o formulário do índice ceo-d (decíduos) no formato de coleta Total.
+	 *
+	 * @param {string} idioma - Sigla do idioma atual da interface.
+	 * @returns {string} Estrutura HTML final.
+	 */
 	static renderizarCeodTotal(idioma) {
 		return this._gerarEstruturaArcos(this._obterQuadrantesDeciduos());
 	}
 
+	/**
+	 * Renderiza o formulário do índice CPO-D (permanentes) no formato detalhado por Componentes.
+	 *
+	 * @param {string} idioma - Sigla do idioma atual da interface.
+	 * @returns {string} Estrutura HTML final.
+	 */
 	static renderizarCpodPorComponente(idioma) {
 		const configComponentes = {
 			rotuloC: t.formularios?.componentes?.cariado ?? 'C',
@@ -156,6 +211,12 @@ class FormulariosRenderer {
 		return this._gerarEstruturaArcos(this._obterQuadrantesPermanentes(), configComponentes);
 	}
 
+	/**
+	 * Renderiza o formulário do índice ceo-d (decíduos) no formato detalhado por Componentes.
+	 *
+	 * @param {string} idioma - Sigla do idioma atual da interface.
+	 * @returns {string} Estrutura HTML final.
+	 */
 	static renderizarCeodPorComponente(idioma) {
 		const configComponentes = {
 			rotuloC: t.formularios?.componentes?.c_deciduo ?? 'c',

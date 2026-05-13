@@ -1,15 +1,9 @@
-/**
- * =======================================================================================
- * CONFIGURAÇÕES E CONSTANTES GLOBAIS
- * =======================================================================================
- */
+import { t } from './i18n.js';
 
 /**
- * Simulação de ENUM para identificação dos tipos de formulários.
- * Utilizado para controle de fluxo e lógica de download/geração.
- * @enum {number}
+ * ENUM para identificação dos tipos de formulários.
  */
-const TIPO_FORMULARIO = {
+export const TIPO_FORMULARIO = {
 	CEOD_POR_COMPONENTE: 1,
 	CEOD_TOTAL: 2,
 	CPOD_POR_COMPONENTE: 3,
@@ -17,10 +11,9 @@ const TIPO_FORMULARIO = {
 };
 
 /**
- * Mapeamento de identificadores de formulários para strings de saída.
- * Traduz o valor numérico do TIPO_FORMULARIO para o nome do arquivo.
+ * Mapeamento do tipo de formulário para o nome do arquivo interno.
  */
-const DESCRICAO_TIPO_FORMULARIO = {
+export const DESCRICAO_TIPO_FORMULARIO = {
 	[TIPO_FORMULARIO.CEOD_POR_COMPONENTE]: 'ceod-por-comp',
 	[TIPO_FORMULARIO.CEOD_TOTAL]: 'ceod-total',
 	[TIPO_FORMULARIO.CPOD_POR_COMPONENTE]: 'cpod-por-comp',
@@ -28,57 +21,41 @@ const DESCRICAO_TIPO_FORMULARIO = {
 };
 
 /**
- * Mapeamento de identificadores dos formulários para os Usuários.
- * Traduz o valor numérico do TIPO_FORMULARIO para o nome que será mostrado para o Usuário.
+ * Mapeamento do tipo de formulário para exibição amigável ao usuário.
  */
-const NOMES_EXIBICAO_FORMULARIO = {
+export const NOMES_EXIBICAO_FORMULARIO = {
 	[TIPO_FORMULARIO.CEOD_POR_COMPONENTE]: 'ceo-d (Por Componente)',
 	[TIPO_FORMULARIO.CEOD_TOTAL]: 'ceo-d (Total)',
 	[TIPO_FORMULARIO.CPOD_POR_COMPONENTE]: 'CPO-D (Por Componente)',
 	[TIPO_FORMULARIO.CPOD_TOTAL]: 'CPO-D (Total)',
 };
 
-/**
- * Definição da quantidade de colunas (dentes) esperadas para cada índice epidemiológico.
- */
-const QTD_COLUNAS_CEOD = 20;
-const QTD_COLUNAS_CPOD = 32;
+export const QTD_COLUNAS_CEOD = 20;
+export const QTD_COLUNAS_CPOD = 32;
+export const LOCAL_ARQUIVOS = 'assets/planilhas/';
 
-/**
- * Configuração de caminhos para os modelos de planilhas Excel (.xlsx).
- * @constant {string} LOCAL_ARQUIVOS - Pasta raiz dos arquivos de planilha.
- */
-const LOCAL_ARQUIVOS = 'assets/planilhas/';
-
-/**
- * Mapeamento dos caminhos específicos para planilhas do índice ceo-d (Decíduos).
- */
-const ARQUIVOS_CEOD = {
+export const ARQUIVOS_CEOD = {
 	TOTAL: `${LOCAL_ARQUIVOS}Total-ceo-d.xlsx`,
 	POR_COMPONENTE: `${LOCAL_ARQUIVOS}PComp-ceo-d.xlsx`,
 };
 
-/**
- * Mapeamento dos caminhos específicos para planilhas do índice CPO-D (Permanentes).
- */
-const ARQUIVOS_CPOD = {
+export const ARQUIVOS_CPOD = {
 	TOTAL: `${LOCAL_ARQUIVOS}Total-cpo-d.xlsx`,
 	POR_COMPONENTE: `${LOCAL_ARQUIVOS}PComp-cpo-d.xlsx`,
 };
 
 /**
  * =======================================================================================
- * FUNÇÕES DOS BOTÕES DA TELA
+ * FUNÇÕES DE AÇÃO DA TELA
  * =======================================================================================
  */
 
 /**
- * Gerencia o download do modelo de planilha correspondente ao formulário ativo.
+ * Dispara o download automático do modelo de planilha correspondente ao formulário ativo na tela.
  */
-function baixarPlanilhaModelo() {
+export function baixarPlanilhaModelo() {
 	const tipoForm = verificaTipoFormulario();
 
-	// Mapa de busca rápida (Lookup Table) em vez de switch/case
 	const mapasArquivos = {
 		[TIPO_FORMULARIO.CEOD_POR_COMPONENTE]: ARQUIVOS_CEOD.POR_COMPONENTE,
 		[TIPO_FORMULARIO.CEOD_TOTAL]: ARQUIVOS_CEOD.TOTAL,
@@ -93,7 +70,6 @@ function baixarPlanilhaModelo() {
 		return;
 	}
 
-	// Disparo programático do download
 	const link = document.createElement('a');
 	link.href = caminhoArquivo;
 	link.download = caminhoArquivo.split('/').pop();
@@ -101,14 +77,13 @@ function baixarPlanilhaModelo() {
 }
 
 /**
- * Cria um input de arquivo oculto para permitir a seleção de planilhas Excel pelo usuário.
+ * Cria dinamicamente um input de arquivo e abre a janela de seleção para o usuário.
  */
-function selecionarArquivoPlanilha() {
+export function selecionarArquivoPlanilha() {
 	const entradaArquivo = document.createElement('input');
 	entradaArquivo.type = 'file';
 	entradaArquivo.accept = '.xlsx, .xls';
 
-	// Ouve o evento de mudança antes de disparar o clique
 	entradaArquivo.addEventListener('change', (e) => {
 		const arquivo = e.target.files[0];
 		if (arquivo) {
@@ -116,14 +91,13 @@ function selecionarArquivoPlanilha() {
 		}
 	});
 
-	// Dispara a janela de seleção
 	entradaArquivo.click();
 }
 
 /**
- * Inicia o processamento dos dados em tela para geração do histograma.
+ * Inicia a lógica de geração de gráficos a partir dos dados do formulário.
  */
-function gerarHistograma() {
+export function gerarHistograma() {
 	// TODO: Implementar a lógica de geração do gráfico baseada nos inputs da tela
 	console.log('Iniciando geração de histograma...');
 }
@@ -135,12 +109,13 @@ function gerarHistograma() {
  */
 
 /**
- * Callback executado após a seleção de um arquivo. Lê os dados via biblioteca XLSX
- * e valida a compatibilidade entre a planilha e o formulário ativo na tela.
- * @param {File} file - O arquivo Excel selecionado.
+ * Lê o arquivo Excel selecionado, converte em matriz e processa os dados epidemiológicos.
+ *
+ * @param {File} file - O arquivo Excel selecionado pelo usuário.
  */
-function processarArquivoSelecionado(file) {
+export function processarArquivoSelecionado(file) {
 	const tipoFormularioNaTela = verificaTipoFormulario();
+
 	if (!tipoFormularioNaTela) {
 		alert('Tipo de formulário não identificado na tela.');
 		return;
@@ -158,7 +133,6 @@ function processarArquivoSelecionado(file) {
 			blankrows: true,
 		});
 
-		// Validação da estrutura da planilha importada
 		const tipoFormularioNaPlanilha = identificarTipoPlanilha(dadosMatriz);
 
 		if (!tipoFormularioNaPlanilha) {
@@ -166,30 +140,25 @@ function processarArquivoSelecionado(file) {
 			return;
 		}
 
-		// Comparação de segurança: Planilha vs Seleção na Tela
 		if (tipoFormularioNaPlanilha !== tipoFormularioNaTela) {
 			const nomeTela = NOMES_EXIBICAO_FORMULARIO[tipoFormularioNaTela];
 			const nomePlanilha = NOMES_EXIBICAO_FORMULARIO[tipoFormularioNaPlanilha];
 
 			const conteudoHtml = /* html */ `
-				<p>${t.modal.mensagemErro}</p>
+        <p>${t.modal.mensagemErro}</p>
 
-				<div class="alerta-comparativo">
-					<span><b>${t.modal.labelTela}</b> <strong>${nomeTela}</strong></span>
-					<span><b>${t.modal.labelPlanilha}</b> <strong class="valor-planilha">${nomePlanilha}</strong></span>
-				</div>
-				
-				<p class="alerta-dica">${t.modal.dicaErro}</p>
-			`;
+        <div class="alerta-comparativo">
+          <span><b>${t.modal.labelTela}</b> <strong>${nomeTela}</strong></span>
+          <span><b>${t.modal.labelPlanilha}</b> <strong class="valor-planilha">${nomePlanilha}</strong></span>
+        </div>
+        <p class="alerta-dica">${t.modal.dicaErro}</p>
+      `;
 
 			exibirAlerta(t.modal.tituloErro, conteudoHtml);
 			return;
 		}
 
-		const planilhaFormatada = formataPlanilha(
-			dadosMatriz,
-			tipoFormularioNaPlanilha,
-		);
+		const planilhaFormatada = formataPlanilha(dadosMatriz, tipoFormularioNaPlanilha);
 		console.log('Processamento concluído com sucesso:', planilhaFormatada);
 	};
 
@@ -197,23 +166,22 @@ function processarArquivoSelecionado(file) {
 }
 
 /**
- * Varre a matriz de dados da planilha para extrair participantes e valores por dente.
- * @param {Array} dados - Matriz bruta de dados da planilha.
- * @param {number} tipoFormularioNaPlanilha - Tipo de formulário identificado.
- * @returns {Object} Objeto contendo o tipo, total de participantes e array de dados.
+ * Extrai os dados valiosos (participantes e valores por dente) da matriz bruta do Excel.
+ *
+ * @param {Array<Array>} dados - Matriz contendo as linhas e colunas lidas da planilha.
+ * @param {number} tipoFormularioNaPlanilha - ID interno do tipo de índice e modo.
+ * @returns {Object} Objeto com tipo, total de participantes e vetor de dados limpos.
  */
-function formataPlanilha(dados, tipoFormularioNaPlanilha) {
+export function formataPlanilha(dados, tipoFormularioNaPlanilha) {
 	const cabecalho = dados[0];
 	const linhas = dados.slice(1);
 
-	// Mapeia índices das colunas que possuem numeração de dentes
 	const colunasDentes = cabecalho
 		.map((h, i) => (/^\d+$/.test(h) ? i : null))
 		.filter((i) => i !== null);
 
 	let totalParticipantes = 0;
 
-	// Busca o total de participantes nas linhas da planilha
 	for (const linha of linhas) {
 		if (String(linha[0]).toLowerCase().includes('particip')) {
 			for (const i of colunasDentes) {
@@ -231,9 +199,8 @@ function formataPlanilha(dados, tipoFormularioNaPlanilha) {
 		tipoFormularioNaPlanilha === TIPO_FORMULARIO.CPOD_TOTAL;
 
 	if (ehModeloTotal) {
-		const linhaTotal = linhas.find(
-			(l) => l[0] && String(l[0]).toLowerCase().includes('total'),
-		);
+		const linhaTotal = linhas.find((l) => l[0] && String(l[0]).toLowerCase().includes('total'));
+
 		for (const indiceColuna of colunasDentes) {
 			let valor = linhaTotal?.[indiceColuna] ?? '';
 
@@ -245,11 +212,11 @@ function formataPlanilha(dados, tipoFormularioNaPlanilha) {
 			dadosFinais.push(valor);
 		}
 	} else {
-		// Modelo por Componente
 		for (const indiceColuna of colunasDentes) {
 			for (const linha of linhas) {
 				if (String(linha[0]).toLowerCase().includes('particip')) continue;
 				let valor = linha[indiceColuna];
+
 				if (valor === '') {
 					dadosFinais.push('');
 				} else {
@@ -274,44 +241,45 @@ function formataPlanilha(dados, tipoFormularioNaPlanilha) {
  */
 
 /**
- * Identifica o tipo de formulário ativo com base nos selects da interface.
- * @returns {number|null} ID do ENUM TIPO_FORMULARIO.
+ * Lê os selects do DOM para identificar qual formulário está sendo exibido atualmente.
+ *
+ * @returns {number|null} ID interno do tipo de formulário.
  */
-function verificaTipoFormulario() {
-	const indice = document.getElementById('selecao-indice').value;
-	const distribuicao = document.getElementById('selecao-distribuicao').value;
+export function verificaTipoFormulario() {
+	const indice = document.getElementById('selecao-indice')?.value;
+	const distribuicao = document.getElementById('selecao-distribuicao')?.value;
 
 	if (indice === 'ceo-d') {
 		return distribuicao === 'total'
 			? TIPO_FORMULARIO.CEOD_TOTAL
 			: TIPO_FORMULARIO.CEOD_POR_COMPONENTE;
 	}
+
 	if (indice === 'cpo-d') {
 		return distribuicao === 'total'
 			? TIPO_FORMULARIO.CPOD_TOTAL
 			: TIPO_FORMULARIO.CPOD_POR_COMPONENTE;
 	}
+
 	return null;
 }
 
 /**
- * Analisa a estrutura de uma matriz de dados para identificar o índice (CPO-D/ceo-d) e modo.
- * @param {Array} dadosMatriz - Dados brutos lidos do Excel.
- * @returns {number|null} ID do ENUM TIPO_FORMULARIO identificado na planilha.
+ * Realiza uma checagem heurística no cabeçalho e linhas para inferir de qual índice
+ * pertence a planilha importada.
+ *
+ * @param {Array<Array>} dadosMatriz - Dados brutos da planilha.
+ * @returns {number|null} ID interno do tipo de formulário identificado ou null se inválido.
  */
-function identificarTipoPlanilha(dadosMatriz) {
+export function identificarTipoPlanilha(dadosMatriz) {
 	if (!dadosMatriz || dadosMatriz.length === 0) return null;
 
 	const cabecalho = dadosMatriz[0];
-	const indexCodigo = cabecalho.findIndex((h) =>
-		String(h).toLowerCase().includes('código'),
-	);
+	const indexCodigo = cabecalho.findIndex((h) => String(h).toLowerCase().includes('código'));
 
 	if (indexCodigo === -1) return null;
 
-	const colunasNumericas = cabecalho
-		.slice(indexCodigo + 1)
-		.filter((h) => /^\d+$/.test(h));
+	const colunasNumericas = cabecalho.slice(indexCodigo + 1).filter((h) => /^\d+$/.test(h));
 	let tipoIndice = null;
 
 	if (colunasNumericas.length === QTD_COLUNAS_CEOD) {
@@ -334,30 +302,50 @@ function identificarTipoPlanilha(dadosMatriz) {
 	const modo = possuiTermosComponente ? 'POR_COMPONENTE' : 'TOTAL';
 
 	if (tipoIndice === 'CEOD') {
-		return modo === 'TOTAL'
-			? TIPO_FORMULARIO.CEOD_TOTAL
-			: TIPO_FORMULARIO.CEOD_POR_COMPONENTE;
+		return modo === 'TOTAL' ? TIPO_FORMULARIO.CEOD_TOTAL : TIPO_FORMULARIO.CEOD_POR_COMPONENTE;
 	} else {
-		return modo === 'TOTAL'
-			? TIPO_FORMULARIO.CPOD_TOTAL
-			: TIPO_FORMULARIO.CPOD_POR_COMPONENTE;
+		return modo === 'TOTAL' ? TIPO_FORMULARIO.CPOD_TOTAL : TIPO_FORMULARIO.CPOD_POR_COMPONENTE;
 	}
 }
 
 /**
- * Exibe o modal personalizado centralizado na tela.
+ * Exibe o modal de feedback para o usuário de forma imperativa.
+ *
+ * @param {string} titulo - Título a ser exibido no modal.
+ * @param {string} htmlConteudo - Corpo de texto em formato HTML livre.
  */
-function exibirAlerta(titulo, htmlConteudo) {
+export function exibirAlerta(titulo, htmlConteudo) {
 	const modal = document.getElementById('janela-modal');
+	if (!modal) return;
+
 	document.getElementById('modal-titulo').textContent = titulo;
 	document.getElementById('modal-mensagem').innerHTML = htmlConteudo;
-
 	modal.style.display = 'flex';
 }
 
 /**
- * Esconde o modal.
+ * Oculta o modal de feedback.
  */
-function fecharModal() {
-	document.getElementById('janela-modal').style.display = 'none';
+export function fecharModal() {
+	const modal = document.getElementById('janela-modal');
+	if (modal) modal.style.display = 'none';
 }
+
+/**
+ * Intercepta cliques na tela inteira e direciona para a função correta
+ * caso o alvo tenha um ID mapeado. Ideal para elementos recriados via innerHTML.
+ */
+document.addEventListener('click', (evento) => {
+	const alvo = evento.target;
+
+	// Usamos closest para garantir que funcione mesmo se o clique for no texto dentro do botão
+	if (alvo.closest('#botao-baixar')) {
+		baixarPlanilhaModelo();
+	} else if (alvo.closest('#botao-selecionar-arquivo')) {
+		selecionarArquivoPlanilha();
+	} else if (alvo.closest('#botao-gerar')) {
+		gerarHistograma();
+	} else if (alvo.closest('#botao-fechar-modal')) {
+		fecharModal();
+	}
+});
