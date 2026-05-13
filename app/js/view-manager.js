@@ -1,17 +1,24 @@
+import { t } from './i18n.js';
+import {
+	gerarFormulario,
+	atualizarClassificacaoDente,
+	resetarEstadoFormulario,
+} from './forms/form-controller.js';
+
 /**
- * Constrói a string HTML da página principal
- * @returns {string} O HTML completo em formato de string
+ * Constrói e retorna a estrutura HTML principal da aplicação.
+ * Os eventos de clique (antigos 'onclick') foram removidos para seguir o princípio de
+ * Separação de Responsabilidades (Clean Code), devendo ser atrelados via JavaScript.
+ * @returns {string} Código HTML formatado.
  */
-function construirPaginaPrincipal() {
+export function construirPaginaPrincipal() {
 	return /* html */ `
     <!-- ========= SEÇÃO HERO ========= -->
     <section class="apresentacao-container">
       <div class="apresentacao-texto">
         <h1>TeethGram</h1>
-
         <p>${t.cabecalho.descricao}</p>
       </div>
-
       <div class="apresentacao-imagem">
         <img src="assets/imagens/imagem-hero.png" alt="Ilustração TeethGram" width="350" height="350" loading="lazy" />
       </div>
@@ -29,7 +36,6 @@ function construirPaginaPrincipal() {
           <!-- Campo: Índice -->
           <div class="campo-grupo">
             <label for="selecao-indice">${t.filtros.rotuloIndice}</label>
-            
             <select id="selecao-indice">
               <option value="cpo-d" selected>${t.filtros.indice.permanentes}</option>
               <option value="ceo-d">${t.filtros.indice.deciduos}</option>
@@ -39,7 +45,6 @@ function construirPaginaPrincipal() {
           <!-- Campo: Distribuição -->
           <div class="campo-grupo">
             <label for="selecao-distribuicao">${t.filtros.rotuloDistribuicao}</label>
-            
             <select id="selecao-distribuicao">
               <option value="componente-c">${t.filtros.opcoes.componenteC}</option>
               <option value="componente-p">${t.filtros.opcoes.componenteP}</option>
@@ -52,7 +57,6 @@ function construirPaginaPrincipal() {
           <!-- Campo: Classificação dos Dentes -->
           <div class="campo-grupo">
             <label for="selecao-classificacao">${t.filtros.rotuloClassificacao}</label>
-            
             <select id="selecao-classificacao">
               <option value="fdi">FDI</option>
               <option value="ada">ADA</option>
@@ -71,10 +75,9 @@ function construirPaginaPrincipal() {
         <!-- ========= SESSÃO DE BOTÕES ========= -->
         <article class="botoes-container">
           <h3>${t.principal.tituloBotoes}</h3>
-
           <div class="linha-botoes">
-            <button id="botao-baixar" onclick="baixarPlanilhaModelo()" type="button">${t.filtros.botoes.baixar}</button>
-            <button id="botao-selecionar-arquivo" onclick="selecionarArquivoPlanilha()" type="button">${t.filtros.botoes.selecionar}</button>
+            <button id="botao-baixar" type="button">${t.filtros.botoes.baixar}</button>
+            <button id="botao-selecionar-arquivo" type="button">${t.filtros.botoes.selecionar}</button>
           </div>
         </article>
 
@@ -94,7 +97,6 @@ function construirPaginaPrincipal() {
               <input type="radio" name="modo-distribuicao" value="media" checked />
               ${t.processamento.media}
             </label>
-
             <label>
               <input type="radio" name="modo-distribuicao" value="percentual" />
               ${t.processamento.percentual}
@@ -102,7 +104,7 @@ function construirPaginaPrincipal() {
           </div>
         </fieldset>
 
-        <button class="botao-gerar-histograma" id="botao-gerar" onclick="gerarHistograma()">${t.processamento.botaoGerar}</button>
+        <button class="botao-gerar-histograma" id="botao-gerar">${t.processamento.botaoGerar}</button>
       </section>
     </main>
 
@@ -111,7 +113,6 @@ function construirPaginaPrincipal() {
       <div class="conteudo-rodape">
         <div class="texto-informativo">
           <h3>${t.rodape.titulo}</h3>
-
           <p>${t.rodape.descricao}</p>
           
           <div class="logos-parceiros">
@@ -147,19 +148,19 @@ function construirPaginaPrincipal() {
         </div>
 
         <h3 id="modal-titulo"></h3>
-        
         <div id="modal-mensagem" class="modal-corpo"></div>
         
-        <button onclick="fecharModal()" class="modal-botao">${t.modal?.botaoOk ?? 'Ok'}</button>
+        <button id="botao-fechar-modal" class="modal-botao">${t.modal?.botaoOk ?? 'Ok'}</button>
       </div>
     </div>
   `;
 }
 
 /**
- * Inicializa os ouvintes de evento para os formulários dinâmicos.
+ * Captura os elementos de seleção do DOM e atrela os ouvintes de eventos
+ * para a reatividade do formulário. Também dispara a renderização inicial.
  */
-function inicializarEventosFormulario() {
+export function inicializarEventosFormulario() {
 	const selectIndice = document.getElementById('selecao-indice');
 	const selectDistribuicao = document.getElementById('selecao-distribuicao');
 	const selectClassificacao = document.getElementById('selecao-classificacao');
@@ -169,6 +170,8 @@ function inicializarEventosFormulario() {
 		selectDistribuicao.addEventListener('change', gerarFormulario);
 
 		gerarFormulario();
+	} else {
+		console.warn('[ViewManager] Elementos de índice ou distribuição não encontrados.');
 	}
 
 	if (selectClassificacao) {
@@ -177,14 +180,26 @@ function inicializarEventosFormulario() {
 }
 
 /**
- * Atualiza dinamicamente o título principal da seção de acordo com o índice selecionado.
- * @param {string} indiceSelecionado - O valor do índice vindo do select ('cpo-d' ou 'ceo-d').
- * @returns {void}
+ * Atualiza dinamicamente o título da seção principal com base no índice epidemiológico.
+ *
+ * @param {string} indiceSelecionado - O valor do índice selecionado (ex: 'cpo-d' ou 'ceo-d').
  */
-function mudarTituloCard(indiceSelecionado) {
+export function mudarTituloCard(indiceSelecionado) {
 	const tituloCard = document.getElementById('titulo-secao-dinamico');
-	if (!tituloCard) return;
+
+	if (!tituloCard) {
+		console.warn('[ViewManager] Elemento "titulo-secao-dinamico" não encontrado.');
+		return;
+	}
 
 	tituloCard.textContent =
 		indiceSelecionado === 'cpo-d' ? t.principal.tituloPermanentes : t.principal.tituloDeciduos;
+}
+
+/**
+ * Proxy para resetar o estado interno do controlador de formulários.
+ * Utilizado principalmente durante a troca de idioma para forçar a re-renderização.
+ */
+export function resetarIndicesCarregados() {
+	resetarEstadoFormulario();
 }
