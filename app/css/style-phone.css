@@ -331,27 +331,48 @@
 		}
 
 		#modal-titulo {
-			font-size: 5vw;
+			font-size: 4.5vw;
 		}
 
 		.modal-corpo {
 			font-size: 3.5vw;
 
-			gap: 1vw;
+			gap: 3.5vw;
 
-			.alerta-comparativo {
-				padding: 3vw;
-				border-radius: 1.5vw;
+			.alerta-titulo {
+				font-size: 3.2vw;
 			}
 
-			.alerta-dica {
-				font-size: 3vw;
+			.alerta-comparativo {
+				max-height: 35vw;
+				padding: 3vw;
+				border-radius: 1.5vw;
+
+				gap: 2vw;
+
+				.erro-item {
+					padding: 1.5vw;
+					font-size: 2.8vw;
+					border-left: 0.8vw solid #f87171;
+
+					.marcador-erro {
+						margin-right: 2vw;
+					}
+				}
+			}
+
+			.caixa-dica {
+				padding: 1.5vw;
+
+				.alerta-dica {
+					font-size: 2.8vw;
+				}
 			}
 		}
 
 		.modal-botao {
-			font-size: 4.5vw;
 			padding: 2vw 8vw;
+			font-size: 2.8vw;
 			border-radius: 1.5vw;
 		}
 	}

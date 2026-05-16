@@ -19,10 +19,17 @@
 			},
 			"opcoes": {
 				"total": "Total",
-				"componenteC": "Componente cariado (C)",
-				"componenteP": "Componente perdido (P)",
-				"componenteO": "Componente obturado (O)",
-				"totalComponente": "Total distribuido por componente"
+				"totalComponente": "Total distribuído por componente",
+				"permanente": {
+					"componenteC": "Componente cariado (C)",
+					"componenteP": "Componente perdido (P)",
+					"componenteO": "Componente obturado (O)"
+				},
+				"deciduo": {
+					"componenteC": "Componente cariado (c)",
+					"componenteP": "Componente extraído (e)",
+					"componenteO": "Componente obturado (o)"
+				}
 			},
 			"botoes": {
 				"baixar": "Baixar modelo de planilha",
@@ -61,10 +68,21 @@
 		},
 		"modal": {
 			"tituloErro": "Erro de Compatibilidade",
-			"mensagemErro": "A planilha carregada não corresponde ao formulário selecionado.",
+			"mensagemErro": "Nenhum dado numérico foi identificado. A planilha parece estar <strong>completamente vazia</strong>. Verifique o arquivo.",
+			"erroFiltrosGerais": "A planilha possui dados, mas em uma <strong>combinação diferente</strong> de Índice e Classificação. Revise os filtros na tela.",
 			"labelTela": "Tela:",
 			"labelPlanilha": "Planilha:",
-			"dicaErro": "Certifique-se de carregar o arquivo correto para o índice selecionado."
+			"dicaErro": "Certifique-se de carregar o arquivo correto para o índice selecionado.",
+			"tituloErroImportacao": "Erro na Importação",
+			"inconsistencias": "Inconsistências encontradas:",
+			"dicaTitulo": "Dica:",
+			"dicaParticipantes": "O total de participantes é lido da célula <strong>B33</strong>. Verifique se os valores por dente superam este limite.",
+			"erroParticipantesFalta": "O total de participantes na célula B33 deve ser informado e maior que zero.",
+			"erroParticipantesTotal": "Dente [DENTE]: O valor total ([VALOR]) é maior que o número de participantes ([TOTAL]).",
+			"erroParticipantesSoma": "Dente [DENTE]: A soma (C+P+O = [SOMA]) ultrapassa o limite de participantes ([TOTAL]).",
+			"erroDistribuicaoTrocada": "A planilha carregada possui dados, mas na <strong>Distribuição</strong> oposta. Verifique o filtro na tela.",
+			"erroClassificacaoTrocada": "A planilha possui dados, mas na <strong>Classificação</strong> oposta. Verifique o filtro na tela.",
+			"erroIndiceTrocado": "A planilha possui dados, mas para o <strong>Índice</strong> oposto. Verifique o filtro na tela."
 		}
 	},
 	"en": {
@@ -87,10 +105,17 @@
 			},
 			"opcoes": {
 				"total": "Total",
-				"componenteC": "Decayed component (D)",
-				"componenteP": "Missing component (M)",
-				"componenteO": "Filled component (F)",
-				"totalComponente": "Total distributed by component"
+				"totalComponente": "Total distributed by component",
+				"permanente": {
+					"componenteC": "Decayed component (D)",
+					"componenteP": "Missing component (M)",
+					"componenteO": "Filled component (F)"
+				},
+				"deciduo": {
+					"componenteC": "Decayed component (d)",
+					"componenteP": "Missing component (m)",
+					"componenteO": "Filled component (f)"
+				}
 			},
 			"botoes": {
 				"baixar": "Download spreadsheet template",
@@ -129,10 +154,22 @@
 		},
 		"modal": {
 			"tituloErro": "Compatibility Error",
-			"mensagemErro": "The uploaded spreadsheet does not match the selected form.",
+			"mensagemErro": "No numerical data was identified. The spreadsheet appears to be <strong>completely empty</strong>. Please check the file.",
+			"erroFiltrosGerais": "The spreadsheet contains data, but in a <strong>different combination</strong> of Index and Classification. Check the screen filters.",
 			"labelTela": "Screen:",
 			"labelPlanilha": "Spreadsheet:",
-			"dicaErro": "Make sure to upload the correct file for the selected index."
+			"dicaErro": "Make sure to upload the correct file for the selected index.",
+			"tituloErroImportacao": "Import Error",
+			"inconsistencias": "Inconsistencies found:",
+			"dicaTitulo": "Tip:",
+			"dicaParticipantes": "The total number of participants is read from cell <strong>B33</strong>. Ensure the values per tooth do not exceed this limit.",
+			"erroParticipantesFalta": "The total number of participants in cell B33 must be provided and greater than zero.",
+			"erroParticipantesTotal": "Tooth [DENTE]: The total value ([VALOR]) is greater than the number of participants ([TOTAL]).",
+			"erroParticipantesSoma": "Tooth [DENTE]: The sum (D+M+F = [SOMA]) exceeds the participant limit ([TOTAL]).",
+			"erroParticipantesComponente": "Tooth [DENTE]: The component value ([VALOR]) is greater than the number of participants ([TOTAL]).",
+			"erroDistribuicaoTrocada": "The spreadsheet contains data, but in the opposite <strong>Distribution</strong>. Check the screen filter.",
+			"erroClassificacaoTrocada": "The spreadsheet contains data, but in the opposite <strong>Classification</strong>. Check the screen filter.",
+			"erroIndiceTrocado": "The spreadsheet contains data, but for the opposite <strong>Index</strong>. Check the screen filter."
 		}
 	}
 }
