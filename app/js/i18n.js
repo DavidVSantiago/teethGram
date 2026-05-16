@@ -1,10 +1,10 @@
-import {
-	construirPaginaPrincipal,
-	mudarTituloCard,
-	resetarIndicesCarregados,
-	inicializarEventosFormulario,
-} from './view-manager.js';
+import { ViewManager } from './ui/view-manager.js';
+import { FormController } from './controllers/form-controller.js';
 
+/**
+ * Configurações globais do sistema de internacionalização.
+ * @constant
+ */
 export const CONFIG_I18N = {
 	IDIOMA_PADRAO: 'pt-br',
 	CHAVE_STORAGE: 'language',
@@ -12,97 +12,118 @@ export const CONFIG_I18N = {
 };
 
 export let dicionarioCompleto = null;
+
+/**
+ * Objeto reativo contendo os textos traduzidos da aplicação.
+ * É atualizado dinamicamente quando o idioma muda.
+ */
 export const t = {};
 
 /**
- * =======================================================================================
- * CARREGAMENTO E GERENCIAMENTO DE ESTADO
- * =======================================================================================
+ * Ponto de entrada principal para o sistema de tradução.
+ * Chamado pelo main.js na inicialização da aplicação.
+ * @returns {Promise<void>}
  */
+export async function inicializarI18n() {
+	const idiomaSalvo = localStorage.getItem(CONFIG_I18N.CHAVE_STORAGE) || CONFIG_I18N.IDIOMA_PADRAO;
+
+	document.documentElement.lang = idiomaSalvo;
+
+	await carregarDicionario();
+
+	await definirIdioma(idiomaSalvo);
+
+	configurarSeletor();
+}
 
 /**
- * Busca e armazena em memória o JSON contendo todas as traduções da aplicação.
- * Evita requisições duplicadas caso o dicionário já esteja em cache.
+ * Realiza o download assíncrono do arquivo JSON de traduções.
+ * @returns {Promise<void>}
  */
-export async function carregarDicionario() {
+async function carregarDicionario() {
 	if (dicionarioCompleto) return;
 
 	try {
 		const resposta = await fetch(CONFIG_I18N.CAMINHO_DICIONARIO);
-		if (!resposta.ok) throw new Error(`Erro HTTP: ${resposta.status}`);
+
+		if (!resposta.ok) {
+			throw new Error(`Erro HTTP: ${resposta.status}`);
+		}
 
 		dicionarioCompleto = await resposta.json();
 	} catch (erro) {
-		console.error('[i18n] Falha crítica ao carregar o dicionário de traduções:', erro);
+		console.error('[i18n] Falha ao carregar dicionário:', erro);
 	}
 }
 
 /**
- * Altera o idioma atual da aplicação, salva a preferência localmente,
- * recarrega as traduções e reconstrói a interface preservando o estado dos filtros.
- *
- * @param {string} idioma - Sigla do idioma desejado (ex: 'pt-br', 'en').
+ * Altera o idioma ativo, atualiza o dicionário em memória e reconstrói o DOM.
+ * @param {string} idioma - O código do idioma desejado (ex: 'pt-br', 'en').
+ * @returns {Promise<void>}
  */
 export async function definirIdioma(idioma) {
-	const containerApp = document.getElementById('app');
-
-	if (!containerApp) {
-		console.warn('[i18n] Container principal "#app" não encontrado no DOM.');
-		return;
+	if (!dicionarioCompleto) {
+		await carregarDicionario();
 	}
-
-	await carregarDicionario();
-
-	localStorage.setItem(CONFIG_I18N.CHAVE_STORAGE, idioma);
-	document.documentElement.lang = idioma;
 
 	const novoDicionario =
 		dicionarioCompleto[idioma] || dicionarioCompleto[CONFIG_I18N.IDIOMA_PADRAO];
 
-	Object.keys(t).forEach((key) => delete t[key]);
+	for (const chave in t) {
+		delete t[chave];
+	}
 	Object.assign(t, novoDicionario);
 
-	const estadoTela = {
-		indice: document.getElementById('selecao-indice')?.value,
-		distribuicao: document.getElementById('selecao-distribuicao')?.value,
-		classificacao: document.getElementById('selecao-classificacao')?.value,
-	};
+	localStorage.setItem(CONFIG_I18N.CHAVE_STORAGE, idioma);
+	document.documentElement.lang = idioma;
 
-	containerApp.innerHTML = construirPaginaPrincipal();
-	resetarIndicesCarregados();
+	const containerApp = document.getElementById('app');
 
-	if (estadoTela.indice) {
-		document.getElementById('selecao-indice').value = estadoTela.indice;
-		mudarTituloCard(estadoTela.indice);
+	if (containerApp) {
+		const estadoSalvo = { ...FormController.estado };
+
+		const selectClassAntigo = document.getElementById('selecao-classificacao');
+		const classificacaoSalva = selectClassAntigo ? selectClassAntigo.value : null;
+
+		containerApp.innerHTML = ViewManager.construirPaginaPrincipal();
+
+		FormController.init();
+
+		if (typeof FormController.renderizar === 'function' && estadoSalvo.indice !== null) {
+			const selectIndice = document.getElementById('selecao-indice');
+			const selectDist = document.getElementById('selecao-distribuicao');
+			const selectClassNovo = document.getElementById('selecao-classificacao');
+
+			if (selectIndice) selectIndice.value = estadoSalvo.indice;
+			if (selectDist) selectDist.value = estadoSalvo.distribuicao;
+
+			if (selectClassNovo && classificacaoSalva) {
+				selectClassNovo.value = classificacaoSalva;
+			}
+
+			FormController.estado = { indice: null, distribuicao: null };
+
+			FormController.renderizar();
+		}
+
+		configurarSeletor();
 	}
-
-	if (estadoTela.distribuicao) {
-		document.getElementById('selecao-distribuicao').value = estadoTela.distribuicao;
-	}
-
-	if (estadoTela.classificacao) {
-		document.getElementById('selecao-classificacao').value = estadoTela.classificacao;
-	}
-
-	inicializarEventosFormulario();
 }
 
 /**
- * Inicializa o subsistema de internacionalização.
- * Recupera a preferência salva no storage (ou adota o padrão) e atrela o ouvinte ao seletor de idiomas.
+ * Sincroniza o valor do elemento `<select>` com o idioma ativo
+ * e atrela o ouvinte de mudança (change event).
+ * @private
  */
-export function inicializarI18n() {
-	const idiomaSalvo = localStorage.getItem(CONFIG_I18N.CHAVE_STORAGE) || CONFIG_I18N.IDIOMA_PADRAO;
-	const seletorElemento = document.getElementById('seletor-idioma');
+function configurarSeletor() {
+	const seletor = document.getElementById('seletor-idioma');
+	if (!seletor) return;
 
-	if (seletorElemento) {
-		seletorElemento.value = idiomaSalvo;
-		seletorElemento.addEventListener('change', (evento) => {
-			definirIdioma(evento.target.value);
-		});
-	}
+	const idiomaAtivo = localStorage.getItem(CONFIG_I18N.CHAVE_STORAGE) || CONFIG_I18N.IDIOMA_PADRAO;
 
-	definirIdioma(idiomaSalvo);
+	seletor.value = idiomaAtivo;
+
+	seletor.onchange = (evento) => {
+		definirIdioma(evento.target.value);
+	};
 }
-
-inicializarI18n();

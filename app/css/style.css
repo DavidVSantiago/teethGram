@@ -630,6 +630,7 @@ input[type='radio'] {
 	}
 }
 
+/* ========= MODAL DE RESPOSTA ========= */
 .modal-overlay {
 	position: fixed;
 	top: 0;
@@ -646,7 +647,7 @@ input[type='radio'] {
 	justify-content: center;
 
 	.modal-conteudo {
-		width: fit-content;
+		width: 45vw;
 		padding: 2vw 3vw;
 		text-align: center;
 		color: var(--cor-texto);
@@ -689,31 +690,94 @@ input[type='radio'] {
 			flex-direction: column;
 			gap: 1vw;
 
+			.alerta-titulo {
+				font-size: 1.1vw;
+				font-weight: 500;
+				text-align: left;
+				color: #4b5563;
+			}
+
 			.alerta-comparativo {
+				max-height: 18vw;
+				padding: 0.8vw;
+				list-style: none;
 				background: #fdf2f2;
 				border: 0.1vw solid #fbcaca;
 				border-radius: 0.5vw;
-				padding: 1vw;
+				overflow-y: auto;
 
 				display: flex;
 				flex-direction: column;
-				align-items: flex-start;
+				align-items: stretch;
 				gap: 0.5vw;
+
+				&::-webkit-scrollbar {
+					width: 0.4vw;
+				}
+
+				&::-webkit-scrollbar-track {
+					background: #fff5f5;
+				}
+
+				&::-webkit-scrollbar-thumb {
+					background: #fca5a5;
+					border-radius: 0.5vw;
+				}
+
+				.erro-item {
+					padding: 0.8vw;
+					font-size: 0.95vw;
+					text-align: left;
+					color: #374151;
+					background: #ffffff;
+					border-left: 0.3vw solid #f87171;
+					border-radius: 0.4vw;
+					box-shadow: 0 0.1vw 0.3vw rgba(0, 0, 0, 0.08);
+
+					&:last-child {
+						border-bottom: none;
+					}
+
+					.marcador-erro {
+						margin-right: 0.4vw;
+						color: #ef4444;
+					}
+				}
+
+				.erro-fallback {
+					padding: 1vw;
+					font-weight: bold;
+					color: #ef4444;
+					background: white;
+					border-radius: 0.4vw;
+				}
 
 				strong {
 					color: var(--cor-primaria);
 				}
 
 				.valor-planilha {
+					text-align: start;
 					color: #f27474;
 				}
 			}
 
-			.alerta-dica {
-				font-size: 0.9vw;
-				font-style: italic;
-				text-align: center;
-				color: #888;
+			.caixa-dica {
+				padding: 0.8vw;
+				background: #f0f9ff;
+				border: 0.1vw solid #bae6fd;
+				border-radius: 0.5vw;
+
+				.alerta-dica {
+					font-size: 0.9vw;
+					font-style: normal;
+					text-align: center;
+					color: #0369a1;
+
+					strong {
+						color: #0369a1;
+					}
+				}
 			}
 		}
 
