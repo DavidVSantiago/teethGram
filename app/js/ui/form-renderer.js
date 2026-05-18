@@ -38,13 +38,13 @@ export class FormRenderer {
 
         <div class="dente-corpo">
           <div class="caixa-entrada">
-            <input class="entrada-componente" type="number" id="${idC}-${numero}" name="${idC}-${numero}" />
+            <input class="entrada-componente" type="number" id="${idC}-${numero}" name="${idC}-${numero}" min="0" />
           </div>
           <div class="caixa-entrada">
-            <input class="entrada-componente" type="number" id="${idPE}-${numero}" name="${idPE}-${numero}" />
+            <input class="entrada-componente" type="number" id="${idPE}-${numero}" name="${idPE}-${numero}" min="0" />
           </div>
           <div class="caixa-entrada">
-            <input class="entrada-componente" type="number" id="${idO}-${numero}" name="${idO}-${numero}" />
+            <input class="entrada-componente" type="number" id="${idO}-${numero}" name="${idO}-${numero}" min="0" />
           </div>
         </div>
 

@@ -455,6 +455,13 @@ input[type='radio'] {
 						&:focus {
 							border-color: var(--cor-primaria);
 						}
+
+						&:disabled {
+							background-color: var(--cor-texto-claro);
+							border-color: var(--cor-borda);
+							cursor: not-allowed;
+							opacity: 0.6;
+						}
 					}
 				}
 			}

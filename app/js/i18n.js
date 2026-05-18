@@ -3,7 +3,6 @@ import { FormController } from './controllers/form-controller.js';
 
 /**
  * Configurações globais do sistema de internacionalização.
- * @constant
  */
 export const CONFIG_I18N = {
 	IDIOMA_PADRAO: 'pt-br',

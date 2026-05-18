@@ -53,7 +53,6 @@ function configurarCliquesGlobais() {
 /**
  * Cria um input temporário, simulando o clique do usuário para abrir
  * a janela de seleção de arquivos do sistema operacional.
- * @private
  */
 function abrirSeletorArquivo() {
 	const entrada = document.createElement('input');
@@ -72,7 +71,6 @@ function abrirSeletorArquivo() {
 
 /**
  * Realiza o download do modelo de planilha correspondente ao idioma ativo.
- * @private
  */
 function baixarPlanilhaModelo() {
 	const idioma = document.documentElement.lang || 'pt-br';

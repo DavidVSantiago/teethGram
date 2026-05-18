@@ -5,7 +5,7 @@
  * Estrutura:
  * Chave (Key): Sistema ADA (Universal)
  * Valor (Value): Sistema FDI (ISO)
- * * Nota: Congelado (freeze) para garantir imutabilidade durante a execução.
+ * Nota: Congelado (freeze) para garantir imutabilidade durante a execução.
  */
 export const MAPA_CONVERSAO = Object.freeze({
 	PERMANENTE: {
@@ -64,15 +64,12 @@ export const COMPONENTES = Object.freeze({
 /**
  * Converte a numeração de um dente do sistema FDI (padrão da ISO)
  * para o sistema ADA (Universal).
- *
  * @param {string} fdi - O número do dente no sistema FDI (ex: '18', '55').
  * @returns {string} O identificador correspondente no sistema ADA ou o próprio FDI se não encontrar.
  */
 export function converterFDIParaADA(fdi) {
-	// Agrupa os sistemas para varredura contínua (Princípio DRY)
 	const sistemas = [MAPA_CONVERSAO.PERMANENTE, MAPA_CONVERSAO.DECIDUO];
 
-	// Busca o valor nos quadrantes de ambas as categorias
 	for (const sistema of sistemas) {
 		for (const quadrante in sistema) {
 			const dentes = sistema[quadrante];
@@ -86,4 +83,26 @@ export function converterFDIParaADA(fdi) {
 	}
 
 	return fdi;
+}
+
+/**
+ * Converte a numeração de um dente do sistema ADA (Universal)
+ * para o sistema FDI (padrão da ISO).
+ * @param {string} ada - O número/letra do dente no sistema ADA (ex: 'A', '1').
+ * @returns {string} O identificador correspondente no sistema FDI ou o próprio valor.
+ */
+export function converterADAParaFDI(ada) {
+	const sistemas = [MAPA_CONVERSAO.PERMANENTE, MAPA_CONVERSAO.DECIDUO];
+
+	for (const sistema of sistemas) {
+		for (const quadrante in sistema) {
+			const dentes = sistema[quadrante];
+
+			if (dentes[ada]) {
+				return dentes[ada];
+			}
+		}
+	}
+
+	return ada;
 }

@@ -3,7 +3,11 @@ import { ViewManager } from '../ui/view-manager.js';
 import { FormRenderer } from '../ui/form-renderer.js';
 import { UI } from '../ui/ui-feedback.js';
 import { processarPlanilha, TIPO_FORMULARIO } from '../services/planilha-service.js';
-import { converterFDIParaADA, COMPONENTES } from '../services/odontometria-config.js';
+import {
+	converterADAParaFDI,
+	converterFDIParaADA,
+	COMPONENTES,
+} from '../services/odontometria-config.js';
 
 /**
  * Controlador responsável por orquestrar a interface do formulário e o fluxo de dados.
@@ -70,12 +74,14 @@ export const FormController = {
 		// Atualiza o estado interno e sincroniza a numeração (FDI/ADA)
 		this.estado = { indice, distribuicao };
 		this.atualizarSistemaNumeracao();
+
+		this.atualizarEstadoInputs();
 	},
 
 	/**
 	 * Atualiza dinamicamente os textos das opções de distribuição
 	 * para refletir a nomenclatura correta do índice (CPO-D vs ceo-d).
-	 * * @param {string} indice - O índice epidemiológico selecionado ('cpo-d' ou 'ceo-d').
+	 * @param {string} indice - O índice epidemiológico selecionado ('cpo-d' ou 'ceo-d').
 	 */
 	atualizarOpcoesDistribuicao(indice) {
 		const selectDist = document.getElementById('selecao-distribuicao');
@@ -109,6 +115,44 @@ export const FormController = {
 				el.textContent = converterFDIParaADA(fdi);
 			} else {
 				el.textContent = fdi;
+			}
+		});
+	},
+
+	/**
+	 * Habilita ou desabilita (disable) os inputs com base no componente selecionado no filtro.
+	 * Melhora a experiência do usuário (UX) focando apenas no campo relevante.
+	 */
+	atualizarEstadoInputs() {
+		const { indice, distribuicao } = this.estado;
+
+		if (distribuicao === 'total') return;
+
+		const configComp =
+			indice === 'cpo-d' ? this.obterConfiguracaoCPOD() : this.obterConfiguracaoCEOD();
+
+		const mapaPrefixos = {
+			'componente-c': configComp.idC,
+			'componente-p': configComp.idPE,
+			'componente-o': configComp.idO,
+		};
+		const prefixoAtivo = mapaPrefixos[distribuicao] || null;
+
+		const inputs = document.querySelectorAll('.entrada-componente');
+
+		inputs.forEach((input) => {
+			if (!prefixoAtivo) {
+				input.disabled = false;
+				return;
+			}
+
+			const prefixoInput = input.id.split('-')[0];
+
+			if (prefixoInput === prefixoAtivo) {
+				input.disabled = false;
+			} else {
+				input.disabled = true;
+				input.value = '';
 			}
 		});
 	},
@@ -150,12 +194,11 @@ export const FormController = {
 	/**
 	 * Gerencia a importação e leitura do arquivo de planilha.
 	 * Aciona o serviço de processamento e lida com o feedback de interface.
-	 * * @param {File} file - Arquivo enviado pelo input file.
+	 * @param {File} file - Arquivo enviado pelo input file.
 	 */
 	async handleImport(file) {
 		try {
 			const tipoEnum = this.obterTipoEnum();
-
 			const selectClassificacao = document.getElementById('selecao-classificacao');
 			const classificacaoSelecionada = selectClassificacao ? selectClassificacao.value : 'fdi';
 
@@ -164,18 +207,89 @@ export const FormController = {
 			if (this.estado.distribuicao === 'componente-p') componenteAlvo = COMPONENTES.PERDIDO;
 			if (this.estado.distribuicao === 'componente-o') componenteAlvo = COMPONENTES.OBTURADO;
 
-			const dados = await processarPlanilha(
+			const { dados, totalParticipantes } = await processarPlanilha(
 				file,
 				tipoEnum,
 				classificacaoSelecionada,
 				componenteAlvo,
 			);
 
-			console.log('Sucesso na importação:', dados);
-
-			// TODO: Preencher os inputs da tela com os "dados" retornados
+			this.preencherDadosNaTela(
+				dados,
+				totalParticipantes,
+				componenteAlvo,
+				classificacaoSelecionada,
+			);
 		} catch (erro) {
 			UI.notificarErroPlanilha(erro.message);
+		}
+	},
+
+	/**
+	 * Distribui os dados processados da planilha para os respectivos inputs do HTML.
+	 * @param {Map} dadosMap - O mapa contendo os dentes e seus valores.
+	 * @param {number} totalParticipantes - O número total de pacientes lido da planilha.
+	 * @param {string} componenteAlvo - Indica se estamos preenchendo TODOS ou um específico.
+	 */
+	preencherDadosNaTela(dadosMap, totalParticipantes, componenteAlvo, classificacaoSelecionada) {
+		const inputTotal = document.getElementById('total-participantes');
+		if (inputTotal) inputTotal.value = totalParticipantes;
+
+		const ehTotal = this.estado.distribuicao === 'total';
+		const configComp =
+			this.estado.indice === 'cpo-d' ? this.obterConfiguracaoCPOD() : this.obterConfiguracaoCEOD();
+
+		dadosMap.forEach((valor, denteKey) => {
+			if (ehTotal) {
+				this.injetarValorNoInput(denteKey, 'total', valor, classificacaoSelecionada);
+			} else if (componenteAlvo === 'TODOS') {
+				this.injetarValorNoInput(denteKey, configComp.idC, valor.cariado, classificacaoSelecionada);
+				this.injetarValorNoInput(
+					denteKey,
+					configComp.idPE,
+					valor.perdido,
+					classificacaoSelecionada,
+				);
+				this.injetarValorNoInput(
+					denteKey,
+					configComp.idO,
+					valor.obturado,
+					classificacaoSelecionada,
+				);
+			} else {
+				const mapaSufixos = {
+					[COMPONENTES.CARIADO]: configComp.idC,
+					[COMPONENTES.PERDIDO]: configComp.idPE,
+					[COMPONENTES.OBTURADO]: configComp.idO,
+				};
+
+				const sufixo = mapaSufixos[componenteAlvo] || '';
+				this.injetarValorNoInput(denteKey, sufixo, valor, classificacaoSelecionada);
+			}
+		});
+	},
+
+	/**
+	 * Localiza o input no DOM e injeta o valor extraído.
+	 * @param {string} dente - A numeração do dente (Já chega limpa em FDI do serviço).
+	 * @param {string} sufixo - O identificador do componente (ex: 'c', 'e', 'total').
+	 * @param {number} valor - O valor numérico a ser inserido.
+	 */
+	injetarValorNoInput(dente, sufixo, valor, classificacaoSelecionada) {
+		const isAda = String(classificacaoSelecionada).trim().toLowerCase() === 'ada';
+		const denteFDI = isAda ? converterADAParaFDI(dente) : dente;
+
+		const idMontado = `${sufixo}-${denteFDI}`;
+		const inputElement = document.getElementById(idMontado);
+
+		if (inputElement) {
+			if (valor >= 0) {
+				inputElement.value = valor;
+			} else {
+				inputElement.value = '';
+			}
+		} else {
+			console.warn(`Atenção: Input não encontrado na tela: ${idMontado}`);
 		}
 	},
 

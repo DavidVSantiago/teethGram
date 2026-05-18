@@ -17,7 +17,6 @@ export const TIPO_FORMULARIO = Object.freeze({
 /**
  * Mapeamento de coordenadas (base zero) para extração de dados na planilha.
  * Suporta tanto o sistema FDI (topo da planilha) quanto ADA (parte inferior).
- * @constant
  */
 const COORDENADAS_PLANILHA = Object.freeze({
 	LINHA_PARTICIPANTES: 32, // Linha 33 no Excel
@@ -240,7 +239,6 @@ function extrairDados(matriz, tipoFormulario, classificacao, componenteAlvo) {
 			}
 		}
 
-		// Se achou dados em algum lugar, lista tudo o que está divergente com a tela
 		if (encontrouAlgumDado) {
 			if (erroIndice) {
 				errosEncontrados.push(
@@ -277,7 +275,6 @@ function extrairDados(matriz, tipoFormulario, classificacao, componenteAlvo) {
 /**
  * Função utilitária para verificar se a célula possui um dado numérico válido,
  * diferenciando de células completamente vazias.
- * @private
  * @param {any} v - O valor da célula extraído da planilha.
  * @returns {boolean} True se a célula contiver dados, False caso contrário.
  */
@@ -288,7 +285,6 @@ function celulaTemDado(v) {
 /**
  * Função detetive: vasculha rapidamente uma região específica da matriz
  * procurando por qualquer dado legítimo.
- *
  * @param {Array[]} matriz - A matriz completa da planilha.
  * @param {Object} cfgConfig - As coordenadas da região (coluna início, fim e linhas).
  * @param {boolean} checarTotal - Flag para checar linha de total ou linhas de componentes.
@@ -316,7 +312,6 @@ function verificarRegiao(matriz, cfgConfig, checarTotal, ehCEOD) {
 
 /**
  * Normaliza valores extraídos da planilha tratando casas decimais, vírgulas e lixo.
- * @private
  * @param {any} v - Valor bruto da célula.
  * @returns {number} O valor numérico formatado.
  */
