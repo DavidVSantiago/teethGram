@@ -749,6 +749,18 @@ input[type='radio'] {
 						margin-right: 0.4vw;
 						color: #ef4444;
 					}
+
+					.configuracao-destaque {
+						width: fit-content;
+						margin: 1vw auto;
+						padding: 0.5vw 1vw;
+						background-color: #f0f9ff;
+						color: var(--cor-primaria);
+						border-radius: 0.3vw;
+						border: 0.1vw solid #bae6fd;
+						font-weight: bold;
+						text-align: center;
+					}
 				}
 
 				.erro-fallback {
