@@ -1,5 +1,5 @@
 import { t } from '../i18n.js';
-import { COMPONENTES } from './odontometria-config.js';
+import { COMPONENTES } from './dentes-service.js';
 
 /**
  * Enumeração para os tipos de formulários suportados.
@@ -98,7 +98,6 @@ export async function processarPlanilha(
 				});
 
 				const resultado = extrairDados(matriz, tipoFormulario, classificacao, componenteAlvo);
-
 				resolve(resultado);
 			} catch (error) {
 				reject(error);
@@ -129,12 +128,10 @@ function extrairDados(matriz, tipoFormulario, classificacao, componenteAlvo) {
 
 	const configSistema =
 		classificacao === 'ada' ? COORDENADAS_PLANILHA.ADA : COORDENADAS_PLANILHA.FDI;
-
 	const cfg = ehCEOD ? configSistema.CEOD : configSistema.CPOD;
 
 	const valorParticipantesString =
 		matriz[COORDENADAS_PLANILHA.LINHA_PARTICIPANTES]?.[COORDENADAS_PLANILHA.COLUNA_PARTICIPANTES];
-
 	const totalParticipantes = parseInt(valorParticipantesString, 10) || 0;
 
 	if (totalParticipantes <= 0) {
@@ -143,14 +140,13 @@ function extrairDados(matriz, tipoFormulario, classificacao, componenteAlvo) {
 
 	const dadosMap = new Map();
 	const errosEncontrados = [];
-
 	let possuiDados = false;
 
 	const colInicio = COORDENADAS_PLANILHA.COL_INICIO_DENTES;
 	const colFim = ehCEOD ? COORDENADAS_PLANILHA.COL_FIM_CEOD : COORDENADAS_PLANILHA.COL_FIM_CPOD;
 
 	for (let c = colInicio; c <= colFim; c++) {
-		const denteKey = String(matriz[cfg.linhaChaves]?.[c]).trim();
+		const denteKey = String(matriz[cfg.linhaChaves]?.[c] || '').trim();
 
 		if (!denteKey || denteKey === 'null' || denteKey === 'undefined' || denteKey === 'Componente') {
 			continue;
@@ -232,7 +228,6 @@ function extrairDados(matriz, tipoFormulario, classificacao, componenteAlvo) {
 		for (const regiao of todasAsRegioes) {
 			if (verificarRegiao(matriz, regiao.cfg, regiao.isTotal, regiao.isCEOD)) {
 				encontrouAlgumDado = true;
-
 				if (regiao.isCEOD !== ehCEOD) erroIndice = true;
 				if (regiao.isTotal !== ehModeloTotal) erroDistribuicao = true;
 				if (regiao.isADA !== (classificacao === 'ada')) erroClassificacao = true;
@@ -240,23 +235,20 @@ function extrairDados(matriz, tipoFormulario, classificacao, componenteAlvo) {
 		}
 
 		if (encontrouAlgumDado) {
-			if (erroIndice) {
+			if (erroIndice)
 				errosEncontrados.push(
 					t.modal?.erroIndiceTrocado ?? 'A planilha possui dados, mas para o Índice oposto.',
 				);
-			}
-			if (erroDistribuicao) {
+			if (erroDistribuicao)
 				errosEncontrados.push(
 					t.modal?.erroDistribuicaoTrocada ??
 						'A planilha possui dados, mas na Distribuição oposta.',
 				);
-			}
-			if (erroClassificacao) {
+			if (erroClassificacao)
 				errosEncontrados.push(
 					t.modal?.erroClassificacaoTrocada ??
 						'A planilha possui dados, mas na Classificação oposta.',
 				);
-			}
 		} else {
 			errosEncontrados.push(
 				t.modal?.mensagemErro ??

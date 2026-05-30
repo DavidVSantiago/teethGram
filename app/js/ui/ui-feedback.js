@@ -51,17 +51,17 @@ export const UI = {
 				.map(
 					(msg) => `
 						<li class="erro-item">
-								<strong class="marcador-erro">•</strong> ${msg}
+							<strong class="marcador-erro">•</strong> ${msg}
 						</li>
 					`,
 				)
 				.join('');
 		} catch (erro) {
 			listaHtml = `
-        <div class="erro-fallback">
-          ${mensagemBruta}
-        </div>
-      `;
+				<div class="erro-fallback">
+					${mensagemBruta}
+				</div>
+			`;
 		}
 
 		const htmlEstruturado = `
@@ -69,13 +69,13 @@ export const UI = {
         <p class="alerta-titulo">${t.modal?.inconsistencias ?? 'Inconsistências encontradas:'}</p>
 
         <ul class="alerta-comparativo">
-					${listaHtml}
+          ${listaHtml}
         </ul>
 
         <div class="caixa-dica">
-					<p class="alerta-dica">
-						<strong>${t.modal?.dicaTitulo ?? 'Dica:'}</strong> ${t.modal?.dicaParticipantes ?? 'Verifique o total de participantes.'}
-					</p>
+          <p class="alerta-dica">
+            <strong>${t.modal?.dicaTitulo ?? 'Dica:'}</strong> ${t.modal?.dicaParticipantes ?? 'Verifique o total de participantes.'}
+          </p>
         </div>
       </div>
     `;

@@ -26,26 +26,26 @@ document.addEventListener('DOMContentLoaded', async () => {
  */
 function configurarCliquesGlobais() {
 	document.addEventListener('click', (evento) => {
-		const alvo = evento.target;
+		const botaoClicado = evento.target.closest('button');
 
-		// Botão: Selecionar Arquivo (Importar Planilha)
-		if (alvo.closest('#botao-selecionar-arquivo')) {
-			abrirSeletorArquivo();
-		}
+		if (!botaoClicado) return;
 
-		// Botão: Baixar Modelo de Planilha
-		if (alvo.closest('#botao-baixar')) {
-			baixarPlanilhaModelo();
-		}
+		switch (botaoClicado.id) {
+			case 'botao-selecionar-arquivo':
+				abrirSeletorArquivo();
+				break;
 
-		// Botão: Gerar Histograma / Gráfico
-		if (alvo.closest('#botao-gerar')) {
-			FormController.gerarHistograma?.();
-		}
+			case 'botao-baixar':
+				baixarPlanilhaModelo();
+				break;
 
-		// Botão: Fechar Modal de Alerta
-		if (alvo.closest('#botao-fechar-modal')) {
-			UI.fecharModal();
+			case 'botao-gerar':
+				FormController.gerarHistograma?.();
+				break;
+
+			case 'botao-fechar-modal':
+				UI.fecharModal();
+				break;
 		}
 	});
 }
