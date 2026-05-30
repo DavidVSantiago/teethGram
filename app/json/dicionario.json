@@ -80,9 +80,14 @@
 			"erroParticipantesFalta": "O total de participantes na célula B33 deve ser informado e maior que zero.",
 			"erroParticipantesTotal": "Dente [DENTE]: O valor total ([VALOR]) é maior que o número de participantes ([TOTAL]).",
 			"erroParticipantesSoma": "Dente [DENTE]: A soma (C+P+O = [SOMA]) ultrapassa o limite de participantes ([TOTAL]).",
+			"erroParticipantesComponente": "Dente [DENTE]: O valor do componente ([VALOR]) é maior que o número de participantes ([TOTAL]).",
 			"erroDistribuicaoTrocada": "A planilha carregada possui dados, mas na <strong>Distribuição</strong> oposta. Verifique o filtro na tela.",
 			"erroClassificacaoTrocada": "A planilha possui dados, mas na <strong>Classificação</strong> oposta. Verifique o filtro na tela.",
-			"erroIndiceTrocado": "A planilha possui dados, mas para o <strong>Índice</strong> oposto. Verifique o filtro na tela."
+			"erroIndiceTrocado": "A planilha possui dados, mas para o <strong>Índice</strong> oposto. Verifique o filtro na tela.",
+			"erroDadosFaltantesConfig": "A planilha possui dados faltantes para a configuração selecionada:",
+			"erroDadosFaltantesPreencher": "Preencha todos os campos da planilha entre as células",
+			"conjuncaoE": "e",
+			"palavraComponente": "Componente"
 		}
 	},
 	"en": {
@@ -169,7 +174,10 @@
 			"erroParticipantesComponente": "Tooth [DENTE]: The component value ([VALOR]) is greater than the number of participants ([TOTAL]).",
 			"erroDistribuicaoTrocada": "The spreadsheet contains data, but in the opposite <strong>Distribution</strong>. Check the screen filter.",
 			"erroClassificacaoTrocada": "The spreadsheet contains data, but in the opposite <strong>Classification</strong>. Check the screen filter.",
-			"erroIndiceTrocado": "The spreadsheet contains data, but for the opposite <strong>Index</strong>. Check the screen filter."
+			"erroDadosFaltantesConfig": "The spreadsheet is missing data for the selected configuration:",
+			"erroDadosFaltantesPreencher": "Please fill in all fields in the spreadsheet between cells",
+			"conjuncaoE": "and",
+			"palavraComponente": "Component"
 		}
 	}
 }
