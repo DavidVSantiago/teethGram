@@ -14,14 +14,13 @@ export let dicionarioCompleto = null;
 
 /**
  * Objeto reativo contendo os textos traduzidos da aplicação.
- * É atualizado dinamicamente quando o idioma muda.
+ * É atualizado dinamicamente quando o idioma muda mantendo a referência de memória.
  */
 export const t = {};
 
 /**
  * Ponto de entrada principal para o sistema de tradução.
  * Chamado pelo main.js na inicialização da aplicação.
- * @returns {Promise<void>}
  */
 export async function inicializarI18n() {
 	const idiomaSalvo = localStorage.getItem(CONFIG_I18N.CHAVE_STORAGE) || CONFIG_I18N.IDIOMA_PADRAO;
@@ -29,7 +28,6 @@ export async function inicializarI18n() {
 	document.documentElement.lang = idiomaSalvo;
 
 	await carregarDicionario();
-
 	await definirIdioma(idiomaSalvo);
 
 	configurarSeletor();
@@ -37,7 +35,6 @@ export async function inicializarI18n() {
 
 /**
  * Realiza o download assíncrono do arquivo JSON de traduções.
- * @returns {Promise<void>}
  */
 async function carregarDicionario() {
 	if (dicionarioCompleto) return;
@@ -58,7 +55,6 @@ async function carregarDicionario() {
 /**
  * Altera o idioma ativo, atualiza o dicionário em memória e reconstrói o DOM.
  * @param {string} idioma - O código do idioma desejado (ex: 'pt-br', 'en').
- * @returns {Promise<void>}
  */
 export async function definirIdioma(idioma) {
 	if (!dicionarioCompleto) {
@@ -76,37 +72,39 @@ export async function definirIdioma(idioma) {
 	localStorage.setItem(CONFIG_I18N.CHAVE_STORAGE, idioma);
 	document.documentElement.lang = idioma;
 
+	reconstruirInterface();
+}
+
+/**
+ * Isola a lógica de reconstrução do DOM e recuperação de estado.
+ * Evita que a função de tradução fique poluída com regras de UI.
+ * @private
+ */
+function reconstruirInterface() {
 	const containerApp = document.getElementById('app');
+	if (!containerApp) return;
 
-	if (containerApp) {
-		const estadoSalvo = { ...FormController.estado };
+	const estadoSalvo = { ...FormController.estado };
+	const classificacaoSalva = document.getElementById('selecao-classificacao')?.value;
 
-		const selectClassAntigo = document.getElementById('selecao-classificacao');
-		const classificacaoSalva = selectClassAntigo ? selectClassAntigo.value : null;
+	containerApp.innerHTML = ViewManager.construirPaginaPrincipal();
 
-		containerApp.innerHTML = ViewManager.construirPaginaPrincipal();
+	FormController.init();
 
-		FormController.init();
+	if (typeof FormController.renderizar === 'function' && estadoSalvo.indice !== null) {
+		const selectIndice = document.getElementById('selecao-indice');
+		const selectDist = document.getElementById('selecao-distribuicao');
+		const selectClass = document.getElementById('selecao-classificacao');
 
-		if (typeof FormController.renderizar === 'function' && estadoSalvo.indice !== null) {
-			const selectIndice = document.getElementById('selecao-indice');
-			const selectDist = document.getElementById('selecao-distribuicao');
-			const selectClassNovo = document.getElementById('selecao-classificacao');
+		if (selectIndice) selectIndice.value = estadoSalvo.indice;
+		if (selectDist) selectDist.value = estadoSalvo.distribuicao;
+		if (selectClass && classificacaoSalva) selectClass.value = classificacaoSalva;
 
-			if (selectIndice) selectIndice.value = estadoSalvo.indice;
-			if (selectDist) selectDist.value = estadoSalvo.distribuicao;
-
-			if (selectClassNovo && classificacaoSalva) {
-				selectClassNovo.value = classificacaoSalva;
-			}
-
-			FormController.estado = { indice: null, distribuicao: null };
-
-			FormController.renderizar();
-		}
-
-		configurarSeletor();
+		FormController.estado = { indice: null, distribuicao: null };
+		FormController.renderizar();
 	}
+
+	configurarSeletor();
 }
 
 /**
@@ -118,9 +116,7 @@ function configurarSeletor() {
 	const seletor = document.getElementById('seletor-idioma');
 	if (!seletor) return;
 
-	const idiomaAtivo = localStorage.getItem(CONFIG_I18N.CHAVE_STORAGE) || CONFIG_I18N.IDIOMA_PADRAO;
-
-	seletor.value = idiomaAtivo;
+	seletor.value = localStorage.getItem(CONFIG_I18N.CHAVE_STORAGE) || CONFIG_I18N.IDIOMA_PADRAO;
 
 	seletor.onchange = (evento) => {
 		definirIdioma(evento.target.value);

@@ -10,36 +10,9 @@
 export const MAPA_CONVERSAO = Object.freeze({
 	PERMANENTE: {
 		superiorDireito: { 1: '18', 2: '17', 3: '16', 4: '15', 5: '14', 6: '13', 7: '12', 8: '11' },
-		superiorEsquerdo: {
-			9: '21',
-			10: '22',
-			11: '23',
-			12: '24',
-			13: '25',
-			14: '26',
-			15: '27',
-			16: '28',
-		},
-		inferiorEsquerdo: {
-			17: '38',
-			18: '37',
-			19: '36',
-			20: '35',
-			21: '34',
-			22: '33',
-			23: '32',
-			24: '31',
-		},
-		inferiorDireito: {
-			25: '41',
-			26: '42',
-			27: '43',
-			28: '44',
-			29: '45',
-			30: '46',
-			31: '47',
-			32: '48',
-		},
+		superiorEsquerdo: { 9: '21', 10: '22', 11: '23', 12: '24', 13: '25', 14: '26', 15: '27', 16: '28' },
+		inferiorEsquerdo: { 17: '38', 18: '37', 19: '36', 20: '35', 21: '34', 22: '33', 23: '32', 24: '31' },
+		inferiorDireito: { 25: '41', 26: '42', 27: '43', 28: '44', 29: '45', 30: '46', 31: '47', 32: '48' },
 	},
 
 	DECIDUO: {
@@ -61,48 +34,43 @@ export const COMPONENTES = Object.freeze({
 	TOTAL: 'TOTAL',
 });
 
+const cacheAdaParaFdi = {};
+const cacheFdiParaAda = {};
+
+const sistemas = [MAPA_CONVERSAO.PERMANENTE, MAPA_CONVERSAO.DECIDUO];
+for (const sistema of sistemas) {
+	for (const quadrante in sistema) {
+		const dentes = sistema[quadrante];
+		for (const ada in dentes) {
+			const fdi = dentes[ada];
+			cacheAdaParaFdi[ada] = fdi;
+			cacheFdiParaAda[fdi] = ada;
+		}
+	}
+}
+
 /**
  * Converte a numeração de um dente do sistema FDI (padrão da ISO)
  * para o sistema ADA (Universal).
+ *
  * @param {string} fdi - O número do dente no sistema FDI (ex: '18', '55').
- * @returns {string} O identificador correspondente no sistema ADA ou o próprio FDI se não encontrar.
+ * @returns {string} O identificador correspondente no sistema ADA ou o próprio FDI.
  */
 export function converterFDIParaADA(fdi) {
-	const sistemas = [MAPA_CONVERSAO.PERMANENTE, MAPA_CONVERSAO.DECIDUO];
+	const fdiLimpo = String(fdi).trim();
 
-	for (const sistema of sistemas) {
-		for (const quadrante in sistema) {
-			const dentes = sistema[quadrante];
-
-			for (const ada in dentes) {
-				if (dentes[ada] === fdi) {
-					return ada;
-				}
-			}
-		}
-	}
-
-	return fdi;
+	return cacheFdiParaAda[fdiLimpo] || fdi;
 }
 
 /**
  * Converte a numeração de um dente do sistema ADA (Universal)
  * para o sistema FDI (padrão da ISO).
+ *
  * @param {string} ada - O número/letra do dente no sistema ADA (ex: 'A', '1').
  * @returns {string} O identificador correspondente no sistema FDI ou o próprio valor.
  */
 export function converterADAParaFDI(ada) {
-	const sistemas = [MAPA_CONVERSAO.PERMANENTE, MAPA_CONVERSAO.DECIDUO];
+	const adaLimpo = String(ada).trim().toUpperCase();
 
-	for (const sistema of sistemas) {
-		for (const quadrante in sistema) {
-			const dentes = sistema[quadrante];
-
-			if (dentes[ada]) {
-				return dentes[ada];
-			}
-		}
-	}
-
-	return ada;
+	return cacheAdaParaFdi[adaLimpo] || ada;
 }

@@ -1,9 +1,13 @@
 import { t } from '../i18n.js';
-import { MAPA_CONVERSAO } from '../services/odontometria-config.js';
+import {
+	MAPA_CONVERSAO,
+	converterFDIParaADA,
+	converterADAParaFDI,
+} from '../services/dentes-service.js';
 
 /**
  * Classe utilitária responsável por gerar o HTML dinâmico dos formulários.
- * Atua como uma "fábrica" de templates visuais.
+ * Atua como uma "fábrica" de templates visuais e gerencia manipulações de DOM.
  */
 export class FormRenderer {
 	/**
@@ -65,17 +69,13 @@ export class FormRenderer {
 	 */
 	static gerarEstruturaArcos(quadrantes, configComponentes = null) {
 		const renderizarQuadrante = (quadranteObj) => {
-			const listaDentesFDI = Object.values(quadranteObj);
-
-			const htmlGerado = listaDentesFDI.map((fdi) => {
-				if (configComponentes !== null) {
-					return this.renderizarCartaoComponente(fdi, configComponentes);
-				} else {
-					return this.renderizarCartaoSimples(fdi);
-				}
-			});
-
-			return htmlGerado.join('');
+			return Object.values(quadranteObj)
+				.map((fdi) =>
+					configComponentes
+						? this.renderizarCartaoComponente(fdi, configComponentes)
+						: this.renderizarCartaoSimples(fdi),
+				)
+				.join('');
 		};
 
 		return /* html */ `
@@ -120,10 +120,107 @@ export class FormRenderer {
 	 * @returns {Object} Mapa de conversão (Permanente ou Decíduo).
 	 */
 	static obterQuadrantes(indice) {
-		if (indice === 'cpo-d') {
-			return MAPA_CONVERSAO.PERMANENTE;
+		return indice === 'cpo-d' ? MAPA_CONVERSAO.PERMANENTE : MAPA_CONVERSAO.DECIDUO;
+	}
+
+	static obterConfiguracaoCPOD() {
+		return {
+			idC: 'c',
+			idPE: 'p',
+			idO: 'o',
+			rotulos: {
+				C: t.formularios?.componentes?.cariado ?? 'C',
+				P: t.formularios?.componentes?.perdido ?? 'P',
+				O: t.formularios?.componentes?.obturado ?? 'O',
+			},
+		};
+	}
+
+	static obterConfiguracaoCEOD() {
+		return {
+			idC: 'c',
+			idPE: 'e',
+			idO: 'o',
+			rotulos: {
+				C: t.formularios?.componentes?.c_deciduo ?? 'c',
+				P: t.formularios?.componentes?.e_deciduo ?? 'e',
+				O: t.formularios?.componentes?.o_deciduo ?? 'o',
+			},
+		};
+	}
+
+	static atualizarOpcoesDistribuicao(indice) {
+		const selectDist = document.getElementById('selecao-distribuicao');
+		if (!selectDist) return;
+
+		const textos = indice === 'cpo-d' ? t.filtros.opcoes?.permanente : t.filtros.opcoes?.deciduo;
+		if (!textos) return;
+
+		const opcaoC = selectDist.querySelector('option[value="componente-c"]');
+		const opcaoP = selectDist.querySelector('option[value="componente-p"]');
+		const opcaoO = selectDist.querySelector('option[value="componente-o"]');
+
+		if (opcaoC) opcaoC.textContent = textos.componenteC;
+		if (opcaoP) opcaoP.textContent = textos.componenteP;
+		if (opcaoO) opcaoO.textContent = textos.componenteO;
+	}
+
+	static atualizarSistemaNumeracao(sistemaAlvo) {
+		const titulos = document.querySelectorAll('[data-fdi]');
+
+		titulos.forEach((el) => {
+			const fdi = el.getAttribute('data-fdi');
+			el.textContent = sistemaAlvo === 'ada' ? converterFDIParaADA(fdi) : fdi; // Otimização rápida aqui também!
+		});
+	}
+
+	static atualizarEstadoInputs(indice, distribuicao) {
+		if (distribuicao === 'total') return;
+
+		const configComp =
+			indice === 'cpo-d' ? this.obterConfiguracaoCPOD() : this.obterConfiguracaoCEOD();
+
+		const mapaPrefixos = {
+			'componente-c': configComp.idC,
+			'componente-p': configComp.idPE,
+			'componente-o': configComp.idO,
+		};
+		const prefixoAtivo = mapaPrefixos[distribuicao] || null;
+
+		const inputs = document.querySelectorAll('.entrada-componente');
+
+		inputs.forEach((input) => {
+			if (!prefixoAtivo) {
+				input.disabled = false;
+				return;
+			}
+
+			const prefixoInput = input.id.split('-')[0];
+
+			if (prefixoInput === prefixoAtivo) {
+				input.disabled = false;
+			} else {
+				input.disabled = true;
+				input.value = '';
+			}
+		});
+	}
+
+	static injetarValorNoInput(dente, sufixo, valor, classificacaoSelecionada) {
+		const isAda = String(classificacaoSelecionada).trim().toLowerCase() === 'ada';
+		const denteFDI = isAda ? converterADAParaFDI(dente) : dente;
+
+		const idMontado = `${sufixo}-${denteFDI}`;
+		const inputElement = document.getElementById(idMontado);
+
+		if (inputElement) {
+			if (valor >= 0) {
+				inputElement.value = valor;
+			} else {
+				inputElement.value = '';
+			}
 		} else {
-			return MAPA_CONVERSAO.DECIDUO;
+			console.warn(`Atenção: Input não encontrado na tela: ${idMontado}`);
 		}
 	}
 }
