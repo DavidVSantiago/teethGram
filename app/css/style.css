@@ -6,6 +6,17 @@
 	--cor-texto-claro: #f0f0f0;
 	--cor-fundo: #f8f9fb;
 	--cor-borda: #ddd;
+	--cor-cartao: #ffffff;
+}
+
+/* ========= VARIÁVEIS DO TEMA ESCURO ========= */
+body.tema-escuro {
+	--cor-texto: #e8eaed;
+	--cor-fundo: #131314; /* Fundo principal mais escuro (A base) */
+	--cor-cartao: #1e1f22; /* Cartão levemente mais claro (Flutuando acima) */
+	--cor-borda: #444746;
+
+	color-scheme: dark;
 }
 
 /* ========= ESTILOS GERAIS ========= */
@@ -18,7 +29,11 @@
 body {
 	min-height: 100vh;
 	font-family: Arial, sans-serif;
-	background: #ffffff;
+	color: var(--cor-texto);
+	background: var(--cor-fundo);
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
 }
 
 button {
@@ -106,7 +121,7 @@ input[type='radio'] {
 			transition: all 0.2s ease;
 
 			&:hover {
-				background-color: #fff;
+				background-color: var(--cor-cartao);
 				border-color: var(--cor-primaria);
 			}
 		}
@@ -130,7 +145,6 @@ input[type='radio'] {
 
 			svg {
 				position: absolute;
-
 				width: 1.5vw;
 				height: 1.5vw;
 				transition:
@@ -161,7 +175,7 @@ input[type='radio'] {
 		/* Quando o Tema está ativo */
 		#toggle-tema:checked + .botao-alternancia {
 			color: #f1c40f;
-			background-color: #333;
+			background-color: var(--cor-fundo);
 
 			.icone--sol {
 				opacity: 0;
@@ -233,7 +247,7 @@ input[type='radio'] {
 	width: 75vw;
 	margin-top: 3vw;
 	padding: 2.5vw;
-	background: var(--cor-fundo);
+	background: var(--cor-cartao);
 	border-radius: 1vw;
 	box-shadow: 0 0.2vw 0.6vw rgba(0, 0, 0, 0.1);
 
@@ -241,7 +255,7 @@ input[type='radio'] {
 		margin: 0;
 		font-size: 1.8vw;
 		text-align: center;
-		color: #222;
+		color: var(--cor-texto);
 	}
 
 	/* --------- Filtros --------- */
@@ -251,7 +265,7 @@ input[type='radio'] {
 		gap: 1.5vw;
 
 		padding: 1.5vw;
-		background: #ffffff;
+		background: var(--cor-fundo);
 		border: 0.1vw solid var(--cor-borda);
 		border-radius: 0.8vw;
 
@@ -285,12 +299,13 @@ input[type='radio'] {
 			color: var(--cor-texto);
 		}
 
-		/* Separação estratégica: Input recebe shorthand normal, Select recebe 4 valores para blindar a seta */
 		input[type='number'] {
 			width: 100%;
 			padding: 0.6vw;
 			font-size: 0.9vw;
-			border: 0.1vw solid #ccc;
+			color: var(--cor-texto);
+			background-color: var(--cor-fundo);
+			border: 0.1vw solid var(--cor-borda);
 			border-radius: 0.5vw;
 		}
 
@@ -298,7 +313,9 @@ input[type='radio'] {
 			width: 100%;
 			padding: 0.6vw 4vw 0.6vw 0.6vw;
 			font-size: 0.9vw;
-			border: 0.1vw solid #ccc;
+			color: var(--cor-texto);
+			background-color: var(--cor-fundo);
+			border: 0.1vw solid var(--cor-borda);
 			border-radius: 0.5vw;
 		}
 	}
@@ -341,7 +358,7 @@ input[type='radio'] {
 				margin: 2vw 0;
 				font-size: 1.2vw;
 				font-weight: bold;
-				color: #222;
+				color: var(--cor-texto);
 			}
 		}
 
@@ -380,7 +397,7 @@ input[type='radio'] {
 			display: flex;
 			align-items: center;
 
-			background: #ffffff;
+			background: var(--cor-cartao);
 			border: 0.1vw solid var(--cor-borda);
 			border-radius: 0.5vw;
 			box-shadow: 0 0.2vw 0.6vw rgba(0, 0, 0, 0.1);
@@ -411,9 +428,10 @@ input[type='radio'] {
 				padding: 0.5vw;
 				text-align: center;
 				font-size: 1.1vw;
-				background: #ffffff;
+				color: var(--cor-texto);
+				background: var(--cor-cartao);
 				border: none;
-				border-left: 0.1vw solid #ececec;
+				border-left: 0.1vw solid var(--cor-borda);
 				outline: none;
 			}
 		}
@@ -424,7 +442,7 @@ input[type='radio'] {
 			flex-direction: column;
 
 			width: 14vw;
-			background: #ffffff;
+			background: var(--cor-cartao);
 			border: 0.1vw solid var(--cor-borda);
 			border-radius: 0.5vw;
 			box-shadow: 0 0.2vw 0.6vw rgba(0, 0, 0, 0.1);
@@ -450,7 +468,7 @@ input[type='radio'] {
 				gap: 0.4vw;
 
 				padding: 0.8vw 0.5vw;
-				background: #ffffff;
+				background: var(--cor-cartao);
 
 				.caixa-entrada {
 					display: flex;
@@ -464,7 +482,7 @@ input[type='radio'] {
 						text-align: center;
 						color: var(--cor-texto);
 						background-color: transparent;
-						border: 0.1vw solid #ccc;
+						border: 0.1vw solid var(--cor-borda);
 						border-radius: 0.3vw;
 						outline: none;
 
@@ -473,7 +491,7 @@ input[type='radio'] {
 						}
 
 						&:disabled {
-							background-color: var(--cor-texto-claro);
+							background-color: var(--cor-borda);
 							border-color: var(--cor-borda);
 							opacity: 0.6;
 							cursor: not-allowed;
@@ -486,8 +504,8 @@ input[type='radio'] {
 				display: flex;
 				justify-content: space-around;
 
-				background: #eff6ff;
-				border-top: 0.1vw solid #dbeafe;
+				background: var(--cor-fundo);
+				border-top: 0.1vw solid var(--cor-borda);
 
 				label {
 					width: 33%;
@@ -496,7 +514,7 @@ input[type='radio'] {
 					text-align: center;
 					font-size: 0.9vw;
 					font-weight: bold;
-					color: #1e3a8a;
+					color: var(--cor-texto);
 				}
 			}
 		}
@@ -534,7 +552,6 @@ input[type='radio'] {
 				display: flex;
 				flex-direction: row;
 				justify-content: space-evenly;
-
 				width: 20vw;
 
 				label {
@@ -588,7 +605,7 @@ input[type='radio'] {
 		width: 75vw;
 		text-align: center;
 		font-size: 0.9vw;
-		color: #0f172a;
+		color: var(--cor-texto);
 
 		.texto-informativo {
 			display: flex;
@@ -630,7 +647,6 @@ input[type='radio'] {
 
 		.botao-download-manual {
 			justify-self: center;
-
 			padding: 0.8vw 2vw;
 			text-decoration: none;
 			font-size: 0.9vw;
@@ -648,8 +664,8 @@ input[type='radio'] {
 			margin: 0;
 			padding-top: 0.6vw;
 			font-size: 0.8vw;
-			color: #1e293b;
-			border-top: 0.08vw solid #cbd5e1;
+			color: var(--cor-texto-claro);
+			border-top: 0.08vw solid var(--cor-borda);
 		}
 	}
 }
@@ -679,7 +695,7 @@ input[type='radio'] {
 		padding: 2vw 3vw;
 		text-align: center;
 		color: var(--cor-texto);
-		background: var(--cor-fundo);
+		background: var(--cor-cartao);
 		border-radius: 0.5vw;
 		box-shadow: 0 1vw 3vw rgba(0, 0, 0, 0.2);
 		user-select: none;
@@ -712,13 +728,13 @@ input[type='radio'] {
 
 			font-size: 1.1vw;
 			line-height: 1.5;
-			color: #444;
+			color: var(--cor-texto);
 
 			.alerta-titulo {
 				text-align: left;
 				font-size: 1.1vw;
 				font-weight: 500;
-				color: #4b5563;
+				color: var(--cor-texto);
 			}
 
 			.alerta-comparativo {
@@ -729,8 +745,8 @@ input[type='radio'] {
 
 				max-height: 18vw;
 				padding: 0.8vw;
-				background: #fdf2f2;
-				border: 0.1vw solid #fbcaca;
+				background: var(--cor-fundo);
+				border: 0.1vw solid var(--cor-borda);
 				border-radius: 0.5vw;
 				list-style: none;
 				overflow-y: auto;
@@ -740,11 +756,11 @@ input[type='radio'] {
 				}
 
 				&::-webkit-scrollbar-track {
-					background: #fff5f5;
+					background: var(--cor-fundo);
 				}
 
 				&::-webkit-scrollbar-thumb {
-					background: #fca5a5;
+					background: var(--cor-borda);
 					border-radius: 0.5vw;
 				}
 
@@ -752,8 +768,8 @@ input[type='radio'] {
 					padding: 0.8vw;
 					font-size: 0.95vw;
 					text-align: left;
-					color: #374151;
-					background: #ffffff;
+					color: var(--cor-texto);
+					background: var(--cor-cartao);
 					border-left: 0.3vw solid #f87171;
 					border-radius: 0.4vw;
 					box-shadow: 0 0.1vw 0.3vw rgba(0, 0, 0, 0.08);
@@ -774,8 +790,8 @@ input[type='radio'] {
 						font-weight: bold;
 						text-align: center;
 						color: var(--cor-primaria);
-						background-color: #f0f9ff;
-						border: 0.1vw solid #bae6fd;
+						background-color: var(--cor-fundo);
+						border: 0.1vw solid var(--cor-borda);
 						border-radius: 0.3vw;
 					}
 				}
@@ -784,7 +800,7 @@ input[type='radio'] {
 					padding: 1vw;
 					font-weight: bold;
 					color: #ef4444;
-					background: white;
+					background: var(--cor-cartao);
 					border-radius: 0.4vw;
 				}
 
@@ -800,18 +816,18 @@ input[type='radio'] {
 
 			.caixa-dica {
 				padding: 0.8vw;
-				background: #f0f9ff;
-				border: 0.1vw solid #bae6fd;
+				background: var(--cor-fundo);
+				border: 0.1vw solid var(--cor-borda);
 				border-radius: 0.5vw;
 
 				.alerta-dica {
 					font-size: 0.9vw;
 					font-style: normal;
 					text-align: center;
-					color: #0369a1;
+					color: var(--cor-texto);
 
 					strong {
-						color: #0369a1;
+						color: var(--cor-primaria);
 					}
 				}
 			}
