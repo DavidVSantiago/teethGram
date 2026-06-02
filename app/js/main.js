@@ -1,6 +1,7 @@
 import { inicializarI18n } from './i18n.js';
 import { FormController } from './controllers/form-controller.js';
 import { UI } from './ui/ui-feedback.js';
+import { ThemeManager } from './ui/theme-manager.js';
 
 /**
  * Ponto de entrada da aplicação (Entry Point).
@@ -8,6 +9,8 @@ import { UI } from './ui/ui-feedback.js';
  */
 document.addEventListener('DOMContentLoaded', async () => {
 	try {
+		ThemeManager.init();
+
 		await inicializarI18n();
 		FormController.init();
 		configurarCliquesGlobais();
