@@ -15,6 +15,7 @@ export const TIPO_FORMULARIO = Object.freeze({
 
 /**
  * Mapeamento de coordenadas (base zero) para extração de dados na planilha.
+ * O comentário lateral indica a linha e coluna equivalente visível no Microsoft Excel.
  */
 const COORDENADAS_PLANILHA = Object.freeze({
 	LINHA_PARTICIPANTES: 32, // Linha 33 no Excel
@@ -69,9 +70,14 @@ const COORDENADAS_PLANILHA = Object.freeze({
 
 /**
  * Lê um arquivo Excel e converte em uma estrutura de dados processável.
+ * @param {File} arquivoPlanilha - Objeto físico do arquivo (File).
+ * @param {number} tipoFormulario - O tipo do formulário ativo mapeado no Enum.
+ * @param {string} [classificacao='fdi'] - O sistema de numeração (FDI ou ADA).
+ * @param {string} [componenteAlvo='TODOS'] - O componente de distribuição alvo.
+ * @returns {Promise<Object>} Promessa resolvida com os participantes e os dados mapeados.
  */
 export async function processarPlanilha(
-	file,
+	arquivoPlanilha,
 	tipoFormulario,
 	classificacao = 'fdi',
 	componenteAlvo = 'TODOS',
@@ -79,48 +85,62 @@ export async function processarPlanilha(
 	return new Promise((resolve, reject) => {
 		const leitor = new FileReader();
 
-		leitor.onload = (e) => {
+		leitor.onload = (eventoDeCarga) => {
 			try {
-				const workbook = XLSX.read(e.target.result, { type: 'array' });
-				const primeiraAba = workbook.Sheets[workbook.SheetNames[0]];
+				const pastaDeTrabalho = XLSX.read(eventoDeCarga.target.result, { type: 'array' });
+				const nomePrimeiraAba = pastaDeTrabalho.SheetNames[0];
+				const planilhaAtiva = pastaDeTrabalho.Sheets[nomePrimeiraAba];
 
-				const matriz = XLSX.utils.sheet_to_json(primeiraAba, {
+				const matrizDadosExcel = XLSX.utils.sheet_to_json(planilhaAtiva, {
 					header: 1,
-					defval: '', // Mantém células vazias para a nossa validação rigorosa
+					defval: '',
 				});
 
-				const resultado = extrairDados(matriz, tipoFormulario, classificacao, componenteAlvo);
-				resolve(resultado);
-			} catch (error) {
-				reject(error);
+				const resultadoDaExtracao = extrairDados(
+					matrizDadosExcel,
+					tipoFormulario,
+					classificacao,
+					componenteAlvo,
+				);
+				resolve(resultadoDaExtracao);
+			} catch (erroDeProcessamento) {
+				reject(erroDeProcessamento);
 			}
 		};
 
-		leitor.onerror = () => reject(new Error('Erro ao ler o arquivo físico.'));
-		leitor.readAsArrayBuffer(file);
+		leitor.onerror = () => reject(new Error('Erro físico ao tentar ler o arquivo selecionado.'));
+		leitor.readAsArrayBuffer(arquivoPlanilha);
 	});
 }
 
 /**
  * Extrai os dados da matriz utilizando o padrão Bounding Box.
- * Se houver um espaço vazio na área alvo, lança a mensagem exata do professor.
+ * Se houver um espaço vazio na área alvo, lança uma mensagem de erro formatada (conforme regra acadêmica).
+ * @param {Array<Array>} matriz - Array bidimensional contendo as linhas e colunas do Excel.
+ * @param {number} tipoFormulario - Código do tipo de formulário.
+ * @param {string} classificacao - O sistema (FDI ou ADA).
+ * @param {string} componenteAlvo - O componente alvo ou 'TODOS'.
+ * @returns {Object} Um objeto com o total de participantes e o mapa de dados estruturado.
  */
 function extrairDados(matriz, tipoFormulario, classificacao, componenteAlvo) {
-	const ehCEOD =
+	const ehIndiceCEOD =
 		tipoFormulario === TIPO_FORMULARIO.CEOD_TOTAL ||
 		tipoFormulario === TIPO_FORMULARIO.CEOD_POR_COMPONENTE;
+
 	const ehModeloTotal =
 		tipoFormulario === TIPO_FORMULARIO.CEOD_TOTAL || tipoFormulario === TIPO_FORMULARIO.CPOD_TOTAL;
 
-	const configSistema =
+	const configuracaoDeSistema =
 		classificacao === 'ada' ? COORDENADAS_PLANILHA.ADA : COORDENADAS_PLANILHA.FDI;
-	const cfg = ehCEOD ? configSistema.CEOD : configSistema.CPOD;
+	const configuracaoDeCoordenadas = ehIndiceCEOD
+		? configuracaoDeSistema.CEOD
+		: configuracaoDeSistema.CPOD;
 
-	const valorParticipantesString =
+	const valorBrutoParticipantes =
 		matriz[COORDENADAS_PLANILHA.LINHA_PARTICIPANTES]?.[COORDENADAS_PLANILHA.COLUNA_PARTICIPANTES];
-	const totalParticipantes = parseInt(valorParticipantesString, 10) || 0;
+	const totalDeParticipantes = parseInt(valorBrutoParticipantes, 10) || 0;
 
-	if (totalParticipantes <= 0) {
+	if (totalDeParticipantes <= 0) {
 		throw new Error(
 			JSON.stringify([
 				t.modal?.erroParticipantesFalta ??
@@ -129,161 +149,202 @@ function extrairDados(matriz, tipoFormulario, classificacao, componenteAlvo) {
 		);
 	}
 
-	const dadosMap = new Map();
-	const errosEncontrados = [];
-	let encontrouDadoFaltante = false;
+	const mapaDeDadosDeDentes = new Map();
+	const listaDeErrosMatematicos = [];
+	let flagDadoVazioEncontrado = false;
 
-	// 1. Calcula a área exata de busca (Bounding Box)
-	const colInicio = COORDENADAS_PLANILHA.COL_INICIO_DENTES;
-	const colFim = ehCEOD ? COORDENADAS_PLANILHA.COL_FIM_CEOD : COORDENADAS_PLANILHA.COL_FIM_CPOD;
+	const colunaInicial = COORDENADAS_PLANILHA.COL_INICIO_DENTES;
+	const colunaFinal = ehIndiceCEOD
+		? COORDENADAS_PLANILHA.COL_FIM_CEOD
+		: COORDENADAS_PLANILHA.COL_FIM_CPOD;
 
-	let linhaInicio, linhaFim;
+	let linhaInicialDaArea, linhaFinalDaArea;
+
 	if (ehModeloTotal) {
-		linhaInicio = cfg.linhas[COMPONENTES.TOTAL];
-		linhaFim = linhaInicio;
+		linhaInicialDaArea = configuracaoDeCoordenadas.linhas[COMPONENTES.TOTAL];
+		linhaFinalDaArea = linhaInicialDaArea;
 	} else if (componenteAlvo === 'TODOS') {
-		linhaInicio = Math.min(
-			cfg.linhas[COMPONENTES.CARIADO],
-			cfg.linhas[COMPONENTES.PERDIDO],
-			cfg.linhas[COMPONENTES.OBTURADO],
+		linhaInicialDaArea = Math.min(
+			configuracaoDeCoordenadas.linhas[COMPONENTES.CARIADO],
+			configuracaoDeCoordenadas.linhas[COMPONENTES.PERDIDO],
+			configuracaoDeCoordenadas.linhas[COMPONENTES.OBTURADO],
 		);
-		linhaFim = Math.max(
-			cfg.linhas[COMPONENTES.CARIADO],
-			cfg.linhas[COMPONENTES.PERDIDO],
-			cfg.linhas[COMPONENTES.OBTURADO],
+		linhaFinalDaArea = Math.max(
+			configuracaoDeCoordenadas.linhas[COMPONENTES.CARIADO],
+			configuracaoDeCoordenadas.linhas[COMPONENTES.PERDIDO],
+			configuracaoDeCoordenadas.linhas[COMPONENTES.OBTURADO],
 		);
 	} else {
-		linhaInicio = cfg.linhas[componenteAlvo];
-		linhaFim = linhaInicio;
+		linhaInicialDaArea = configuracaoDeCoordenadas.linhas[componenteAlvo];
+		linhaFinalDaArea = linhaInicialDaArea;
 	}
 
-	// 2. Helper: Verifica se a célula está VAZIA
-	const verificarEEstrair = (linha, coluna) => {
-		const celulaBruta = matriz[linha]?.[coluna];
-		if (celulaBruta === undefined || celulaBruta === null || String(celulaBruta).trim() === '') {
-			encontrouDadoFaltante = true;
-			return 0; // Fallback temporário; a função será abortada no Passo 4
+	const verificarEExtrairValorDaCelula = (indiceLinha, indiceColuna) => {
+		const conteudoBrutoDaCelula = matriz[indiceLinha]?.[indiceColuna];
+
+		if (
+			conteudoBrutoDaCelula === undefined ||
+			conteudoBrutoDaCelula === null ||
+			String(conteudoBrutoDaCelula).trim() === ''
+		) {
+			flagDadoVazioEncontrado = true;
+			return 0;
 		}
-		return limparValor(celulaBruta);
+
+		return converterLimparValorNumerico(conteudoBrutoDaCelula);
 	};
 
-	// 3. Varredura estrita dentro das coordenadas com i18n restaurado
-	for (let c = colInicio; c <= colFim; c++) {
-		const denteKey = String(matriz[cfg.linhaChaves]?.[c] || '').trim();
+	for (
+		let indiceColunaAtual = colunaInicial;
+		indiceColunaAtual <= colunaFinal;
+		indiceColunaAtual++
+	) {
+		const chaveDoDente = String(
+			matriz[configuracaoDeCoordenadas.linhaChaves]?.[indiceColunaAtual] || '',
+		).trim();
 
-		if (!denteKey || denteKey === 'null' || denteKey === 'undefined' || denteKey === 'Componente') {
+		if (
+			!chaveDoDente ||
+			chaveDoDente === 'null' ||
+			chaveDoDente === 'undefined' ||
+			chaveDoDente === 'Componente'
+		) {
 			continue;
 		}
 
 		if (ehModeloTotal) {
-			const valorTotal = verificarEEstrair(cfg.linhas[COMPONENTES.TOTAL], c);
+			const valorAmostradoTotal = verificarEExtrairValorDaCelula(
+				configuracaoDeCoordenadas.linhas[COMPONENTES.TOTAL],
+				indiceColunaAtual,
+			);
 
-			if (valorTotal > totalParticipantes && !encontrouDadoFaltante) {
-				const msgErro =
+			if (valorAmostradoTotal > totalDeParticipantes && !flagDadoVazioEncontrado) {
+				const mensagemDeErroTraduzida =
 					t.modal?.erroParticipantesTotal
-						?.replace('[DENTE]', denteKey)
-						?.replace('[VALOR]', valorTotal)
-						?.replace('[TOTAL]', totalParticipantes) ??
-					`Dente ${denteKey}: O valor total (${valorTotal}) é maior que o número de participantes (${totalParticipantes}).`;
+						?.replace('[DENTE]', chaveDoDente)
+						?.replace('[VALOR]', valorAmostradoTotal)
+						?.replace('[TOTAL]', totalDeParticipantes) ??
+					`Dente ${chaveDoDente}: O valor total (${valorAmostradoTotal}) é maior que o número de participantes (${totalDeParticipantes}).`;
 
-				errosEncontrados.push(msgErro);
+				listaDeErrosMatematicos.push(mensagemDeErroTraduzida);
 			}
-			dadosMap.set(denteKey, valorTotal);
+			mapaDeDadosDeDentes.set(chaveDoDente, valorAmostradoTotal);
 		} else if (componenteAlvo === 'TODOS') {
-			const cariado = verificarEEstrair(cfg.linhas[COMPONENTES.CARIADO], c);
-			const perdido = verificarEEstrair(cfg.linhas[COMPONENTES.PERDIDO], c);
-			const obturado = verificarEEstrair(cfg.linhas[COMPONENTES.OBTURADO], c);
-			const soma = cariado + perdido + obturado;
+			const valorCariado = verificarEExtrairValorDaCelula(
+				configuracaoDeCoordenadas.linhas[COMPONENTES.CARIADO],
+				indiceColunaAtual,
+			);
+			const valorPerdido = verificarEExtrairValorDaCelula(
+				configuracaoDeCoordenadas.linhas[COMPONENTES.PERDIDO],
+				indiceColunaAtual,
+			);
+			const valorObturado = verificarEExtrairValorDaCelula(
+				configuracaoDeCoordenadas.linhas[COMPONENTES.OBTURADO],
+				indiceColunaAtual,
+			);
 
-			if (soma > totalParticipantes && !encontrouDadoFaltante) {
-				const msgErro =
+			const somaDosComponentes = valorCariado + valorPerdido + valorObturado;
+
+			if (somaDosComponentes > totalDeParticipantes && !flagDadoVazioEncontrado) {
+				const mensagemDeErroTraduzida =
 					t.modal?.erroParticipantesSoma
-						?.replace('[DENTE]', denteKey)
-						?.replace('[SOMA]', soma)
-						?.replace('[TOTAL]', totalParticipantes) ??
-					`Dente ${denteKey}: A soma (C+P+O = ${soma}) ultrapassa o limite de participantes (${totalParticipantes}).`;
+						?.replace('[DENTE]', chaveDoDente)
+						?.replace('[SOMA]', somaDosComponentes)
+						?.replace('[TOTAL]', totalDeParticipantes) ??
+					`Dente ${chaveDoDente}: A soma (C+P+O = ${somaDosComponentes}) ultrapassa o limite de participantes (${totalDeParticipantes}).`;
 
-				errosEncontrados.push(msgErro);
+				listaDeErrosMatematicos.push(mensagemDeErroTraduzida);
 			}
-			dadosMap.set(denteKey, { cariado, perdido, obturado });
+			mapaDeDadosDeDentes.set(chaveDoDente, {
+				cariado: valorCariado,
+				perdido: valorPerdido,
+				obturado: valorObturado,
+			});
 		} else {
-			const valorUnico = verificarEEstrair(cfg.linhas[componenteAlvo], c);
+			const valorComponenteUnico = verificarEExtrairValorDaCelula(
+				configuracaoDeCoordenadas.linhas[componenteAlvo],
+				indiceColunaAtual,
+			);
 
-			if (valorUnico > totalParticipantes && !encontrouDadoFaltante) {
-				const msgErro =
+			if (valorComponenteUnico > totalDeParticipantes && !flagDadoVazioEncontrado) {
+				const mensagemDeErroTraduzida =
 					t.modal?.erroParticipantesComponente
-						?.replace('[DENTE]', denteKey)
-						?.replace('[VALOR]', valorUnico)
-						?.replace('[TOTAL]', totalParticipantes) ??
-					`Dente ${denteKey}: O componente (${valorUnico}) é maior que o número de participantes (${totalParticipantes}).`;
+						?.replace('[DENTE]', chaveDoDente)
+						?.replace('[VALOR]', valorComponenteUnico)
+						?.replace('[TOTAL]', totalDeParticipantes) ??
+					`Dente ${chaveDoDente}: O componente (${valorComponenteUnico}) é maior que o número de participantes (${totalDeParticipantes}).`;
 
-				errosEncontrados.push(msgErro);
+				listaDeErrosMatematicos.push(mensagemDeErroTraduzida);
 			}
-			dadosMap.set(denteKey, valorUnico);
+			mapaDeDadosDeDentes.set(chaveDoDente, valorComponenteUnico);
 		}
 	}
 
-	// 4. Dispara a mensagem EXATA solicitada pelo professor
-	if (encontrouDadoFaltante) {
-		const indiceStr = ehCEOD
+	if (flagDadoVazioEncontrado) {
+		const stringNomeDoIndice = ehIndiceCEOD
 			? (t.filtros?.indice?.deciduos ?? 'ceo-d')
 			: (t.filtros?.indice?.permanentes ?? 'CPO-D');
 
-		let distStr = t.filtros?.opcoes?.total ?? 'Total';
+		let stringDistribuicao = t.filtros?.opcoes?.total ?? 'Total';
 
 		if (!ehModeloTotal) {
-			distStr =
+			stringDistribuicao =
 				componenteAlvo === 'TODOS'
 					? (t.filtros?.opcoes?.totalComponente ?? 'Todos os Componentes')
 					: `${t.modal?.palavraComponente ?? 'Componente'} ${componenteAlvo}`;
 		}
 
-		const classStr = String(classificacao).toUpperCase();
-		const inicioExcel = `${obterLetraColunaExcel(colInicio)}${linhaInicio + 1}`;
-		const fimExcel = `${obterLetraColunaExcel(colFim)}${linhaFim + 1}`;
+		const stringClassificacao = String(classificacao).toUpperCase();
+		const celulaInicialExcel = `${converterIndiceParaLetraExcel(colunaInicial)}${linhaInicialDaArea + 1}`;
+		const celulaFinalExcel = `${converterIndiceParaLetraExcel(colunaFinal)}${linhaFinalDaArea + 1}`;
 
-		const textoConfig =
+		const textoPrefixoConfiguracao =
 			t.modal?.erroDadosFaltantesConfig ??
 			'A planilha possui dados faltantes para a configuração selecionada:';
-		const textoPreencher =
+		const textoAcaoPreencher =
 			t.modal?.erroDadosFaltantesPreencher ??
 			'Preencha todos os campos da planilha entre as células';
-		const textoE = t.modal?.conjuncaoE ?? 'e';
+		const textoConjuncaoE = t.modal?.conjuncaoE ?? 'e';
 
-		const msgProfessor = `${textoConfig}
+		const mensagemMoldadaProfessor = `${textoPrefixoConfiguracao}
       <div class="configuracao-destaque">
-        ${indiceStr} — ${distStr} — ${classStr}
+        ${stringNomeDoIndice} — ${stringDistribuicao} — ${stringClassificacao}
       </div>
-      ${textoPreencher} <strong>${inicioExcel}</strong> ${textoE} <strong>${fimExcel}</strong>.`;
+      ${textoAcaoPreencher} <strong>${celulaInicialExcel}</strong> ${textoConjuncaoE} <strong>${celulaFinalExcel}</strong>.`;
 
-		throw new Error(JSON.stringify([msgProfessor]));
+		throw new Error(JSON.stringify([mensagemMoldadaProfessor]));
 	}
 
-	// 5. Se não faltou nenhum dado, mas a matemática falhou
-	if (errosEncontrados.length > 0) {
-		throw new Error(JSON.stringify(errosEncontrados));
+	if (listaDeErrosMatematicos.length > 0) {
+		throw new Error(JSON.stringify(listaDeErrosMatematicos));
 	}
 
-	return { totalParticipantes, dados: dadosMap };
+	return { totalParticipantes: totalDeParticipantes, dados: mapaDeDadosDeDentes };
 }
 
 /**
- * Converte o índice da matriz (base 0) para as letras das colunas do Excel.
+ * Converte o índice numérico da matriz (base 0) para as letras alfabéticas das colunas do Excel.
+ * @param {number} indiceBase0 - O número da coluna no array (ex: 1 = 'B').
+ * @returns {string} Letra correspondente à coluna do Excel.
  */
-function obterLetraColunaExcel(indiceBase0) {
-	let letra = '';
-	let temp = indiceBase0;
-	while (temp >= 0) {
-		letra = String.fromCharCode((temp % 26) + 65) + letra;
-		temp = Math.floor(temp / 26) - 1;
+function converterIndiceParaLetraExcel(indiceBase0) {
+	let letraDaColuna = '';
+	let indiceTemporario = indiceBase0;
+
+	while (indiceTemporario >= 0) {
+		letraDaColuna = String.fromCharCode((indiceTemporario % 26) + 65) + letraDaColuna;
+		indiceTemporario = Math.floor(indiceTemporario / 26) - 1;
 	}
-	return letra;
+
+	return letraDaColuna;
 }
 
 /**
- * Formata valores brutos limpando vírgulas e casas decimais.
+ * Normaliza valores numéricos brutos da planilha, tratando vírgulas e eliminando casas decimais.
+ * @param {any} valorBruto - O conteúdo não tipado retirado da célula.
+ * @returns {number} O número final formatado.
  */
-function limparValor(v) {
-	let n = parseFloat(String(v).replace(',', '.'));
-	return isNaN(n) ? 0 : Number(n.toFixed(2));
+function converterLimparValorNumerico(valorBruto) {
+	const numeroConvertido = parseFloat(String(valorBruto).replace(',', '.'));
+	return isNaN(numeroConvertido) ? 0 : Number(numeroConvertido.toFixed(2));
 }

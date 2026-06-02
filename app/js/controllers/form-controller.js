@@ -26,53 +26,71 @@ export const FormController = {
 	 * Configura os ouvintes de eventos para os campos de seleção principais.
 	 */
 	setupListeners() {
-		document.getElementById('selecao-indice')?.addEventListener('change', () => this.renderizar());
+		const elementoSelecaoIndice = document.getElementById('selecao-indice');
+		const elementoSelecaoDistribuicao = document.getElementById('selecao-distribuicao');
+		const elementoSelecaoClassificacao = document.getElementById('selecao-classificacao');
 
-		document
-			.getElementById('selecao-distribuicao')
-			?.addEventListener('change', () => this.renderizar());
+		if (elementoSelecaoIndice) {
+			elementoSelecaoIndice.addEventListener('change', () => this.renderizar());
+		}
 
-		document.getElementById('selecao-classificacao')?.addEventListener('change', () => {
-			const sistemaAlvo = document.getElementById('selecao-classificacao')?.value;
-			FormRenderer.atualizarSistemaNumeracao(sistemaAlvo);
-		});
+		if (elementoSelecaoDistribuicao) {
+			elementoSelecaoDistribuicao.addEventListener('change', () => this.renderizar());
+		}
+
+		if (elementoSelecaoClassificacao) {
+			elementoSelecaoClassificacao.addEventListener('change', (evento) => {
+				const sistemaAlvoSelecionado = evento.target.value;
+				FormRenderer.atualizarSistemaNumeracao(sistemaAlvoSelecionado);
+			});
+		}
 	},
 
 	/**
 	 * Renderiza a grade de dentes na tela com base nas opções selecionadas no filtro.
 	 */
 	renderizar() {
-		const indice = document.getElementById('selecao-indice')?.value;
-		const distribuicao = document.getElementById('selecao-distribuicao')?.value;
-		const container = document.getElementById('container-formulario');
+		const elementoSelecaoIndice = document.getElementById('selecao-indice');
+		const elementoSelecaoDistribuicao = document.getElementById('selecao-distribuicao');
+		const containerFormulario = document.getElementById('container-formulario');
 
-		if (this.estado.indice === indice && this.estado.distribuicao === distribuicao) {
+		if (!elementoSelecaoIndice || !elementoSelecaoDistribuicao || !containerFormulario) {
+			console.warn('FormController: Elementos base não encontrados para renderização.');
 			return;
 		}
 
-		ViewManager.mudarTituloCard(indice);
-		FormRenderer.atualizarOpcoesDistribuicao(indice);
+		const valorIndiceAtual = elementoSelecaoIndice.value;
+		const valorDistribuicaoAtual = elementoSelecaoDistribuicao.value;
 
-		const sistema = FormRenderer.obterQuadrantes(indice);
-		const ehTotal = distribuicao === 'total';
+		if ( this.estado.indice === valorIndiceAtual && this.estado.distribuicao === valorDistribuicaoAtual ) {
+			return;
+		}
 
-		let configComp = null;
-		if (!ehTotal) {
-			configComp =
-				indice === 'cpo-d'
+		ViewManager.mudarTituloCard(valorIndiceAtual);
+		FormRenderer.atualizarOpcoesDistribuicao(valorIndiceAtual);
+
+		const quadrantesDoSistema = FormRenderer.obterQuadrantes(valorIndiceAtual);
+		const ehDistribuicaoTotal = valorDistribuicaoAtual === 'total';
+
+		let configuracaoComponentes = null;
+
+		if (!ehDistribuicaoTotal) {
+			configuracaoComponentes =
+				valorIndiceAtual === 'cpo-d'
 					? FormRenderer.obterConfiguracaoCPOD()
 					: FormRenderer.obterConfiguracaoCEOD();
 		}
 
-		if (container) {
-			container.innerHTML = FormRenderer.gerarEstruturaArcos(sistema, configComp);
-		}
+		containerFormulario.innerHTML =
+			FormRenderer.gerarEstruturaArcos( quadrantesDoSistema, configuracaoComponentes );
 
-		this.estado = { indice, distribuicao };
+		this.estado = { indice: valorIndiceAtual, distribuicao: valorDistribuicaoAtual };
 
-		const sistemaAlvo = document.getElementById('selecao-classificacao')?.value;
+		const elementoSelecaoClassificacao = document.getElementById('selecao-classificacao');
+		const sistemaAlvo = elementoSelecaoClassificacao ? elementoSelecaoClassificacao.value : 'fdi';
+
 		FormRenderer.atualizarSistemaNumeracao(sistemaAlvo);
-		FormRenderer.atualizarEstadoInputs(indice, distribuicao);
+		FormRenderer.atualizarEstadoInputs(valorIndiceAtual, valorDistribuicaoAtual);
 	},
 
 	/**
@@ -82,30 +100,37 @@ export const FormController = {
 	 */
 	async handleImport(file) {
 		try {
-			const tipoEnum = this.obterTipoEnum();
-			const selectClassificacao = document.getElementById('selecao-classificacao');
-			const classificacaoSelecionada = selectClassificacao ? selectClassificacao.value : 'fdi';
+			const tipoDeFormularioEnum = this.obterTipoEnum();
+			const elementoSelecaoClassificacao = document.getElementById('selecao-classificacao');
+			const classificacaoSelecionada = elementoSelecaoClassificacao
+				? elementoSelecaoClassificacao.value
+				: 'fdi';
 
-			let componenteAlvo = 'TODOS';
-			if (this.estado.distribuicao === 'componente-c') componenteAlvo = COMPONENTES.CARIADO;
-			if (this.estado.distribuicao === 'componente-p') componenteAlvo = COMPONENTES.PERDIDO;
-			if (this.estado.distribuicao === 'componente-o') componenteAlvo = COMPONENTES.OBTURADO;
+			let componenteAlvoSelecionado = 'TODOS';
 
-			const { dados, totalParticipantes } = await processarPlanilha(
+			if (this.estado.distribuicao === 'componente-c') {
+				componenteAlvoSelecionado = COMPONENTES.CARIADO;
+			} else if (this.estado.distribuicao === 'componente-p') {
+				componenteAlvoSelecionado = COMPONENTES.PERDIDO;
+			} else if (this.estado.distribuicao === 'componente-o') {
+				componenteAlvoSelecionado = COMPONENTES.OBTURADO;
+			}
+
+			const resultadoProcessamento = await processarPlanilha(
 				file,
-				tipoEnum,
+				tipoDeFormularioEnum,
 				classificacaoSelecionada,
-				componenteAlvo,
+				componenteAlvoSelecionado,
 			);
 
 			this.preencherDadosNaTela(
-				dados,
-				totalParticipantes,
-				componenteAlvo,
+				resultadoProcessamento.dados,
+				resultadoProcessamento.totalParticipantes,
+				componenteAlvoSelecionado,
 				classificacaoSelecionada,
 			);
-		} catch (erro) {
-			UI.notificarErroPlanilha(erro.message);
+		} catch (erroDeImportacao) {
+			UI.notificarErroPlanilha(erroDeImportacao.message);
 		}
 	},
 
@@ -114,64 +139,78 @@ export const FormController = {
 	 * @param {Map} dadosMap - O mapa contendo os dentes e seus valores.
 	 * @param {number} totalParticipantes - O número total de pacientes lido da planilha.
 	 * @param {string} componenteAlvo - Indica se estamos preenchendo TODOS ou um específico.
+	 * @param {string} classificacaoSelecionada - O sistema de numeração alvo (ex: 'fdi' ou 'ada').
 	 */
 	preencherDadosNaTela(dadosMap, totalParticipantes, componenteAlvo, classificacaoSelecionada) {
-		const inputTotal = document.getElementById('total-participantes');
-		if (inputTotal) inputTotal.value = totalParticipantes;
+		const inputTotalParticipantes = document.getElementById('total-participantes');
 
-		const ehTotal = this.estado.distribuicao === 'total';
-		const configComp =
+		if (inputTotalParticipantes) {
+			inputTotalParticipantes.value = totalParticipantes;
+		}
+
+		const ehDistribuicaoTotal = this.estado.distribuicao === 'total';
+		const configuracaoComponentes =
 			this.estado.indice === 'cpo-d'
 				? FormRenderer.obterConfiguracaoCPOD()
 				: FormRenderer.obterConfiguracaoCEOD();
 
-		dadosMap.forEach((valor, denteKey) => {
-			if (ehTotal) {
-				FormRenderer.injetarValorNoInput(denteKey, 'total', valor, classificacaoSelecionada);
+		dadosMap.forEach((valorExtraido, chaveDoDente) => {
+			if (ehDistribuicaoTotal) {
+				FormRenderer.injetarValorNoInput(
+					chaveDoDente,
+					'total',
+					valorExtraido,
+					classificacaoSelecionada,
+				);
 			} else if (componenteAlvo === 'TODOS') {
 				FormRenderer.injetarValorNoInput(
-					denteKey,
-					configComp.idC,
-					valor.cariado,
+					chaveDoDente,
+					configuracaoComponentes.idC,
+					valorExtraido.cariado,
 					classificacaoSelecionada,
 				);
 				FormRenderer.injetarValorNoInput(
-					denteKey,
-					configComp.idPE,
-					valor.perdido,
+					chaveDoDente,
+					configuracaoComponentes.idPE,
+					valorExtraido.perdido,
 					classificacaoSelecionada,
 				);
 				FormRenderer.injetarValorNoInput(
-					denteKey,
-					configComp.idO,
-					valor.obturado,
+					chaveDoDente,
+					configuracaoComponentes.idO,
+					valorExtraido.obturado,
 					classificacaoSelecionada,
 				);
 			} else {
-				const mapaSufixos = {
-					[COMPONENTES.CARIADO]: configComp.idC,
-					[COMPONENTES.PERDIDO]: configComp.idPE,
-					[COMPONENTES.OBTURADO]: configComp.idO,
+				const mapaDeSufixos = {
+					[COMPONENTES.CARIADO]: configuracaoComponentes.idC,
+					[COMPONENTES.PERDIDO]: configuracaoComponentes.idPE,
+					[COMPONENTES.OBTURADO]: configuracaoComponentes.idO,
 				};
 
-				const sufixo = mapaSufixos[componenteAlvo] || '';
-				FormRenderer.injetarValorNoInput(denteKey, sufixo, valor, classificacaoSelecionada);
+				const sufixoDoInput = mapaDeSufixos[componenteAlvo] || '';
+				FormRenderer.injetarValorNoInput(
+					chaveDoDente,
+					sufixoDoInput,
+					valorExtraido,
+					classificacaoSelecionada,
+				);
 			}
 		});
 	},
 
 	/**
 	 * Determina o tipo de formulário a ser processado com base no estado atual.
-	 * @returns {number} O identificador do enumerador TIPO_FORMULARIO.
+	 * @returns {number} O identificador numérico do enumerador TIPO_FORMULARIO.
 	 */
 	obterTipoEnum() {
 		const { indice, distribuicao } = this.estado;
-		const ehTotal = distribuicao === 'total';
+		const ehDistribuicaoTotal = distribuicao === 'total';
 
 		if (indice === 'cpo-d') {
-			return ehTotal ? TIPO_FORMULARIO.CPOD_TOTAL : TIPO_FORMULARIO.CPOD_POR_COMPONENTE;
+			return ehDistribuicaoTotal ? TIPO_FORMULARIO.CPOD_TOTAL : TIPO_FORMULARIO.CPOD_POR_COMPONENTE;
 		}
 
-		return ehTotal ? TIPO_FORMULARIO.CEOD_TOTAL : TIPO_FORMULARIO.CEOD_POR_COMPONENTE;
+		return ehDistribuicaoTotal ? TIPO_FORMULARIO.CEOD_TOTAL : TIPO_FORMULARIO.CEOD_POR_COMPONENTE;
 	},
 };

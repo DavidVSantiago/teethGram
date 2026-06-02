@@ -34,17 +34,20 @@ export const COMPONENTES = Object.freeze({
 	TOTAL: 'TOTAL',
 });
 
-const cacheAdaParaFdi = {};
-const cacheFdiParaAda = {};
+const dicionarioAdaParaFdi = {};
+const dicionarioFdiParaAda = {};
 
-const sistemas = [MAPA_CONVERSAO.PERMANENTE, MAPA_CONVERSAO.DECIDUO];
-for (const sistema of sistemas) {
-	for (const quadrante in sistema) {
-		const dentes = sistema[quadrante];
-		for (const ada in dentes) {
-			const fdi = dentes[ada];
-			cacheAdaParaFdi[ada] = fdi;
-			cacheFdiParaAda[fdi] = ada;
+const todosOsSistemasDentarios = [MAPA_CONVERSAO.PERMANENTE, MAPA_CONVERSAO.DECIDUO];
+
+for (const sistemaDentario of todosOsSistemasDentarios) {
+	const listaDeQuadrantes = Object.values(sistemaDentario);
+
+	for (const dentesDoQuadrante of listaDeQuadrantes) {
+		const paresDeDentes = Object.entries(dentesDoQuadrante);
+
+		for (const [identificadorAda, identificadorFdi] of paresDeDentes) {
+			dicionarioAdaParaFdi[identificadorAda] = identificadorFdi;
+			dicionarioFdiParaAda[identificadorFdi] = identificadorAda;
 		}
 	}
 }
@@ -57,9 +60,12 @@ for (const sistema of sistemas) {
  * @returns {string} O identificador correspondente no sistema ADA ou o próprio FDI.
  */
 export function converterFDIParaADA(fdi) {
-	const fdiLimpo = String(fdi).trim();
+	const codigoFdiLimpo = String(fdi).trim();
+	const codigoAdaConvertido = dicionarioFdiParaAda[codigoFdiLimpo];
 
-	return cacheFdiParaAda[fdiLimpo] || fdi;
+	if (codigoAdaConvertido) return codigoAdaConvertido;
+
+	return fdi;
 }
 
 /**
@@ -70,7 +76,10 @@ export function converterFDIParaADA(fdi) {
  * @returns {string} O identificador correspondente no sistema FDI ou o próprio valor.
  */
 export function converterADAParaFDI(ada) {
-	const adaLimpo = String(ada).trim().toUpperCase();
+	const codigoAdaLimpo = String(ada).trim().toUpperCase();
+	const codigoFdiConvertido = dicionarioAdaParaFdi[codigoAdaLimpo];
 
-	return cacheAdaParaFdi[adaLimpo] || ada;
+	if (codigoFdiConvertido) return codigoFdiConvertido;
+
+	return ada;
 }
