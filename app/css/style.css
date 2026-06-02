@@ -12,11 +12,24 @@
 /* ========= VARIÁVEIS DO TEMA ESCURO ========= */
 body.tema-escuro {
 	--cor-texto: #e8eaed;
-	--cor-fundo: #131314; /* Fundo principal mais escuro (A base) */
-	--cor-cartao: #1e1f22; /* Cartão levemente mais claro (Flutuando acima) */
+	--cor-fundo: #131314;
+	--cor-cartao: #1e1f22;
 	--cor-borda: #444746;
 
 	color-scheme: dark;
+}
+
+/* ========= ZOOM CUSTOMIZADO ========= */
+body.zoom-ativo {
+	zoom: 1.15;
+}
+
+@-moz-document url-prefix() {
+	body.zoom-ativo {
+		transform: scale(1.15);
+		transform-origin: top left;
+		overflow-x: auto;
+	}
 }
 
 /* ========= ESTILOS GERAIS ========= */

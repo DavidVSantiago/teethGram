@@ -2,6 +2,25 @@ import { inicializarI18n } from './i18n.js';
 import { FormController } from './controllers/form-controller.js';
 import { UI } from './ui/ui-feedback.js';
 import { ThemeManager } from './ui/theme-manager.js';
+import { ZoomManager } from './ui/zoom-manager.js';
+
+/**
+ * Ponto de entrada da aplicação (Entry Point).
+ */
+document.addEventListener('DOMContentLoaded', async () => {
+	try {
+		ThemeManager.init();
+		ZoomManager.init();
+
+		await inicializarI18n();
+		FormController.init();
+		configurarCliquesGlobais();
+
+		console.log('TeethGram: Aplicação inicializada com sucesso.');
+	} catch (erro) {
+		console.error('Falha crítica na inicialização da aplicação:', erro);
+	}
+});
 
 /**
  * Ponto de entrada da aplicação (Entry Point).

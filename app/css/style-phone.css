@@ -15,6 +15,18 @@
 		background-position: right 3vw center;
 	}
 
+	/* ========= ZOOM CUSTOMIZADO ========= */
+	#toggle-zoom,
+	#toggle-zoom + .botao-alternancia {
+		display: none !important;
+	}
+
+	body.zoom-ativo {
+		zoom: 1 !important;
+		transform: none !important;
+		overflow-x: hidden;
+	}
+
 	/* --------- Configuração do Input Radio --------- */
 	input[type='radio'] {
 		width: 4vw;
