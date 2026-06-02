@@ -10,6 +10,11 @@
 		border-radius: 2vw;
 	}
 
+	select {
+		background-size: 4vw;
+		background-position: right 3vw center;
+	}
+
 	/* --------- Configuração do Input Radio --------- */
 	input[type='radio'] {
 		width: 4vw;
@@ -17,27 +22,24 @@
 	}
 
 	/* ========= CABEÇALHO ========= */
-	.ferramentas-container {
+	.barra-ferramentas {
+		gap: 4vw;
 		padding: 3vw 4vw;
 
-		gap: 4vw;
-
-		.ferramenta-item {
+		.barra-ferramentas__item {
 			.seletor-idioma {
-				padding: 1vw 2vw;
-
+				padding: 1.5vw 10vw 1.5vw 2.5vw;
 				font-size: 3vw;
-
 				border: 0.1vw solid transparent;
 			}
 
-			.button-troca {
-				width: 8vw;
-				height: 8vw;
+			.botao-alternancia {
+				width: 7vw;
+				height: 7vw;
 
 				svg {
-					width: 6vw;
-					height: 6vw;
+					width: 5vw;
+					height: 5vw;
 				}
 			}
 		}
@@ -45,19 +47,19 @@
 
 	/* ========= SEÇÃO HERO ========= */
 	.apresentacao-container {
+		grid-template-columns: 1fr;
+		gap: 6vw;
+
 		padding: 8vw 6vw;
 		text-align: center;
 		border-bottom-left-radius: 35vw;
 
-		grid-template-columns: 1fr;
-		gap: 6vw;
-
 		.apresentacao-texto {
-			max-width: 100%;
-			padding-left: 0;
-
 			justify-items: center;
 			gap: 3vw;
+
+			max-width: 100%;
+			padding-left: 0;
 
 			h1 {
 				font-size: 6vw;
@@ -80,12 +82,12 @@
 
 	/* ========= CARD PRINCIPAL ========= */
 	.cartao-principal {
+		gap: 6vw;
+
 		width: 100%;
 		padding: 5vw;
 		border-radius: 3vw;
 		box-shadow: none;
-
-		gap: 6vw;
 
 		h2 {
 			font-size: 5vw;
@@ -93,9 +95,9 @@
 
 		/* --------- Filtros --------- */
 		.sub-cartao-configuracao {
+			gap: 5vw;
 			padding: 4vw;
 			border-radius: 2vw;
-			gap: 5vw;
 
 			.linha-formulario {
 				grid-template-columns: 1fr;
@@ -110,9 +112,14 @@
 				font-size: 3.5vw;
 			}
 
-			select,
 			input[type='number'] {
 				padding: 2.5vw;
+				font-size: 3vw;
+				border-radius: 1.5vw;
+			}
+
+			select {
+				padding: 3vw 12vw 3vw 3vw;
 				font-size: 3vw;
 				border-radius: 1.5vw;
 			}
@@ -139,10 +146,10 @@
 
 		/* --------- Formulários --------- */
 		.container-formulario-dinamico {
-			padding: 2vw 0;
+			flex-direction: column;
 			gap: 6vw;
 
-			flex-direction: column;
+			padding: 2vw 0;
 
 			.grupo-dentes {
 				width: 100%;
@@ -172,8 +179,8 @@
 
 			/* --- ESTILO 1: DENTE TOTAL (Card Simples) --- */
 			.cartao-dente-simples {
-				border-radius: 1.5vw;
 				border-width: 0.3vw;
+				border-radius: 1.5vw;
 
 				.container-numero {
 					width: 12vw;
@@ -195,8 +202,8 @@
 			/* --- ESTILO 2: DENTE COMPONENTE (Card Detalhado) --- */
 			.componente-dente {
 				width: 44vw;
-				border-radius: 1.8vw;
 				border-width: 0.2vw;
+				border-radius: 1.8vw;
 
 				.dente-titulo {
 					padding: 1.5vw;
@@ -207,8 +214,8 @@
 				}
 
 				.dente-corpo {
-					padding: 2vw 1vw;
 					gap: 0.8vw;
+					padding: 2vw 1vw;
 
 					.caixa-entrada input.entrada-componente {
 						padding: 1.5vw 0;
@@ -231,10 +238,10 @@
 
 		/* --------- Geração do Histograma --------- */
 		.linha-processamento {
-			padding-top: 6vw;
-
 			grid-template-columns: 1fr;
 			gap: 8vw;
+
+			padding-top: 6vw;
 
 			.grupo-distribuicao {
 				justify-content: space-around;
@@ -245,23 +252,26 @@
 				}
 
 				.radios-distribuicao {
-					width: 45vw;
 					justify-content: flex-end;
 					gap: 6vw;
 
+					width: 45vw;
+
 					label {
-						font-size: 3vw;
 						gap: 2vw;
+
+						font-size: 3vw;
 					}
 				}
 			}
 
 			.botao-gerar-histograma {
+				justify-self: center;
+
 				width: 90%;
 				padding: 3vw;
 				font-size: 3.5vw;
 				border-radius: 1.2vw;
-				justify-self: center;
 			}
 		}
 	}
@@ -271,9 +281,8 @@
 		padding: 8vw 0;
 
 		.conteudo-rodape {
-			width: 90vw;
-			/* font-size: 4vw; */
 			gap: 6vw;
+			width: 90vw;
 
 			.texto-informativo {
 				gap: 4vw;
@@ -317,11 +326,11 @@
 
 	/* ========= MODAL DE RESPOSTA ========= */
 	.modal-overlay .modal-conteudo {
+		gap: 5vw;
+
 		width: 85vw;
 		padding: 5vw;
 		border-radius: 2vw;
-
-		gap: 5vw;
 
 		.modal-icone {
 			width: 12vw;
@@ -335,20 +344,20 @@
 		}
 
 		.modal-corpo {
-			font-size: 3.5vw;
-
 			gap: 3.5vw;
+
+			font-size: 3.5vw;
 
 			.alerta-titulo {
 				font-size: 3.2vw;
 			}
 
 			.alerta-comparativo {
+				gap: 2vw;
+
 				max-height: 35vw;
 				padding: 3vw;
 				border-radius: 1.5vw;
-
-				gap: 2vw;
 
 				.erro-item {
 					padding: 1.5vw;

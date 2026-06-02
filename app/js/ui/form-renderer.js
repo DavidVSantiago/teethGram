@@ -70,11 +70,12 @@ export class FormRenderer {
 	static gerarEstruturaArcos(quadrantes, configComponentes = null) {
 		const renderizarQuadrante = (quadranteObj) => {
 			return Object.values(quadranteObj)
-				.map((fdi) =>
-					configComponentes
-						? this.renderizarCartaoComponente(fdi, configComponentes)
-						: this.renderizarCartaoSimples(fdi),
-				)
+				.map((fdi) => {
+					if (configComponentes) {
+						return this.renderizarCartaoComponente(fdi, configComponentes);
+					}
+					return this.renderizarCartaoSimples(fdi);
+				})
 				.join('');
 		};
 
@@ -120,7 +121,10 @@ export class FormRenderer {
 	 * @returns {Object} Mapa de conversão (Permanente ou Decíduo).
 	 */
 	static obterQuadrantes(indice) {
-		return indice === 'cpo-d' ? MAPA_CONVERSAO.PERMANENTE : MAPA_CONVERSAO.DECIDUO;
+		if (indice === 'cpo-d') {
+			return MAPA_CONVERSAO.PERMANENTE;
+		}
+		return MAPA_CONVERSAO.DECIDUO;
 	}
 
 	static obterConfiguracaoCPOD() {
@@ -150,77 +154,103 @@ export class FormRenderer {
 	}
 
 	static atualizarOpcoesDistribuicao(indice) {
-		const selectDist = document.getElementById('selecao-distribuicao');
-		if (!selectDist) return;
+		const elementoSelectDistribuicao = document.getElementById('selecao-distribuicao');
 
-		const textos = indice === 'cpo-d' ? t.filtros.opcoes?.permanente : t.filtros.opcoes?.deciduo;
-		if (!textos) return;
+		if (!elementoSelectDistribuicao) {
+			return;
+		}
 
-		const opcaoC = selectDist.querySelector('option[value="componente-c"]');
-		const opcaoP = selectDist.querySelector('option[value="componente-p"]');
-		const opcaoO = selectDist.querySelector('option[value="componente-o"]');
+		const textosDoIndice =
+			indice === 'cpo-d' ? t.filtros.opcoes?.permanente : t.filtros.opcoes?.deciduo;
 
-		if (opcaoC) opcaoC.textContent = textos.componenteC;
-		if (opcaoP) opcaoP.textContent = textos.componenteP;
-		if (opcaoO) opcaoO.textContent = textos.componenteO;
+		if (!textosDoIndice) {
+			return;
+		}
+
+		const opcaoComponenteC = elementoSelectDistribuicao.querySelector(
+			'option[value="componente-c"]',
+		);
+		const opcaoComponenteP = elementoSelectDistribuicao.querySelector(
+			'option[value="componente-p"]',
+		);
+		const opcaoComponenteO = elementoSelectDistribuicao.querySelector(
+			'option[value="componente-o"]',
+		);
+
+		if (opcaoComponenteC) {
+			opcaoComponenteC.textContent = textosDoIndice.componenteC;
+		}
+		if (opcaoComponenteP) {
+			opcaoComponenteP.textContent = textosDoIndice.componenteP;
+		}
+		if (opcaoComponenteO) {
+			opcaoComponenteO.textContent = textosDoIndice.componenteO;
+		}
 	}
 
 	static atualizarSistemaNumeracao(sistemaAlvo) {
-		const titulos = document.querySelectorAll('[data-fdi]');
+		const listaDeTitulos = document.querySelectorAll('[data-fdi]');
 
-		titulos.forEach((el) => {
-			const fdi = el.getAttribute('data-fdi');
-			el.textContent = sistemaAlvo === 'ada' ? converterFDIParaADA(fdi) : fdi; // Otimização rápida aqui também!
+		listaDeTitulos.forEach((elementoTitulo) => {
+			const numeroFDI = elementoTitulo.getAttribute('data-fdi');
+
+			if (sistemaAlvo === 'ada') {
+				elementoTitulo.textContent = converterFDIParaADA(numeroFDI);
+			} else {
+				elementoTitulo.textContent = numeroFDI;
+			}
 		});
 	}
 
 	static atualizarEstadoInputs(indice, distribuicao) {
-		if (distribuicao === 'total') return;
+		if (distribuicao === 'total') {
+			return;
+		}
 
-		const configComp =
+		const configuracaoComponentes =
 			indice === 'cpo-d' ? this.obterConfiguracaoCPOD() : this.obterConfiguracaoCEOD();
 
-		const mapaPrefixos = {
-			'componente-c': configComp.idC,
-			'componente-p': configComp.idPE,
-			'componente-o': configComp.idO,
+		const mapaDePrefixos = {
+			'componente-c': configuracaoComponentes.idC,
+			'componente-p': configuracaoComponentes.idPE,
+			'componente-o': configuracaoComponentes.idO,
 		};
-		const prefixoAtivo = mapaPrefixos[distribuicao] || null;
 
-		const inputs = document.querySelectorAll('.entrada-componente');
+		const prefixoAtivo = mapaDePrefixos[distribuicao] || null;
+		const listaDeInputs = document.querySelectorAll('.entrada-componente');
 
-		inputs.forEach((input) => {
+		listaDeInputs.forEach((elementoInput) => {
 			if (!prefixoAtivo) {
-				input.disabled = false;
+				elementoInput.disabled = false;
 				return;
 			}
 
-			const prefixoInput = input.id.split('-')[0];
+			const prefixoDoInputAtual = elementoInput.id.split('-')[0];
 
-			if (prefixoInput === prefixoAtivo) {
-				input.disabled = false;
+			if (prefixoDoInputAtual === prefixoAtivo) {
+				elementoInput.disabled = false;
 			} else {
-				input.disabled = true;
-				input.value = '';
+				elementoInput.disabled = true;
+				elementoInput.value = '';
 			}
 		});
 	}
 
 	static injetarValorNoInput(dente, sufixo, valor, classificacaoSelecionada) {
-		const isAda = String(classificacaoSelecionada).trim().toLowerCase() === 'ada';
-		const denteFDI = isAda ? converterADAParaFDI(dente) : dente;
+		const ehSistemaADA = String(classificacaoSelecionada).trim().toLowerCase() === 'ada';
+		const numeroDenteFDI = ehSistemaADA ? converterADAParaFDI(dente) : dente;
 
-		const idMontado = `${sufixo}-${denteFDI}`;
-		const inputElement = document.getElementById(idMontado);
+		const idDoInputMontado = `${sufixo}-${numeroDenteFDI}`;
+		const elementoInput = document.getElementById(idDoInputMontado);
 
-		if (inputElement) {
+		if (elementoInput) {
 			if (valor >= 0) {
-				inputElement.value = valor;
+				elementoInput.value = valor;
 			} else {
-				inputElement.value = '';
+				elementoInput.value = '';
 			}
 		} else {
-			console.warn(`Atenção: Input não encontrado na tela: ${idMontado}`);
+			console.warn(`Atenção: Input não encontrado na tela: ${idDoInputMontado}`);
 		}
 	}
 }

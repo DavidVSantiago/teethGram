@@ -32,7 +32,7 @@ export const ViewManager = {
 
         <!-- ========= SESSÃO DE FILTROS ========= -->
         <section class="sub-cartao-configuracao">
-          <h3 class="visualmente-oculto">Filtros de Configuração</h3>
+          <h3 class="sr-only">Filtros de Configuração</h3>
           
           <div class="linha-formulario">
             <!-- Campo: Índice -->
@@ -94,7 +94,7 @@ export const ViewManager = {
 
         <!-- ========= SESSÃO DOS GERAÇÃO DO HISTOGRAMA ========= -->
         <section class="linha-processamento">
-          <h3 class="visualmente-oculto">Processamento de Dados</h3>
+          <h3 class="sr-only">Processamento de Dados</h3>
           
           <fieldset class="grupo-distribuicao">
             <legend class="titulo-distribuicao">${t.processamento.modoDistribuicao}</legend>
@@ -124,9 +124,9 @@ export const ViewManager = {
             <p>${t.rodape.descricao}</p>
             
             <div class="logos-parceiros">
-              <img src="assets/imagens/logo-uesb.png" alt="Logo UESB" width="100" height="auto" />
+              <img src="assets/imagens/logo-uesb.png" alt="Logo UESB" width="100" />
               <img src="assets/imagens/logo-sorrir.png" alt="Logo Programa Sorrir" width="200" />
-              <img src="assets/imagens/logo-projeto.png" alt="Logo do Projeto" width="100" height="auto" />
+              <img src="assets/imagens/logo-projeto.png" alt="Logo do Projeto" width="100" />
             </div>
             
             <div>
@@ -166,17 +166,17 @@ export const ViewManager = {
 
 	/**
 	 * Altera o título da seção principal com base no índice selecionado.
-	 * @param {string} indice - O índice selecionado no menu (ex: 'cpo-d').
+	 * @param {string} indice - O código do índice selecionado no menu (ex: 'cpo-d').
 	 */
 	mudarTituloCard(indice) {
-		const titulo = document.getElementById('titulo-secao-dinamico');
+		const elementoTitulo = document.getElementById('titulo-secao-dinamico');
 
-		if (titulo) {
-			if (indice === 'cpo-d') {
-				titulo.textContent = t.principal.tituloPermanentes;
-			} else {
-				titulo.textContent = t.principal.tituloDeciduos;
-			}
+		if (!elementoTitulo) return;
+
+		if (indice === 'cpo-d') {
+			elementoTitulo.textContent = t.principal.tituloPermanentes;
+		} else {
+			elementoTitulo.textContent = t.principal.tituloDeciduos;
 		}
 	},
 };

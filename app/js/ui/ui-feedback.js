@@ -8,30 +8,36 @@ import { t } from '../i18n.js';
 export const UI = {
 	/**
 	 * Exibe um alerta no modal principal da interface.
+	 * @param {string} titulo - Título a ser exibido no cabeçalho do modal.
+	 * @param {string} htmlConteudo - Conteúdo HTML estruturado para o corpo do modal.
 	 */
 	exibirAlerta(titulo, htmlConteudo) {
 		const modal = document.getElementById('janela-modal');
-		const tituloElem = document.getElementById('modal-titulo');
-		const mensagemElem = document.getElementById('modal-mensagem');
+		const elementoTitulo = document.getElementById('modal-titulo');
+		const elementoMensagem = document.getElementById('modal-mensagem');
 
-		if (!modal || !tituloElem || !mensagemElem) return;
+		if (!modal || !elementoTitulo || !elementoMensagem) return;
 
-		tituloElem.textContent = titulo;
-		mensagemElem.innerHTML = htmlConteudo;
+		elementoTitulo.textContent = titulo;
+		elementoMensagem.innerHTML = htmlConteudo;
 		modal.style.display = 'flex';
 	},
 
 	/**
-	 * Oculta o modal de feedback da interface.
+	 * Oculta o modal de feedback da interface visualmente.
 	 */
 	fecharModal() {
 		const modal = document.getElementById('janela-modal');
-		if (modal) modal.style.display = 'none';
+
+		if (modal) {
+			modal.style.display = 'none';
+		}
 	},
 
 	/**
 	 * Notifica os erros de importação de planilha de forma organizada e legível.
-	 * @param {string} mensagemBruta - String contendo o array JSON de erros.
+	 * Extrai um array JSON de dentro de uma string bruta e converte em lista HTML.
+	 * @param {string} mensagemBruta - String gerada pelo sistema contendo detalhes do erro.
 	 */
 	notificarErroPlanilha(mensagemBruta) {
 		let listaHtml = '';
@@ -48,20 +54,20 @@ export const UI = {
 			const listaErros = JSON.parse(jsonPuro);
 
 			listaHtml = listaErros
-				.map(
-					(msg) => `
-						<li class="erro-item">
-							<strong class="marcador-erro">•</strong> ${msg}
-						</li>
-					`,
-				)
+				.map((mensagemErro) => {
+					return `
+            <li class="erro-item">
+              <strong class="marcador-erro">•</strong> ${mensagemErro}
+            </li>
+          `;
+				})
 				.join('');
 		} catch (erro) {
 			listaHtml = `
-				<div class="erro-fallback">
-					${mensagemBruta}
-				</div>
-			`;
+        <div class="erro-fallback">
+          ${mensagemBruta}
+        </div>
+      `;
 		}
 
 		const htmlEstruturado = `
