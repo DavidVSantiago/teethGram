@@ -191,7 +191,14 @@ function extrairDados(matriz, tipoFormulario, classificacao, componenteAlvo) {
 			return 0;
 		}
 
-		return converterLimparValorNumerico(conteudoBrutoDaCelula);
+		const valorLimpo = converterLimparValorNumerico(conteudoBrutoDaCelula);
+
+		if (isNaN(valorLimpo)) {
+			flagDadoVazioEncontrado = true;
+			return 0;
+		}
+
+		return valorLimpo;
 	};
 
 	for (
@@ -346,5 +353,5 @@ function converterIndiceParaLetraExcel(indiceBase0) {
  */
 function converterLimparValorNumerico(valorBruto) {
 	const numeroConvertido = parseFloat(String(valorBruto).replace(',', '.'));
-	return isNaN(numeroConvertido) ? 0 : Number(numeroConvertido.toFixed(2));
+	return isNaN(numeroConvertido) ? NaN : Number(numeroConvertido.toFixed(2));
 }
