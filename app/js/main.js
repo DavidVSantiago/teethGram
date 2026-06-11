@@ -6,29 +6,12 @@ import { ZoomManager } from './ui/zoom-manager.js';
 
 /**
  * Ponto de entrada da aplicação (Entry Point).
- */
-document.addEventListener('DOMContentLoaded', async () => {
-	try {
-		ThemeManager.init();
-		ZoomManager.init();
-
-		await inicializarI18n();
-		FormController.init();
-		configurarCliquesGlobais();
-
-		console.log('TeethGram: Aplicação inicializada com sucesso.');
-	} catch (erro) {
-		console.error('Falha crítica na inicialização da aplicação:', erro);
-	}
-});
-
-/**
- * Ponto de entrada da aplicação (Entry Point).
  * Responsabilidade: Inicializar os módulos principais e configurar ouvintes globais.
  */
 document.addEventListener('DOMContentLoaded', async () => {
 	try {
 		ThemeManager.init();
+		ZoomManager.init();
 
 		await inicializarI18n();
 		FormController.init();
