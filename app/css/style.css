@@ -623,6 +623,7 @@ input[type='radio'] {
 		.texto-informativo {
 			display: flex;
 			flex-direction: column;
+			align-items: center;
 			gap: 1vw;
 
 			h3 {
@@ -643,7 +644,11 @@ input[type='radio'] {
 				justify-content: center;
 				gap: 2vw;
 
+				width: max-content;
 				margin: 0.5vw 0;
+				padding: 1vw 2vw;
+				background-color: rgb(245, 245, 245);
+				border-radius: 0.5vw;
 
 				img {
 					max-height: 6vw;
