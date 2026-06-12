@@ -22,6 +22,10 @@ body.tema-escuro {
 /* ========= ZOOM CUSTOMIZADO ========= */
 body.zoom-ativo {
 	zoom: 1.15;
+
+	.modal-overlay .modal-conteudo {
+		transform: translate(-60%, -60%);
+	}
 }
 
 @-moz-document url-prefix() {
@@ -697,14 +701,17 @@ input[type='radio'] {
 
 	display: none;
 	flex-direction: row;
-	align-items: center;
-	justify-content: center;
 
 	width: 100vw;
 	height: 100vh;
 	background: rgba(0, 0, 0, 0.5);
 
 	.modal-conteudo {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
 		display: flex;
 		flex-direction: column;
 		gap: 1.5vw;

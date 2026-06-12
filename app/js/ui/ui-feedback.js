@@ -21,6 +21,7 @@ export const UI = {
 		elementoTitulo.textContent = titulo;
 		elementoMensagem.innerHTML = htmlConteudo;
 		modal.style.display = 'flex';
+		document.body.style.overflow = 'hidden';
 	},
 
 	/**
@@ -32,6 +33,7 @@ export const UI = {
 		if (modal) {
 			modal.style.display = 'none';
 		}
+		document.body.style.overflow = 'auto';
 	},
 
 	/**
