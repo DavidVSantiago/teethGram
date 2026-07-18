@@ -1,30 +1,35 @@
-import { t } from '../i18n.js';
-import {
-	MAPA_CONVERSAO,
-	converterFDIParaADA,
-	converterADAParaFDI,
-} from '../services/dentes-service.js';
+import { t } from '../I18nManager.js';
+import { DentesService } from '../services/DentesService.js';
 
 /**
  * Classe utilitária responsável por gerar o HTML dinâmico dos formulários.
  * Atua como uma "fábrica" de templates visuais e gerencia manipulações de DOM.
  */
 export class FormRenderer {
+	static CLASSES_INPUT = Object.freeze({
+		TOTAL: 'entrada-total',
+		COMPONENTE: 'entrada-componente',
+	});
+
+	static PREFIXOS_INPUT = Object.freeze({
+		C: 'c',
+		PE: 'p',
+		O: 'o',
+	});
+
 	/**
 	 * Gera o HTML de um cartão de dente simples (apenas valor total).
 	 * @param {string} numero - O identificador do dente (FDI ou ADA).
 	 * @returns {string} String contendo o HTML do cartão.
 	 */
 	static renderizarCartaoSimples(numero) {
-		return /* html */ `
-      <article class="cartao-dente-simples">
-        <header class="container-numero">
-          <label for="total-${numero}" class="numero-dente" data-fdi="${numero}">${numero}</label>
-        </header>
-
-        <input class="entrada-total" type="number" id="total-${numero}" name="total-${numero}" min="0" />
-      </article>
-    `;
+		return this.renderizarCartaoBase({
+			tipo: 'simples',
+			numero,
+			conteudo: /* html */ `
+        <input class="${this.CLASSES_INPUT.TOTAL}" type="number" id="total-${numero}" name="total-${numero}" min="0" />
+      `,
+		});
 	}
 
 	/**
@@ -36,27 +41,54 @@ export class FormRenderer {
 	static renderizarCartaoComponente(numero, config) {
 		const { idC, idPE, idO, rotulos } = config;
 
-		return /* html */ `
-      <article class="componente-dente">
-        <header class="dente-titulo"><h3 data-fdi="${numero}">${numero}</h3></header>
-
+		return this.renderizarCartaoBase({
+			tipo: 'componente',
+			numero,
+			conteudo: /* html */ `
         <div class="dente-corpo">
           <div class="caixa-entrada">
-            <input class="entrada-componente" type="number" id="${idC}-${numero}" name="${idC}-${numero}" min="0" />
+            <input class="${this.CLASSES_INPUT.COMPONENTE}" type="number" id="${idC}-${numero}" name="${idC}-${numero}" min="0" />
           </div>
           <div class="caixa-entrada">
-            <input class="entrada-componente" type="number" id="${idPE}-${numero}" name="${idPE}-${numero}" min="0" />
+            <input class="${this.CLASSES_INPUT.COMPONENTE}" type="number" id="${idPE}-${numero}" name="${idPE}-${numero}" min="0" />
           </div>
           <div class="caixa-entrada">
-            <input class="entrada-componente" type="number" id="${idO}-${numero}" name="${idO}-${numero}" min="0" />
+            <input class="${this.CLASSES_INPUT.COMPONENTE}" type="number" id="${idO}-${numero}" name="${idO}-${numero}" min="0" />
           </div>
         </div>
-
         <footer class="dente-legenda">
           <label for="${idC}-${numero}">${rotulos.C}</label>
           <label for="${idPE}-${numero}">${rotulos.P}</label>
           <label for="${idO}-${numero}">${rotulos.O}</label>
         </footer>
+      `,
+		});
+	}
+
+	/**
+	 * Renderiza o wrapper base do cartão de dente para reutilizar a estrutura visual.
+	 * @param {{ tipo: string, numero: string, conteudo: string }} opcoes
+	 * @returns {string}
+	 */
+	static renderizarCartaoBase({ tipo, numero, conteudo }) {
+		const classeCartao = tipo === 'componente' ? 'componente-dente' : 'cartao-dente-simples';
+		const cabecalho =
+			tipo === 'componente'
+				? /* html */ `
+					<header class="dente-titulo">
+						<h3 data-dente="${numero}">${numero}</h3>
+					</header>
+				`
+				: /* html */ `
+					<header class="container-numero">
+						<label for="total-${numero}" class="numero-dente" data-dente="${numero}">${numero}</label>
+					</header>
+				`;
+
+		return /* html */ `
+      <article class="${classeCartao}">
+        ${cabecalho}
+        ${conteudo}
       </article>
     `;
 	}
@@ -79,40 +111,69 @@ export class FormRenderer {
 				.join('');
 		};
 
+		const superior = this.renderizarGrupoArcos({
+			titulo: t.formularios?.superiores ?? 'Superiores',
+			quadranteEsquerdo: quadrantes.superiorDireito,
+			quadranteDireito: quadrantes.superiorEsquerdo,
+			rotuloEsquerdo: t.formularios?.direito ?? 'Direito',
+			rotuloDireito: t.formularios?.esquerdo ?? 'Esquerdo',
+			configComponentes,
+		});
+
+		const inferior = this.renderizarGrupoArcos({
+			titulo: t.formularios?.inferiores ?? 'Inferiores',
+			quadranteEsquerdo: quadrantes.inferiorEsquerdo,
+			quadranteDireito: quadrantes.inferiorDireito,
+			rotuloEsquerdo: t.formularios?.esquerdo ?? 'Esquerdo',
+			rotuloDireito: t.formularios?.direito ?? 'Direito',
+			configComponentes,
+		});
+
 		return /* html */ `
       <div class="container-formulario-dinamico">
-        <section class="grupo-dentes">
-          <header class="cabecalho-arco"><h4>${t.formularios?.superiores ?? 'Superiores'}</h4></header>
-          
-          <div class="grade-arcos">
-            <div class="hemiarco direito">
-              <span class="etiqueta-lado">${t.formularios?.direito ?? 'Direito'}</span>
-              <div class="coluna-dentes">${renderizarQuadrante(quadrantes.superiorDireito)}</div>
-            </div>
-
-            <div class="hemiarco esquerdo">
-              <span class="etiqueta-lado">${t.formularios?.esquerdo ?? 'Esquerdo'}</span>
-              <div class="coluna-dentes">${renderizarQuadrante(quadrantes.superiorEsquerdo)}</div>
-            </div>
-          </div>
-        </section>
-
-        <section class="grupo-dentes">
-          <header class="cabecalho-arco"><h4>${t.formularios?.inferiores ?? 'Inferiores'}</h4></header>
-          
-          <div class="grade-arcos">
-            <div class="hemiarco esquerdo">
-              <span class="etiqueta-lado">${t.formularios?.esquerdo ?? 'Esquerdo'}</span>
-              <div class="coluna-dentes">${renderizarQuadrante(quadrantes.inferiorEsquerdo)}</div>
-            </div>
-
-            <div class="hemiarco direito">
-              <span class="etiqueta-lado">${t.formularios?.direito ?? 'Direito'}</span>
-              <div class="coluna-dentes">${renderizarQuadrante(quadrantes.inferiorDireito)}</div>
-            </div>
-          </div>
-        </section>
+        ${superior}
+        ${inferior}
       </div>`;
+	}
+
+	/**
+	 * Renderiza um grupo de arcos com base no contexto de direção e configuração do tipo de cartão.
+	 * @param {{ titulo: string, quadranteDireito: Object, quadranteEsquerdo: Object, configComponentes: Object|null }} opcoes
+	 * @returns {string}
+	 */
+	static renderizarGrupoArcos({
+		titulo,
+		quadranteEsquerdo,
+		quadranteDireito,
+		rotuloEsquerdo,
+		rotuloDireito,
+		configComponentes,
+	}) {
+		const renderizarQuadrante = (quadranteObj) => {
+			return Object.values(quadranteObj)
+				.map((fdi) => {
+					if (configComponentes) {
+						return this.renderizarCartaoComponente(fdi, configComponentes);
+					}
+					return this.renderizarCartaoSimples(fdi);
+				})
+				.join('');
+		};
+
+		return /* html */ `
+      <section class="grupo-dentes">
+        <header class="cabecalho-arco"><h4>${titulo}</h4></header>
+        <div class="grade-arcos">
+          <div class="hemiarco esquerdo">
+            <span class="etiqueta-lado">${rotuloEsquerdo}</span>
+            <div class="coluna-dentes">${renderizarQuadrante(quadranteEsquerdo)}</div>
+          </div>
+          <div class="hemiarco direito">
+            <span class="etiqueta-lado">${rotuloDireito}</span>
+            <div class="coluna-dentes">${renderizarQuadrante(quadranteDireito)}</div>
+          </div>
+        </div>
+      </section>`;
 	}
 
 	/**
@@ -122,9 +183,9 @@ export class FormRenderer {
 	 */
 	static obterQuadrantes(indice) {
 		if (indice === 'cpo-d') {
-			return MAPA_CONVERSAO.PERMANENTE;
+			return DentesService.MAPA_CONVERSAO.PERMANENTE;
 		}
-		return MAPA_CONVERSAO.DECIDUO;
+		return DentesService.MAPA_CONVERSAO.DECIDUO;
 	}
 
 	static obterConfiguracaoCPOD() {
@@ -189,13 +250,13 @@ export class FormRenderer {
 	}
 
 	static atualizarSistemaNumeracao(sistemaAlvo) {
-		const listaDeTitulos = document.querySelectorAll('[data-fdi]');
+		const listaDeTitulos = document.querySelectorAll('[data-dente]');
 
 		listaDeTitulos.forEach((elementoTitulo) => {
-			const numeroFDI = elementoTitulo.getAttribute('data-fdi');
+			const numeroFDI = elementoTitulo.getAttribute('data-dente');
 
 			if (sistemaAlvo === 'ada') {
-				elementoTitulo.textContent = converterFDIParaADA(numeroFDI);
+				elementoTitulo.textContent = DentesService.converterFDIParaADA(numeroFDI);
 			} else {
 				elementoTitulo.textContent = numeroFDI;
 			}
@@ -217,7 +278,7 @@ export class FormRenderer {
 		};
 
 		const prefixoAtivo = mapaDePrefixos[distribuicao] || null;
-		const listaDeInputs = document.querySelectorAll('.entrada-componente');
+		const listaDeInputs = document.querySelectorAll(`.${this.CLASSES_INPUT.COMPONENTE}`);
 
 		listaDeInputs.forEach((elementoInput) => {
 			if (!prefixoAtivo) {
@@ -238,19 +299,15 @@ export class FormRenderer {
 
 	static injetarValorNoInput(dente, sufixo, valor, classificacaoSelecionada) {
 		const ehSistemaADA = String(classificacaoSelecionada).trim().toLowerCase() === 'ada';
-		const numeroDenteFDI = ehSistemaADA ? converterADAParaFDI(dente) : dente;
+		const numeroDenteFDI = ehSistemaADA ? DentesService.converterADAParaFDI(dente) : dente;
 
 		const idDoInputMontado = `${sufixo}-${numeroDenteFDI}`;
 		const elementoInput = document.getElementById(idDoInputMontado);
 
-		if (elementoInput) {
-			if (valor >= 0) {
-				elementoInput.value = valor;
-			} else {
-				elementoInput.value = '';
-			}
-		} else {
-			console.warn(`Atenção: Input não encontrado na tela: ${idDoInputMontado}`);
+		if (!elementoInput) {
+			return;
 		}
+
+		elementoInput.value = valor >= 0 ? valor : '';
 	}
 }

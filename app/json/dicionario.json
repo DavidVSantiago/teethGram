@@ -74,6 +74,7 @@
 			"labelPlanilha": "Planilha:",
 			"dicaErro": "Certifique-se de carregar o arquivo correto para o índice selecionado.",
 			"tituloErroImportacao": "Erro na Importação",
+			"dadosInvalidos": "A planilha possui dados inválidos.",
 			"inconsistencias": "Inconsistências encontradas:",
 			"dicaTitulo": "Dica:",
 			"dicaParticipantes": "O total de participantes é lido da célula <strong>B33</strong>. Verifique se os valores por dente superam este limite.",
@@ -86,6 +87,7 @@
 			"erroIndiceTrocado": "A planilha possui dados, mas para o <strong>Índice</strong> oposto. Verifique o filtro na tela.",
 			"erroDadosFaltantesConfig": "A planilha possui dados faltantes para a configuração selecionada:",
 			"erroDadosFaltantesPreencher": "Preencha todos os campos da planilha entre as células",
+			"erroValorInvalido": "Dente [DENTE]: a célula [CELULA] contém um valor inválido ([VALOR]).",
 			"conjuncaoE": "e",
 			"palavraComponente": "Componente"
 		}
@@ -165,6 +167,7 @@
 			"labelPlanilha": "Spreadsheet:",
 			"dicaErro": "Make sure to upload the correct file for the selected index.",
 			"tituloErroImportacao": "Import Error",
+			"dadosInvalidos": "The spreadsheet contains invalid data.",
 			"inconsistencias": "Inconsistencies found:",
 			"dicaTitulo": "Tip:",
 			"dicaParticipantes": "The total number of participants is read from cell <strong>B33</strong>. Ensure the values per tooth do not exceed this limit.",
@@ -176,6 +179,7 @@
 			"erroClassificacaoTrocada": "The spreadsheet contains data, but in the opposite <strong>Classification</strong>. Check the screen filter.",
 			"erroDadosFaltantesConfig": "The spreadsheet is missing data for the selected configuration:",
 			"erroDadosFaltantesPreencher": "Please fill in all fields in the spreadsheet between cells",
+			"erroValorInvalido": "Tooth [DENTE]: cell [CELULA] contains an invalid value ([VALOR]).",
 			"conjuncaoE": "and",
 			"palavraComponente": "Component"
 		}
