@@ -1,18 +1,18 @@
-import { t } from '../i18n.js';
+import { t } from '../I18nManager.js';
 
 /**
  * Gerenciador da View Principal.
  * Responsável por gerar o esqueleto HTML da aplicação e gerenciar
  * atualizações de layout global (como títulos dinâmicos).
  */
-export const ViewManager = {
+export class ViewManager {
 	/**
 	 * Constrói e retorna a estrutura HTML principal da página,
 	 * inserindo as traduções ativas do dicionário.
 	 *
 	 * @returns {string} Código HTML da interface completa.
 	 */
-	construirPaginaPrincipal() {
+	static construirPaginaPrincipal() {
 		return /* html */ `
       <!-- ========= SEÇÃO HERO ========= -->
       <section class="apresentacao-container">
@@ -82,8 +82,8 @@ export const ViewManager = {
             <h3>${t.principal.tituloBotoes}</h3>
 
             <div class="linha-botoes">
-              <button id="botao-baixar" type="button">${t.filtros.botoes.baixar}</button>
-              <button id="botao-selecionar-arquivo" type="button">${t.filtros.botoes.selecionar}</button>
+              <button id="botao-baixar" data-action="baixar" type="button">${t.filtros.botoes.baixar}</button>
+              <button id="botao-selecionar-arquivo" data-action="selecionar-arquivo" type="button">${t.filtros.botoes.selecionar}</button>
             </div>
           </article>
 
@@ -112,7 +112,7 @@ export const ViewManager = {
             </div>
           </fieldset>
 
-          <button class="botao-gerar-histograma" id="botao-gerar">${t.processamento.botaoGerar}</button>
+          <button class="botao-gerar-histograma" id="botao-gerar" data-action="gerar">${t.processamento.botaoGerar}</button>
         </section>
       </main>
 
@@ -158,17 +158,17 @@ export const ViewManager = {
           <h3 id="modal-titulo"></h3>
           <div id="modal-mensagem" class="modal-corpo"></div>
           
-          <button id="botao-fechar-modal" class="modal-botao">${t.modal?.botaoOk ?? 'Ok'}</button>
+          <button id="botao-fechar-modal" data-action="fechar-modal" class="modal-botao">${t.modal?.botaoOk ?? 'Ok'}</button>
         </div>
       </div>
     `;
-	},
+	}
 
 	/**
 	 * Altera o título da seção principal com base no índice selecionado.
 	 * @param {string} indice - O código do índice selecionado no menu (ex: 'cpo-d').
 	 */
-	mudarTituloCard(indice) {
+	static mudarTituloCard(indice) {
 		const elementoTitulo = document.getElementById('titulo-secao-dinamico');
 
 		if (!elementoTitulo) return;
@@ -178,5 +178,5 @@ export const ViewManager = {
 		} else {
 			elementoTitulo.textContent = t.principal.tituloDeciduos;
 		}
-	},
-};
+	}
+}
