@@ -1,4 +1,4 @@
-/* ========= RESPONSIVIDADE ========= */
+/* ========= RESPONSIVIDADE (MOBILE) ========= */
 @media (max-width: 600px) {
 	body {
 		place-items: start;
@@ -11,8 +11,13 @@
 	}
 
 	select {
-		background-size: 4vw;
 		background-position: right 3vw center;
+		background-size: 4vw;
+	}
+
+	input[type='radio'] {
+		width: 4vw;
+		height: 4vw;
 	}
 
 	/* ========= ZOOM CUSTOMIZADO ========= */
@@ -27,13 +32,7 @@
 		overflow-x: hidden;
 	}
 
-	/* --------- Configuração do Input Radio --------- */
-	input[type='radio'] {
-		width: 4vw;
-		height: 4vw;
-	}
-
-	/* ========= CABEÇALHO ========= */
+	/* ========= CABEÇALHO / BARRA DE FERRAMENTAS ========= */
 	.barra-ferramentas {
 		gap: 4vw;
 		padding: 3vw 4vw;
@@ -105,7 +104,7 @@
 			font-size: 5vw;
 		}
 
-		/* --------- Filtros --------- */
+		/* Subcard de Configurações e Filtros */
 		.sub-cartao-configuracao {
 			gap: 5vw;
 			padding: 4vw;
@@ -137,7 +136,7 @@
 			}
 		}
 
-		/* --------- Botões --------- */
+		/* Bloco de Botões Globais */
 		.botoes-container {
 			gap: 6vw;
 
@@ -156,11 +155,10 @@
 			}
 		}
 
-		/* --------- Formulários --------- */
+		/* Formulário Dinâmico e Odontograma */
 		.container-formulario-dinamico {
 			flex-direction: column;
 			gap: 6vw;
-
 			padding: 2vw 0;
 
 			.grupo-dentes {
@@ -189,7 +187,7 @@
 				gap: 2vw;
 			}
 
-			/* --- ESTILO 1: DENTE TOTAL (Card Simples) --- */
+			/* Card Dente Total (Entrada Única) */
 			.cartao-dente-simples {
 				border-width: 0.3vw;
 				border-radius: 1.5vw;
@@ -211,7 +209,7 @@
 				}
 			}
 
-			/* --- ESTILO 2: DENTE COMPONENTE (Card Detalhado) --- */
+			/* Card Dente por Componente (Triplo: C, P, O) */
 			.componente-dente {
 				width: 44vw;
 				border-width: 0.2vw;
@@ -248,11 +246,10 @@
 			}
 		}
 
-		/* --------- Geração do Histograma --------- */
+		/* Linha de Processamento e Gerar Histograma */
 		.linha-processamento {
 			grid-template-columns: 1fr;
 			gap: 8vw;
-
 			padding-top: 6vw;
 
 			.grupo-distribuicao {
@@ -266,12 +263,10 @@
 				.radios-distribuicao {
 					justify-content: flex-end;
 					gap: 6vw;
-
 					width: 45vw;
 
 					label {
 						gap: 2vw;
-
 						font-size: 3vw;
 					}
 				}
@@ -279,7 +274,6 @@
 
 			.botao-gerar-histograma {
 				justify-self: center;
-
 				width: 90%;
 				padding: 3vw;
 				font-size: 3.5vw;
@@ -288,7 +282,31 @@
 		}
 	}
 
-	/* ========= FOOTER ========= */
+	/* ========= CONTAINER DO HISTOGRAMA ========= */
+	.container-histograma {
+		gap: 6vw;
+
+		width: 100%;
+		padding: 5vw;
+		border-radius: 3vw;
+		box-shadow: none;
+
+		canvas {
+			width: 100%;
+			max-width: 600px;
+			height: auto;
+			border-radius: 1vw;
+		}
+
+		.botao-gerar-imagem {
+			justify-self: center;
+			width: 90%;
+			font-size: 3.5vw;
+			border-radius: 1.2vw;
+		}
+	}
+
+	/* ========= RODAPÉ INSTITUCIONAL ========= */
 	.rodape-institucional {
 		padding: 8vw 0;
 
@@ -336,7 +354,7 @@
 		}
 	}
 
-	/* ========= MODAL DE RESPOSTA ========= */
+	/* ========= MODAL DE RESPOSTA E ERROS ========= */
 	.modal-overlay .modal-conteudo {
 		gap: 5vw;
 
@@ -357,7 +375,6 @@
 
 		.modal-corpo {
 			gap: 3.5vw;
-
 			font-size: 3.5vw;
 
 			.alerta-titulo {

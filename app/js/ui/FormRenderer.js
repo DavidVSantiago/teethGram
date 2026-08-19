@@ -3,14 +3,24 @@ import { DentesService } from '../services/DentesService.js';
 
 /**
  * Classe utilitária responsável por gerar o HTML dinâmico dos formulários.
- * Atua como uma "fábrica" de templates visuais e gerencia manipulações de DOM.
+ * Atua como uma fábrica de templates visuais e gerencia manipulações no DOM.
  */
 export class FormRenderer {
+	/**
+	 * Classes CSS aplicadas aos campos de entrada numéricos.
+	 * @readonly
+	 * @type {Readonly<{TOTAL: string, COMPONENTE: string}>}
+	 */
 	static CLASSES_INPUT = Object.freeze({
 		TOTAL: 'entrada-total',
 		COMPONENTE: 'entrada-componente',
 	});
 
+	/**
+	 * Prefixos padrão utilizados nos IDs dos elementos input.
+	 * @readonly
+	 * @type {Readonly<{C: string, PE: string, O: string}>}
+	 */
 	static PREFIXOS_INPUT = Object.freeze({
 		C: 'c',
 		PE: 'p',
@@ -33,9 +43,9 @@ export class FormRenderer {
 	}
 
 	/**
-	 * Gera o HTML de um cartão de dente por componentes (ex: C, P, O).
+	 * Gera o HTML de um cartão de dente por componentes (ex: C, P, O / c, e, o).
 	 * @param {string} numero - O identificador do dente (FDI ou ADA).
-	 * @param {Object} config - Configurações de IDs e rótulos.
+	 * @param {{ idC: string, idPE: string, idO: string, rotulos: { C: string, P: string, O: string } }} config - Configurações de IDs e rótulos.
 	 * @returns {string} String contendo o HTML do cartão.
 	 */
 	static renderizarCartaoComponente(numero, config) {
@@ -66,24 +76,25 @@ export class FormRenderer {
 	}
 
 	/**
-	 * Renderiza o wrapper base do cartão de dente para reutilizar a estrutura visual.
-	 * @param {{ tipo: string, numero: string, conteudo: string }} opcoes
-	 * @returns {string}
+	 * Renderiza a estrutura base (wrapper) do cartão de dente para reutilizar o layout visual.
+	 * @param {{ tipo: string, numero: string, conteudo: string }} opcoes - Parâmetros estruturais do cartão.
+	 * @returns {string} Markup HTML do cartão base.
 	 */
 	static renderizarCartaoBase({ tipo, numero, conteudo }) {
-		const classeCartao = tipo === 'componente' ? 'componente-dente' : 'cartao-dente-simples';
-		const cabecalho =
-			tipo === 'componente'
-				? /* html */ `
-					<header class="dente-titulo">
-						<h3 data-dente="${numero}">${numero}</h3>
-					</header>
-				`
-				: /* html */ `
-					<header class="container-numero">
-						<label for="total-${numero}" class="numero-dente" data-dente="${numero}">${numero}</label>
-					</header>
-				`;
+		const ehComponente = tipo === 'componente';
+		const classeCartao = ehComponente ? 'componente-dente' : 'cartao-dente-simples';
+
+		const cabecalho = ehComponente
+			? /* html */ `
+        <header class="dente-titulo">
+          <h3 data-dente="${numero}">${numero}</h3>
+        </header>
+      `
+			: /* html */ `
+        <header class="container-numero">
+          <label for="total-${numero}" class="numero-dente" data-dente="${numero}">${numero}</label>
+        </header>
+      `;
 
 		return /* html */ `
       <article class="${classeCartao}">
@@ -95,22 +106,11 @@ export class FormRenderer {
 
 	/**
 	 * Gera a estrutura completa de arcos e hemiarcos e preenche com os cartões de dentes.
-	 * @param {Object} quadrantes - O objeto contendo a divisão de dentes.
-	 * @param {Object|null} [configComponentes=null] - A configuração caso o formulário seja por componentes.
-	 * @returns {string} String com a grade HTML completa do formulário.
+	 * @param {Object} quadrantes - Objeto contendo a divisão de dentes da anatomia bucal.
+	 * @param {Object|null} [configComponentes=null] - Configuração dos campos caso seja por componentes.
+	 * @returns {string} String contendo a grade HTML completa do formulário.
 	 */
 	static gerarEstruturaArcos(quadrantes, configComponentes = null) {
-		const renderizarQuadrante = (quadranteObj) => {
-			return Object.values(quadranteObj)
-				.map((fdi) => {
-					if (configComponentes) {
-						return this.renderizarCartaoComponente(fdi, configComponentes);
-					}
-					return this.renderizarCartaoSimples(fdi);
-				})
-				.join('');
-		};
-
 		const superior = this.renderizarGrupoArcos({
 			titulo: t.formularios?.superiores ?? 'Superiores',
 			quadranteEsquerdo: quadrantes.superiorDireito,
@@ -137,18 +137,11 @@ export class FormRenderer {
 	}
 
 	/**
-	 * Renderiza um grupo de arcos com base no contexto de direção e configuração do tipo de cartão.
-	 * @param {{ titulo: string, quadranteDireito: Object, quadranteEsquerdo: Object, configComponentes: Object|null }} opcoes
-	 * @returns {string}
+	 * Renderiza um grupo de arcos (superior ou inferior) agrupando hemiarcos direito e esquerdo.
+	 * @param {{ titulo: string, quadranteEsquerdo: Object, quadranteDireito: Object, rotuloEsquerdo: string, rotuloDireito: string, configComponentes: Object|null }} opcoes
+	 * @returns {string} Markup HTML da seção do arco.
 	 */
-	static renderizarGrupoArcos({
-		titulo,
-		quadranteEsquerdo,
-		quadranteDireito,
-		rotuloEsquerdo,
-		rotuloDireito,
-		configComponentes,
-	}) {
+	static renderizarGrupoArcos({ titulo, quadranteEsquerdo, quadranteDireito, rotuloEsquerdo, rotuloDireito, configComponentes }) {
 		const renderizarQuadrante = (quadranteObj) => {
 			return Object.values(quadranteObj)
 				.map((fdi) => {
@@ -177,9 +170,9 @@ export class FormRenderer {
 	}
 
 	/**
-	 * Retorna os quadrantes de acordo com o índice epidemiológico.
-	 * @param {string} indice - O índice ('cpo-d' ou outro).
-	 * @returns {Object} Mapa de conversão (Permanente ou Decíduo).
+	 * Retorna os quadrantes com base no índice epidemiológico selecionado.
+	 * @param {string} indice - O identificador do índice ('cpo-d' ou 'ceo-d').
+	 * @returns {Object} Mapa de conversão anatômica do DentesService.
 	 */
 	static obterQuadrantes(indice) {
 		if (indice === 'cpo-d') {
@@ -188,11 +181,15 @@ export class FormRenderer {
 		return DentesService.MAPA_CONVERSAO.DECIDUO;
 	}
 
+	/**
+	 * Retorna a configuração de IDs e rótulos para o formulário CPO-D (Dentes Permanentes).
+	 * @returns {{ idC: string, idPE: string, idO: string, rotulos: { C: string, P: string, O: string } }}
+	 */
 	static obterConfiguracaoCPOD() {
 		return {
-			idC: 'c',
-			idPE: 'p',
-			idO: 'o',
+			idC: this.PREFIXOS_INPUT.C,
+			idPE: this.PREFIXOS_INPUT.PE,
+			idO: this.PREFIXOS_INPUT.O,
 			rotulos: {
 				C: t.formularios?.componentes?.cariado ?? 'C',
 				P: t.formularios?.componentes?.perdido ?? 'P',
@@ -201,11 +198,15 @@ export class FormRenderer {
 		};
 	}
 
+	/**
+	 * Retorna a configuração de IDs e rótulos para o formulário ceo-d (Dentes Decíduos).
+	 * @returns {{ idC: string, idPE: string, idO: string, rotulos: { C: string, P: string, O: string } }}
+	 */
 	static obterConfiguracaoCEOD() {
 		return {
-			idC: 'c',
+			idC: this.PREFIXOS_INPUT.C,
 			idPE: 'e',
-			idO: 'o',
+			idO: this.PREFIXOS_INPUT.O,
 			rotulos: {
 				C: t.formularios?.componentes?.c_deciduo ?? 'c',
 				P: t.formularios?.componentes?.e_deciduo ?? 'e',
@@ -214,41 +215,36 @@ export class FormRenderer {
 		};
 	}
 
+	/**
+	 * Atualiza as opções do elemento <select> de distribuição de acordo com o índice selecionado.
+	 * @param {string} indice - O índice ('cpo-d' ou 'ceo-d').
+	 */
 	static atualizarOpcoesDistribuicao(indice) {
 		const elementoSelectDistribuicao = document.getElementById('selecao-distribuicao');
+		if (!elementoSelectDistribuicao) return;
 
-		if (!elementoSelectDistribuicao) {
-			return;
-		}
+		const textosDoIndice = indice === 'cpo-d' ? t.filtros?.opcoes?.permanente : t.filtros?.opcoes?.deciduo;
 
-		const textosDoIndice =
-			indice === 'cpo-d' ? t.filtros.opcoes?.permanente : t.filtros.opcoes?.deciduo;
+		if (!textosDoIndice) return;
 
-		if (!textosDoIndice) {
-			return;
-		}
+		const mapeamentoOpcoes = [
+			{ valor: 'componente-c', texto: textosDoIndice.componenteC },
+			{ valor: 'componente-p', texto: textosDoIndice.componenteP },
+			{ valor: 'componente-o', texto: textosDoIndice.componenteO },
+		];
 
-		const opcaoComponenteC = elementoSelectDistribuicao.querySelector(
-			'option[value="componente-c"]',
-		);
-		const opcaoComponenteP = elementoSelectDistribuicao.querySelector(
-			'option[value="componente-p"]',
-		);
-		const opcaoComponenteO = elementoSelectDistribuicao.querySelector(
-			'option[value="componente-o"]',
-		);
-
-		if (opcaoComponenteC) {
-			opcaoComponenteC.textContent = textosDoIndice.componenteC;
-		}
-		if (opcaoComponenteP) {
-			opcaoComponenteP.textContent = textosDoIndice.componenteP;
-		}
-		if (opcaoComponenteO) {
-			opcaoComponenteO.textContent = textosDoIndice.componenteO;
-		}
+		mapeamentoOpcoes.forEach(({ valor, texto }) => {
+			const opcao = elementoSelectDistribuicao.querySelector(`option[value="${valor}"]`);
+			if (opcao && texto) {
+				opcao.textContent = texto;
+			}
+		});
 	}
 
+	/**
+	 * Atualiza os títulos visuais dos dentes no DOM de acordo com o sistema de numeração selecionado.
+	 * @param {string} sistemaAlvo - O sistema ('fdi' ou 'ada').
+	 */
 	static atualizarSistemaNumeracao(sistemaAlvo) {
 		const listaDeTitulos = document.querySelectorAll('[data-dente]');
 
@@ -263,13 +259,15 @@ export class FormRenderer {
 		});
 	}
 
+	/**
+	 * Habilita ou desabilita os campos de entrada de acordo com a opção de distribuição ativa.
+	 * @param {string} indice - O índice selecionado ('cpo-d' ou 'ceo-d').
+	 * @param {string} distribuicao - A distribuição ativa ('total', 'componente-c', etc.).
+	 */
 	static atualizarEstadoInputs(indice, distribuicao) {
-		if (distribuicao === 'total') {
-			return;
-		}
+		if (distribuicao === 'total') return;
 
-		const configuracaoComponentes =
-			indice === 'cpo-d' ? this.obterConfiguracaoCPOD() : this.obterConfiguracaoCEOD();
+		const configuracaoComponentes = indice === 'cpo-d' ? this.obterConfiguracaoCPOD() : this.obterConfiguracaoCEOD();
 
 		const mapaDePrefixos = {
 			'componente-c': configuracaoComponentes.idC,
@@ -297,6 +295,13 @@ export class FormRenderer {
 		});
 	}
 
+	/**
+	 * Injeta um valor numérico no input correspondente a um dente específico no DOM.
+	 * @param {string} dente - Identificador do dente.
+	 * @param {string} sufixo - Prefixo do input (ex: 'c', 'p', 'o', 'total').
+	 * @param {number} valor - Valor a ser injetado.
+	 * @param {string} classificacaoSelecionada - Sistema de numeração ('fdi' ou 'ada').
+	 */
 	static injetarValorNoInput(dente, sufixo, valor, classificacaoSelecionada) {
 		const ehSistemaADA = String(classificacaoSelecionada).trim().toLowerCase() === 'ada';
 		const numeroDenteFDI = ehSistemaADA ? DentesService.converterADAParaFDI(dente) : dente;
@@ -304,9 +309,7 @@ export class FormRenderer {
 		const idDoInputMontado = `${sufixo}-${numeroDenteFDI}`;
 		const elementoInput = document.getElementById(idDoInputMontado);
 
-		if (!elementoInput) {
-			return;
-		}
+		if (!elementoInput) return;
 
 		elementoInput.value = valor >= 0 ? valor : '';
 	}

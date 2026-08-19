@@ -71,43 +71,40 @@ button {
 }
 
 select {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-
 	padding-right: 2.5vw;
-	background-size: 1vw;
 	background-image: url('../assets/imagens/angle-down-solid-full.svg');
 	background-repeat: no-repeat;
 	background-position: right 0.8vw center;
+	background-size: 1vw;
 	cursor: pointer;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
 }
 
-.sr-only {
-	position: absolute;
-
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	border: 0;
-}
-
-/* --------- Configuração do Input Radio --------- */
 input[type='radio'] {
 	width: 1.2vw;
 	height: 1.2vw;
 }
 
-#app {
-	display: grid;
-	place-items: center;
-	place-content: start;
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
 }
 
-/* ========= CABEÇALHO ========= */
+#app {
+	display: grid;
+	place-content: start;
+	place-items: center;
+}
+
+/* ========= CABEÇALHO / BARRA DE FERRAMENTAS ========= */
 .barra-ferramentas {
 	display: flex;
 	flex-direction: row;
@@ -176,7 +173,7 @@ input[type='radio'] {
 			}
 		}
 
-		/* Quando o Zoom está ativo */
+		/* Alternâncias via Checkbox */
 		#toggle-zoom:checked + .botao-alternancia {
 			.icone--padrao {
 				opacity: 0;
@@ -189,7 +186,6 @@ input[type='radio'] {
 			}
 		}
 
-		/* Quando o Tema está ativo */
 		#toggle-tema:checked + .botao-alternancia {
 			color: #f1c40f;
 			background-color: var(--cor-fundo);
@@ -244,7 +240,6 @@ input[type='radio'] {
 	.apresentacao-imagem {
 		display: grid;
 		place-items: center;
-
 		margin-right: 3vw;
 
 		img {
@@ -275,7 +270,7 @@ input[type='radio'] {
 		color: var(--cor-texto);
 	}
 
-	/* --------- Filtros --------- */
+	/* Subcard de Configurações e Filtros */
 	.sub-cartao-configuracao {
 		display: grid;
 		grid-template-rows: auto auto;
@@ -290,7 +285,6 @@ input[type='radio'] {
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
 			gap: 1.2vw;
-
 			margin-bottom: 1vw;
 
 			.campo-grupo {
@@ -316,7 +310,8 @@ input[type='radio'] {
 			color: var(--cor-texto);
 		}
 
-		input[type='number'] {
+		input[type='number'],
+		select {
 			width: 100%;
 			padding: 0.6vw;
 			font-size: 0.9vw;
@@ -327,17 +322,11 @@ input[type='radio'] {
 		}
 
 		select {
-			width: 100%;
-			padding: 0.6vw 4vw 0.6vw 0.6vw;
-			font-size: 0.9vw;
-			color: var(--cor-texto);
-			background-color: var(--cor-fundo);
-			border: 0.1vw solid var(--cor-borda);
-			border-radius: 0.5vw;
+			padding-right: 4vw;
 		}
 	}
 
-	/* --------- Botões --------- */
+	/* Bloco de Botões Globais */
 	.botoes-container {
 		display: flex;
 		flex-direction: column;
@@ -352,12 +341,11 @@ input[type='radio'] {
 			display: flex;
 			flex-direction: row;
 			justify-content: space-evenly;
-
 			width: 100%;
 		}
 	}
 
-	/* --------- Formulários --------- */
+	/* Formulário Dinâmico e Odontograma */
 	.container-formulario-dinamico {
 		display: flex;
 		justify-content: space-around;
@@ -366,7 +354,6 @@ input[type='radio'] {
 		width: 100%;
 		padding: 1vw 0;
 
-		/* Estilos das Arcadas injetados */
 		.grupo-dentes {
 			width: 48%;
 			text-align: center;
@@ -405,11 +392,10 @@ input[type='radio'] {
 			flex-direction: column;
 			align-items: center;
 			gap: 1.2vw;
-
 			width: 100%;
 		}
 
-		/* --- ESTILO 1: DENTE TOTAL (Card Simples) --- */
+		/* Card Dente Total (Entrada Única) */
 		.cartao-dente-simples {
 			display: flex;
 			align-items: center;
@@ -453,7 +439,7 @@ input[type='radio'] {
 			}
 		}
 
-		/* --- ESTILO 2: DENTE POR COMPONENTE (Card Detalhado) --- */
+		/* Card Dente por Componente (Triplo: C, P, O) */
 		.componente-dente {
 			display: flex;
 			flex-direction: column;
@@ -472,9 +458,9 @@ input[type='radio'] {
 
 				h3 {
 					margin: 0;
-					text-align: center;
 					font-size: 1vw;
 					font-weight: bold;
+					text-align: center;
 					color: #ffffff;
 				}
 			}
@@ -528,16 +514,16 @@ input[type='radio'] {
 					width: 33%;
 					margin: 0;
 					padding: 0.4vw 0;
-					text-align: center;
 					font-size: 0.9vw;
 					font-weight: bold;
+					text-align: center;
 					color: var(--cor-texto);
 				}
 			}
 		}
 	}
 
-	/* --------- Geração do Histograma --------- */
+	/* Linha de Processamento e Gerar Histograma */
 	.linha-processamento {
 		display: grid;
 		grid-template-columns: 1fr auto;
@@ -589,24 +575,54 @@ input[type='radio'] {
 
 		.botao-gerar-histograma {
 			justify-self: end;
-
-			padding: 0.9vw 2vw;
-			font-size: 1vw;
-			color: #fff;
-			background: var(--cor-primaria);
-			border: none;
-			border-radius: 0.5vw;
-			cursor: pointer;
-			transition: background 0.2s ease;
-
-			&:hover {
-				background: var(--cor-primaria-dark);
-			}
 		}
 	}
 }
 
-/* ========= FOOTER ========= */
+/* ========= CONTAINER DO HISTOGRAMA ========= */
+.container-histograma {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4vw;
+
+	width: 75vw;
+	margin-top: 3vw;
+	padding: 6vw;
+	background-color: var(--cor-cartao);
+	border-radius: 1vw;
+	box-shadow: 0 0.2vw 0.6vw rgba(0, 0, 0, 0.1);
+	animation: surgirSuave 0.5s ease-out forwards;
+
+	&.hidden {
+		display: none;
+	}
+
+	canvas {
+		display: block;
+		width: 80%;
+		max-width: 80%;
+		height: auto;
+		aspect-ratio: 1 / 1;
+		background: var(--cor-fundo);
+		border-radius: 0.75rem;
+		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+	}
+}
+
+@keyframes surgirSuave {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* ========= RODAPÉ INSTITUCIONAL ========= */
 .rodape-institucional {
 	display: grid;
 	place-items: center;
@@ -620,8 +636,8 @@ input[type='radio'] {
 		gap: 1.2vw;
 
 		width: 75vw;
-		text-align: center;
 		font-size: 0.9vw;
+		text-align: center;
 		color: var(--cor-texto);
 
 		.texto-informativo {
@@ -646,7 +662,7 @@ input[type='radio'] {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				gap: 2vw;
+				gap: 10vw;
 
 				width: max-content;
 				margin: 0.5vw 0;
@@ -655,6 +671,7 @@ input[type='radio'] {
 				border-radius: 0.5vw;
 
 				img {
+					width: max-content;
 					max-height: 6vw;
 					object-fit: contain;
 				}
@@ -670,9 +687,9 @@ input[type='radio'] {
 		.botao-download-manual {
 			justify-self: center;
 			padding: 0.8vw 2vw;
-			text-decoration: none;
 			font-size: 0.9vw;
 			color: white;
+			text-decoration: none;
 			background: var(--cor-primaria);
 			border-radius: 0.4vw;
 			transition: background 0.2s ease;
@@ -692,7 +709,7 @@ input[type='radio'] {
 	}
 }
 
-/* ========= MODAL DE RESPOSTA ========= */
+/* ========= MODAL DE RESPOSTA E ERROS ========= */
 .modal-overlay {
 	position: fixed;
 	top: 0;
@@ -756,9 +773,9 @@ input[type='radio'] {
 			color: var(--cor-texto);
 
 			.alerta-titulo {
-				text-align: left;
 				font-size: 1.1vw;
 				font-weight: 500;
+				text-align: left;
 				color: var(--cor-texto);
 			}
 
@@ -860,7 +877,6 @@ input[type='radio'] {
 
 		.modal-botao {
 			align-self: center;
-
 			padding: 0.6vw 2vw;
 			font-size: 1.1vw;
 			color: white;

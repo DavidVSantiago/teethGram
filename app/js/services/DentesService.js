@@ -43,31 +43,29 @@ export class DentesService {
 	 * MAPA_CONVERSAO é a fonte da verdade para a conversão entre sistemas dentários.
 	 * A propriedade abaixo é inicializada gerando os dicionários de atalhos de consulta,
 	 * com o objetivo de acelerar a busca durante a conversão.
+	 * @private
 	 */
 	static _dicionarios = this._criarDicionariosDeConversao();
 
 	/**
 	 * Método interno que constrói os dicionários de conversão baseado no MAPA_CONVERSAO.
-	 * @returns {{ dicionarioAdaParaFdi: Object, dicionarioFdiParaAda: Object }}
+	 * @returns {{ dicionarioAdaParaFdi: Object.<string, string>, dicionarioFdiParaAda: Object.<string, string> }}
+	 * @private
 	 */
 	static _criarDicionariosDeConversao() {
 		const dicionarioAdaParaFdi = {};
 		const dicionarioFdiParaAda = {};
 
-		const todosOsSistemasDentarios = [this.MAPA_CONVERSAO.PERMANENTE, this.MAPA_CONVERSAO.DECIDUO];
+		const sistemas = [this.MAPA_CONVERSAO.PERMANENTE, this.MAPA_CONVERSAO.DECIDUO];
 
-		for (const sistemaDentario of todosOsSistemasDentarios) {
-			const listaDeQuadrantes = Object.values(sistemaDentario);
-
-			for (const dentesDoQuadrante of listaDeQuadrantes) {
-				const paresDeDentes = Object.entries(dentesDoQuadrante);
-
-				for (const [identificadorAda, identificadorFdi] of paresDeDentes) {
-					dicionarioAdaParaFdi[identificadorAda] = identificadorFdi;
-					dicionarioFdiParaAda[identificadorFdi] = identificadorAda;
-				}
-			}
-		}
+		sistemas.forEach((sistema) => {
+			Object.values(sistema).forEach((quadrante) => {
+				Object.entries(quadrante).forEach(([ada, fdi]) => {
+					dicionarioAdaParaFdi[ada] = fdi;
+					dicionarioFdiParaAda[fdi] = ada;
+				});
+			});
+		});
 
 		return {
 			dicionarioAdaParaFdi,
@@ -79,31 +77,25 @@ export class DentesService {
 	 * Converte a numeração de um dente do sistema FDI (padrão da ISO)
 	 * para o sistema ADA (Universal).
 	 *
-	 * @param {string} fdi - O número do dente no sistema FDI (ex: '18', '55').
-	 * @returns {string} O identificador correspondente no sistema ADA ou o próprio FDI.
+	 * @param {string|number} fdi - O número do dente no sistema FDI (ex: '18', '55').
+	 * @returns {string} O identificador correspondente no sistema ADA ou o próprio valor informado.
 	 */
 	static converterFDIParaADA(fdi) {
+		if (fdi === null || fdi === undefined) return '';
 		const codigoFdiLimpo = String(fdi).trim();
-		const codigoAdaConvertido = this._dicionarios.dicionarioFdiParaAda[codigoFdiLimpo];
-
-		if (codigoAdaConvertido) return codigoAdaConvertido;
-
-		return fdi;
+		return this._dicionarios.dicionarioFdiParaAda[codigoFdiLimpo] || String(fdi);
 	}
 
 	/**
 	 * Converte a numeração de um dente do sistema ADA (Universal)
 	 * para o sistema FDI (padrão da ISO).
 	 *
-	 * @param {string} ada - O número/letra do dente no sistema ADA (ex: 'A', '1').
-	 * @returns {string} O identificador correspondente no sistema FDI ou o próprio valor.
+	 * @param {string|number} ada - O número/letra do dente no sistema ADA (ex: 'A', '1').
+	 * @returns {string} O identificador correspondente no sistema FDI ou o próprio valor informado.
 	 */
 	static converterADAParaFDI(ada) {
+		if (ada === null || ada === undefined) return '';
 		const codigoAdaLimpo = String(ada).trim().toUpperCase();
-		const codigoFdiConvertido = this._dicionarios.dicionarioAdaParaFdi[codigoAdaLimpo];
-
-		if (codigoFdiConvertido) return codigoFdiConvertido;
-
-		return ada;
+		return this._dicionarios.dicionarioAdaParaFdi[codigoAdaLimpo] || String(ada);
 	}
 }
