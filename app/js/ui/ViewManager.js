@@ -132,9 +132,9 @@ export class ViewManager {
             <p>${t.rodape?.descricao ?? ''}</p>
             
             <div class="logos-parceiros">
-              <img src="assets/imagens/logo-uesb.png" alt="Logo UESB" width="100" />
+              <img src="assets/imagens/logo-uesb.webp" alt="Logo UESB" width="100" />
               <img src="assets/imagens/logo-sorrir.png" alt="Logo Programa Sorrir" width="200" />
-              <img src="assets/imagens/logo-projeto.png" alt="Logo do Projeto" width="100" />
+              <img src="assets/imagens/logo-projeto.webp" alt="Logo do Projeto" width="100" />
             </div>
             
             <div>
