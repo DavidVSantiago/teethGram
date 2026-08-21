@@ -16,6 +16,8 @@ export class GraficoOdontologico {
 		this.larguraBase = 800;
 		this.alturaBase = 800;
 		this.cores = ['#ff6360', '#68b766', '#6261fb', '#52525B']; // C, P, O, Total
+		this.canvas = null;
+		this.contexto = null;
 		this.conectarCanvas();
 	}
 
@@ -25,7 +27,9 @@ export class GraficoOdontologico {
 	conectarCanvas() {
 		if (!this.canvas || !this.canvas.isConnected) {
 			this.canvas = document.querySelector(this.seletorCanvas);
-			if (this.canvas) this.contexto = this.canvas.getContext('2d');
+			if (this.canvas) {
+				this.contexto = this.canvas.getContext('2d');
+			}
 		}
 	}
 
@@ -41,6 +45,9 @@ export class GraficoOdontologico {
 
 		this.canvas.width = Math.round(largura * dpr);
 		this.canvas.height = Math.round(altura * dpr);
+
+		// Reseta transformações anteriores antes de aplicar a nova escala proporcional
+		this.contexto.setTransform(1, 0, 0, 1, 0, 0);
 		this.contexto.scale(this.canvas.width / this.larguraBase, this.canvas.height / this.alturaBase);
 	}
 
@@ -60,29 +67,42 @@ export class GraficoOdontologico {
 	 * Converte os dados brutos dos dentes em um Array ordenado por anatomia dental.
 	 * @param {Object|Array} dados - Dados brutos dos dentes.
 	 * @param {boolean} ehInferior - Indica se pertence à arcada inferior.
-	 * @param {string} classificacao - Sistema de numeração ('FDI' ou 'ADA').
+	 * @param {Object} [config={}] - Configurações completas do gráfico.
 	 * @returns {Array<{label: string, values: number[]}>} Array estruturado e ordenado.
 	 */
-	transformarDados(dados, ehInferior, classificacao) {
+	transformarDados(dados, ehInferior, config = {}) {
 		if (!dados || Array.isArray(dados)) return dados || [];
 		const entradas = Object.entries(dados);
 		if (!entradas.length) return [];
 
-		const ehAdulto = classificacao === 'ADA' ? !isNaN(entradas[0][0]) : ['1', '2', '3', '4'].some((p) => entradas[0][0].startsWith(p));
-		const mapa = ehAdulto ? DentesService.MAPA_CONVERSAO.PERMANENTE : DentesService.MAPA_CONVERSAO.DECIDUO;
-		const ehADA = classificacao === 'ADA';
+		const rawIndice = String(config.indice || '').toLowerCase();
+		const ehDeciduo = config.ehDeciduo || ['ceo-d', 'ceod', 'dmtf'].includes(rawIndice);
+
+		const mapa = ehDeciduo ? DentesService.MAPA_CONVERSAO.DECIDUO : DentesService.MAPA_CONVERSAO.PERMANENTE;
+		const ehADA = config.classificacao === 'ADA';
 
 		const extrair = (quad, inv) => {
 			const ent = Object.entries(quad);
 			if (inv) ent.reverse();
-			return ent.map(([ada, fdi]) => (ehADA ? ada : fdi));
+			return ent.map(([ada, fdi]) =>
+				String(ehADA ? ada : fdi)
+					.trim()
+					.toUpperCase(),
+			);
 		};
 
 		const ordem = ehInferior
 			? [...extrair(mapa.inferiorDireito, true), ...extrair(mapa.inferiorEsquerdo, true)]
 			: [...extrair(mapa.superiorDireito, false), ...extrair(mapa.superiorEsquerdo, false)];
 
-		entradas.sort((a, b) => ordem.indexOf(a[0]) - ordem.indexOf(b[0]));
+		entradas.sort((a, b) => {
+			const chaveA = String(a[0]).trim().toUpperCase();
+			const chaveB = String(b[0]).trim().toUpperCase();
+
+			const posA = ordem.indexOf(chaveA);
+			const posB = ordem.indexOf(chaveB);
+			return (posA === -1 ? 99 : posA) - (posB === -1 ? 99 : posB);
+		});
 
 		return entradas.map(([dente, c]) => ({
 			label: dente,
@@ -152,7 +172,7 @@ export class GraficoOdontologico {
 		if (config.totalParticipantes) {
 			this.contexto.font = 'italic 13px Arial';
 			this.contexto.fillStyle = '#4B5563';
-			const labelAmostra = t?.filtros?.rotuloTotalParticipantes;
+			const labelAmostra = t?.filtros?.rotuloTotalParticipantes || 'Participantes';
 			this.contexto.fillText(`${labelAmostra}: n = ${config.totalParticipantes}`, 400, 65);
 		}
 	}
@@ -169,8 +189,11 @@ export class GraficoOdontologico {
 	desenharCaixaTexto(x, y, larg, alt, cor, texto) {
 		this.contexto.fillStyle = cor;
 		this.contexto.beginPath();
-		if (this.contexto.roundRect) this.contexto.roundRect(x, y, larg, alt, 3);
-		else this.contexto.rect(x, y, larg, alt);
+		if (typeof this.contexto.roundRect === 'function') {
+			this.contexto.roundRect(x, y, larg, alt, 3);
+		} else {
+			this.contexto.rect(x, y, larg, alt);
+		}
 		this.contexto.fill();
 
 		this.contexto.font = 'bold 11px Arial';
@@ -194,11 +217,13 @@ export class GraficoOdontologico {
 		this.contexto.fillStyle = '#FFFFFF';
 		this.contexto.fillRect(0, 0, this.larguraBase, this.alturaBase);
 
-		const dadosSup = this.transformarDados(dadosSupBrutos, false, config.classificacao);
-		const dadosInf = this.transformarDados(dadosInfBrutos, true, config.classificacao);
+		const dadosSup = this.transformarDados(dadosSupBrutos, false, config);
+		const dadosInf = this.transformarDados(dadosInfBrutos, true, config);
 
 		let totalGeral = 0;
-		[...dadosSup, ...dadosInf].forEach((d) => (totalGeral += d.values[0] + d.values[1] + d.values[2]));
+		[...dadosSup, ...dadosInf].forEach((d) => {
+			totalGeral += d.values[0] + d.values[1] + d.values[2];
+		});
 
 		const maxSup = this.obterMaiorValor(dadosSup, config, totalGeral);
 		const maxInf = this.obterMaiorValor(dadosInf, config, totalGeral);
@@ -226,8 +251,12 @@ export class GraficoOdontologico {
 		this.contexto.fillText(t?.geracao?.rotuloEixoXCentral || 'Número do dente no arco', 400, 395);
 
 		// Renderizar Arcadas
-		if (dadosSup.length) this.desenharArcada(dadosSup, maxSup, { posX: 80, posY: 165, baseY: 345, ehInf: false }, config, totalGeral);
-		if (dadosInf.length) this.desenharArcada(dadosInf, maxInf, { posX: 80, posY: 455, baseY: 635, ehInf: true }, config, totalGeral);
+		if (dadosSup.length) {
+			this.desenharArcada(dadosSup, maxSup, { posX: 80, posY: 165, baseY: 345, ehInf: false }, config, totalGeral);
+		}
+		if (dadosInf.length) {
+			this.desenharArcada(dadosInf, maxInf, { posX: 80, posY: 455, baseY: 635, ehInf: true }, config, totalGeral);
+		}
 
 		this.desenharLegenda(config);
 	}
@@ -298,8 +327,9 @@ export class GraficoOdontologico {
 					this.desenharCaixaTexto(x, caixaY, largBarra, 19, this.cores[idx], this.formatarNumero(vals[idx], config.mostrarPorcentagem));
 				});
 			} else {
-				let val = vals[0],
-					idxCor = 0;
+				let val = vals[0];
+				let idxCor = 0;
+
 				if (dist === 'p' || dist === 'e') {
 					val = vals[1];
 					idxCor = 1;
@@ -322,7 +352,7 @@ export class GraficoOdontologico {
 				this.desenharCaixaTexto(x, caixaY, largBarra, 19, this.cores[idxCor], this.formatarNumero(val, config.mostrarPorcentagem));
 			}
 
-			// Rótulo do Dente (com espaçamento do fim da barra e do eixo central)
+			// Rótulo do Dente
 			this.contexto.font = 'bold 13px Arial';
 			this.contexto.fillStyle = '#000';
 			this.contexto.textAlign = 'center';
@@ -348,10 +378,10 @@ export class GraficoOdontologico {
 				{ t: comp.componenteP || 'Perdidos', c: this.cores[1] },
 				{ t: comp.componenteO || 'Obturados', c: this.cores[2] },
 			];
-		} else if (dist === 'c') itens = [{ t: comp.componenteC, c: this.cores[0] }];
-		else if (dist === 'p' || dist === 'e') itens = [{ t: comp.componenteP, c: this.cores[1] }];
-		else if (dist === 'o') itens = [{ t: comp.componenteO, c: this.cores[2] }];
-		else if (dist === 'total') itens = [{ t: t?.filtros?.opcoes?.total, c: this.cores[3] }];
+		} else if (dist === 'c') itens = [{ t: comp.componenteC || 'Cariados', c: this.cores[0] }];
+		else if (dist === 'p' || dist === 'e') itens = [{ t: comp.componenteP || 'Perdidos', c: this.cores[1] }];
+		else if (dist === 'o') itens = [{ t: comp.componenteO || 'Obturados', c: this.cores[2] }];
+		else if (dist === 'total') itens = [{ t: t?.filtros?.opcoes?.total || 'Total', c: this.cores[3] }];
 
 		if (!itens.length) return;
 
@@ -362,17 +392,25 @@ export class GraficoOdontologico {
 		this.contexto.fillText(t?.geracao?.legenda || 'Legenda', 400, 742);
 
 		this.contexto.font = 'bold 13px Arial';
-		const largTotal = itens.reduce((acc, item) => acc + 22 + this.contexto.measureText(item.t || '').width, 0) + (itens.length - 1) * 30;
+
+		// Mapeia itens calculando a largura dos textos apenas uma vez
+		const itensComLargura = itens.map((item) => ({
+			...item,
+			larguraTexto: this.contexto.measureText(item.t || '').width,
+		}));
+
+		const largTotal = itensComLargura.reduce((acc, item) => acc + 22 + item.larguraTexto, 0) + (itens.length - 1) * 30;
 		let x = 400 - largTotal / 2;
 
 		this.contexto.textAlign = 'left';
 		this.contexto.textBaseline = 'middle';
-		itens.forEach((item) => {
+
+		itensComLargura.forEach((item) => {
 			this.contexto.fillStyle = item.c;
 			this.contexto.fillRect(x, 765, 14, 14);
 			this.contexto.fillStyle = '#111827';
 			this.contexto.fillText(item.t || '', x + 22, 772);
-			x += 22 + this.contexto.measureText(item.t || '').width + 30;
+			x += 22 + item.larguraTexto + 30;
 		});
 	}
 }

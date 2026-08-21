@@ -7,6 +7,13 @@ import { t } from '../I18nManager.js';
  */
 export class UI {
 	/**
+	 * Referência para o listener ativo de teclado do modal.
+	 * @type {Function|null}
+	 * @private
+	 */
+	static _ouvinteTecladoAtivo = null;
+
+	/**
 	 * Escapa texto livre para uso seguro em blocos HTML internos, prevenindo vulnerabilidades XSS.
 	 * @param {string|number} valor - O texto/conteúdo a ser sanitizado.
 	 * @returns {string} String com entidades HTML codificadas.
@@ -60,6 +67,12 @@ export class UI {
 			modal.style.display = 'none';
 		}
 		document.body.style.overflow = 'auto';
+
+		// Limpa ouvintes pendentes para evitar vazamento de memória
+		if (this._ouvinteTecladoAtivo) {
+			document.removeEventListener('keydown', this._ouvinteTecladoAtivo);
+			this._ouvinteTecladoAtivo = null;
+		}
 	}
 
 	/**
@@ -123,19 +136,55 @@ export class UI {
 	 * @private
 	 */
 	static _configurarEventosFechamento(modal) {
-		const aoPressionarTecla = (evento) => {
+		// Garante remoção de ouvinte anterior se houver
+		if (this._ouvinteTecladoAtivo) {
+			document.removeEventListener('keydown', this._ouvinteTecladoAtivo);
+		}
+
+		this._ouvinteTecladoAtivo = (evento) => {
 			if (evento.key === 'Escape') {
 				this.fecharModal();
-				document.removeEventListener('keydown', aoPressionarTecla);
 			}
 		};
 
-		document.addEventListener('keydown', aoPressionarTecla);
+		document.addEventListener('keydown', this._ouvinteTecladoAtivo);
 
 		modal.onclick = (evento) => {
 			if (evento.target === modal) {
 				this.fecharModal();
 			}
 		};
+	}
+
+	/**
+	 * Exibe o modal de feedback para erros de preenchimento no formulário da tela.
+	 * @param {Array<{dente: string, motivo: string}>} erros - Lista de inconsistências encontradas.
+	 */
+	static notificarErroValidacaoFormulario(erros) {
+		const listaErrosHtml = erros
+			.map(
+				(e) => `
+        <li class="erro-item">
+          <strong class="marcador-erro">•</strong> <strong>${this.escaparHtml(e.dente)}:</strong> ${this.escaparHtml(e.motivo)}
+        </li>
+      `,
+			)
+			.join('');
+
+		const conteudoModal = `
+      <div class="modal-corpo">
+        <p class="alerta-titulo">${t.modal?.inconsistencias ?? 'Inconsistências encontradas:'}</p>
+        <ul class="alerta-comparativo">
+          ${listaErrosHtml}
+        </ul>
+        <div class="caixa-dica">
+          <p class="alerta-dica">
+            <strong>${t.modal?.dicaTitulo ?? 'Dica:'}</strong> ${t.modal?.dicaIncompleto ?? 'Preencha todos os campos antes de continuar.'}
+          </p>
+        </div>
+      </div>
+    `;
+
+		this.exibirAlerta(t.modal?.tituloIncompleto ?? 'Informações Incompletas', conteudoModal);
 	}
 }
