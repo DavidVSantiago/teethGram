@@ -73,6 +73,11 @@
 			"direitosAutorais": "&copy; 2025 Teethgram. Todos os direitos reservados. v2 beta"
 		},
 		"modal": {
+			"denteLabel": "Dente",
+			"erroCampoVazio": "Campo em branco. Preencha com 0 ou um valor válido.",
+			"erroValorInvalidoForm": "Valor inválido. Insira um número maior ou igual a zero.",
+			"tituloIncompleto": "Informações Incompletas",
+			"dicaIncompleto": "Todos os campos de dentes no formulário precisam ser preenchidos.",
 			"tituloErro": "Erro de Compatibilidade",
 			"mensagemErro": "Nenhum dado numérico foi identificado. A planilha parece estar <strong>completamente vazia</strong>. Verifique o arquivo.",
 			"erroFiltrosGerais": "A planilha possui dados, mas em uma <strong>combinação diferente</strong> de Índice e Classificação. Revise os filtros na tela.",
@@ -172,6 +177,11 @@
 			"direitosAutorais": "&copy; 2025 Teethgram. All rights reserved. v2 beta"
 		},
 		"modal": {
+			"denteLabel": "Tooth",
+			"erroCampoVazio": "Blank field. Enter 0 or a valid value.",
+			"erroValorInvalidoForm": "Invalid value. Enter a number greater than or equal to zero.",
+			"tituloIncompleto": "Incomplete Information",
+			"dicaIncompleto": "All tooth fields in the form must be filled in.",
 			"tituloErro": "Compatibility Error",
 			"mensagemErro": "No numerical data was identified. The spreadsheet appears to be <strong>completely empty</strong>. Please check the file.",
 			"erroFiltrosGerais": "The spreadsheet contains data, but in a <strong>different combination</strong> of Index and Classification. Check the screen filters.",

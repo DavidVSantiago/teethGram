@@ -3,6 +3,7 @@ import { FormRenderer } from '../ui/FormRenderer.js';
 import { UI } from '../ui/UIFeedback.js';
 import { PlanilhaService } from '../services/PlanilhaService.js';
 import { DentesService } from '../services/DentesService.js';
+import { t } from '../I18nManager.js';
 
 /**
  * Mapeamento entre o estado de distribuição do formulário e os componentes do DentesService.
@@ -73,12 +74,20 @@ export class FormController {
 		const elIndice = document.getElementById('selecao-indice');
 		const elDistribuicao = document.getElementById('selecao-distribuicao');
 		const elClassificacao = document.getElementById('selecao-classificacao');
-		const containerForm = document.getElementById('container-formulario');
 
 		elIndice?.addEventListener('change', () => this.renderizar());
 		elDistribuicao?.addEventListener('change', () => this.renderizar());
-		elClassificacao?.addEventListener('change', (e) => FormRenderer.atualizarSistemaNumeracao(e.target.value));
-		containerForm?.addEventListener('input', () => this.atualizarEstadoBotaoGerar());
+
+		elClassificacao?.addEventListener('change', (e) => {
+			const novoSistema = e.target.value;
+			FormRenderer.atualizarSistemaNumeracao(novoSistema);
+
+			// Se o gráfico já estiver visível na tela, re-gera o gráfico para reordenar os eixos corretamente
+			const containerHistograma = document.getElementById('container-histograma');
+			if (containerHistograma && !containerHistograma.classList.contains('hidden')) {
+				this.gerarHistograma();
+			}
+		});
 	}
 
 	/**
@@ -120,7 +129,6 @@ export class FormController {
 		const sistemaAlvo = document.getElementById('selecao-classificacao')?.value || 'fdi';
 		FormRenderer.atualizarSistemaNumeracao(sistemaAlvo);
 		FormRenderer.atualizarEstadoInputs(valorIndice, valorDistribuicao);
-		this.atualizarEstadoBotaoGerar();
 	}
 
 	/**
@@ -172,8 +180,6 @@ export class FormController {
 				FormRenderer.injetarValorNoInput(dente, mapas[componenteAlvo] || '', valor, classificacaoSelecionada);
 			}
 		});
-
-		this.atualizarEstadoBotaoGerar();
 	}
 
 	/**
@@ -207,50 +213,50 @@ export class FormController {
 	}
 
 	/**
-	 * Coleta todos os valores inseridos no formulário, organiza os dados por arcada,
-	 * exibe a section do Canvas e dispara o desenho utilizando a instância do gráfico.
-	 * @returns {Object|null} Dados e configurações consolidadas ou null se o formulário estiver vazio.
+	 * Coleta os dados dos inputs utilizando o ID nativo (FDI) e traduz para o sistema ativo.
+	 * @returns {Object|null}
 	 */
 	static gerarHistograma() {
+		const inputs = Array.from(document.querySelectorAll(`.${FormRenderer.CLASSES_INPUT.TOTAL}, .${FormRenderer.CLASSES_INPUT.COMPONENTE}`));
+
+		const errosValidacao = this.validarEObterErrosDOM(inputs);
+		if (errosValidacao.length > 0) {
+			UI.notificarErroValidacaoFormulario(errosValidacao);
+			return null;
+		}
+
 		const config = this.obterConfiguracoesFormulario();
 		const modoDistribuicao = document.querySelector('input[name="modo-distribuicao"]:checked')?.value || 'media';
-		const dadosColetados = { valores: {} };
+		const ehADA = config.sistemaClassificacao.toUpperCase() === 'ADA';
 
-		const inputs = document.querySelectorAll(`.${FormRenderer.CLASSES_INPUT.TOTAL}, .${FormRenderer.CLASSES_INPUT.COMPONENTE}`);
-
-		inputs.forEach((input) => {
-			if (input.value === '') return;
-
-			const partes = input.id.split('-');
-			const ehTotal = input.classList.contains(FormRenderer.CLASSES_INPUT.TOTAL);
-			const numeroDente = ehTotal ? partes[1] : partes[1];
-			const val = this.converterParaInteiro(input.value);
-
-			if (!dadosColetados.valores[numeroDente]) {
-				dadosColetados.valores[numeroDente] = { c: 0, p: 0, o: 0 };
-			}
-
-			if (ehTotal) {
-				dadosColetados.valores[numeroDente].c = val;
-			} else {
-				const comp = partes[0].toLowerCase();
-				if (comp === 'c') dadosColetados.valores[numeroDente].c = val;
-				else if (comp === 'p' || comp === 'e') dadosColetados.valores[numeroDente].p = val;
-				else if (comp === 'o') dadosColetados.valores[numeroDente].o = val;
-			}
-		});
-
-		if (!this.temDadosPreenchidos(dadosColetados.valores)) return null;
+		const rawIndice = String(config.indice || '').toLowerCase();
+		const ehDeciduo = config.ehDeciduo || ['ceo-d', 'ceod', 'dmtf'].includes(rawIndice);
 
 		const dadosSuperiores = {};
 		const dadosInferiores = {};
-		const sisClass = config.sistemaClassificacao.toLowerCase();
 
-		Object.entries(dadosColetados.valores).forEach(([dente, contagens]) => {
-			if (this.ehArcadaInferior(dente, sisClass)) {
-				dadosInferiores[dente] = contagens;
+		inputs.forEach((input) => {
+			const partes = input.id.split('-');
+			const ehTotal = input.classList.contains(FormRenderer.CLASSES_INPUT.TOTAL);
+
+			const denteFDI = partes[partes.length - 1].trim();
+			const chaveRotulo = ehADA ? DentesService.converterFDIParaADA(denteFDI) : denteFDI;
+			const val = this.converterParaInteiro(input.value);
+
+			const ehInferior = this.ehArcadaInferiorPorFDI(denteFDI, ehDeciduo);
+			const alvoArcada = ehInferior ? dadosInferiores : dadosSuperiores;
+
+			if (!alvoArcada[chaveRotulo]) {
+				alvoArcada[chaveRotulo] = { c: 0, p: 0, o: 0 };
+			}
+
+			if (ehTotal) {
+				alvoArcada[chaveRotulo].c = val;
 			} else {
-				dadosSuperiores[dente] = contagens;
+				const comp = partes[0].toLowerCase();
+				if (comp === 'c') alvoArcada[chaveRotulo].c = val;
+				else if (comp === 'p' || comp === 'e') alvoArcada[chaveRotulo].p = val;
+				else if (comp === 'o') alvoArcada[chaveRotulo].o = val;
 			}
 		});
 
@@ -260,6 +266,7 @@ export class FormController {
 			mostrarPorcentagem: modoDistribuicao === 'percentual',
 			totalParticipantes: config.totalParticipantes,
 			indice: config.indice,
+			ehDeciduo,
 		};
 
 		const containerHistograma = document.getElementById('container-histograma');
@@ -272,46 +279,62 @@ export class FormController {
 			this.graficoInstancia.renderizar(dadosSuperiores, dadosInferiores, configGrafico);
 		}
 
-		return dadosColetados;
+		return { superior: dadosSuperiores, inferior: dadosInferiores };
 	}
 
 	/**
-	 * Habilita ou desabilita o botão de geração de gráfico com base no preenchimento do formulário.
-	 */
-	static atualizarEstadoBotaoGerar() {
-		const botaoGerar = document.getElementById('btn-gerar-histograma');
-		if (!botaoGerar) return;
-
-		const inputs = document.querySelectorAll(`.${FormRenderer.CLASSES_INPUT.TOTAL}, .${FormRenderer.CLASSES_INPUT.COMPONENTE}`);
-		const possuiValorValido = Array.from(inputs).some((i) => this.converterParaInteiro(i.value) > 0);
-
-		botaoGerar.disabled = !possuiValorValido;
-	}
-
-	/**
-	 * Verifica se existe ao menos um valor numérico maior que zero nos dentes coletados.
-	 * @param {Object} valores - Objeto com os dentes e contagens { c, p, o }.
-	 * @returns {boolean} True se houver ao menos um dado válido.
+	 * Checa se o dente é inferior com base EXCLUSIVAMENTE no primeiro dígito do código FDI nativo.
+	 * - Permanentes inferiores: Quadrantes 3 e 4
+	 * - Decíduos inferiores: Quadrantes 7 e 8
+	 * @param {string} denteFDI - Número do dente em FDI (ex: '71', '85', '31', '48').
+	 * @param {boolean} ehDeciduo - Indica se o índice ativo é decíduo.
+	 * @returns {boolean} True para arcada inferior.
 	 * @private
 	 */
-	static temDadosPreenchidos(valores) {
-		return Object.values(valores).some((c) => (c.c || 0) + (c.p || 0) + (c.o || 0) > 0);
+	static ehArcadaInferiorPorFDI(denteFDI, ehDeciduo) {
+		const primeiroDigito = String(denteFDI).trim().charAt(0);
+		return ehDeciduo ? ['7', '8'].includes(primeiroDigito) : ['3', '4'].includes(primeiroDigito);
 	}
 
 	/**
-	 * Identifica se determinado dente pertence à arcada inferior.
-	 * @param {string} dente - Identificador do dente.
-	 * @param {string} sistemaClassificacao - Sistema de numeração ('fdi' ou 'ada').
-	 * @returns {boolean} True se o dente for da arcada inferior.
+	 * Analisa a lista de inputs do DOM e retorna uma lista formatada com as pendências/erros,
+	 * garantindo a conversão do identificador de acordo com o sistema ativo (FDI/ADA).
+	 * @param {HTMLInputElement[]} inputs - Lista de elementos input do formulário.
+	 * @returns {Array<{dente: string, motivo: string}>} Lista de erros identificados.
 	 * @private
 	 */
-	static ehArcadaInferior(dente, sistemaClassificacao) {
-		if (sistemaClassificacao === 'ada') {
-			const num = parseInt(dente, 10);
-			if (!isNaN(num)) return num >= 17 && num <= 32;
-			return ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'].includes(dente.toUpperCase());
-		}
-		return ['3', '4', '7', '8'].includes(dente.charAt(0));
+	static validarEObterErrosDOM(inputs) {
+		if (!inputs || inputs.length === 0) return [];
+
+		const erros = [];
+		const config = this.obterConfiguracoesFormulario();
+		const ehADA = config.sistemaClassificacao.toUpperCase() === 'ADA';
+
+		inputs.forEach((input) => {
+			const texto = input.value.trim();
+
+			// Extração determinística do ID nativo FDI (evita dependência da árvore DOM para rótulos)
+			const denteFDI = input.id.split('-').pop().trim();
+			const identificador = ehADA ? DentesService.converterFDIParaADA(denteFDI) : denteFDI;
+			const labelDente = `${t.modal?.denteLabel ?? 'Dente'} ${identificador}`;
+
+			if (texto === '') {
+				erros.push({
+					dente: labelDente,
+					motivo: t.modal?.erroCampoVazio ?? 'Campo em branco. Preencha com 0 ou um valor válido.',
+				});
+			} else {
+				const num = Number(texto);
+				if (isNaN(num) || num < 0) {
+					erros.push({
+						dente: labelDente,
+						motivo: t.modal?.erroValorInvalidoForm ?? 'Valor inválido. Insira um número maior ou igual a zero.',
+					});
+				}
+			}
+		});
+
+		return erros;
 	}
 
 	/**
