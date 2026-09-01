@@ -53,14 +53,13 @@ export class GraficoOdontologico {
 
 	/**
 	 * Formata valores numéricos para exibição no padrão brasileiro (,).
+	 * Força a exibição de 2 casas decimais (inclusive para 0, gerando 0,00).
 	 * @param {number} valor - Valor a ser formatado.
-	 * @param {boolean} mostrarPorcentagem - Se exibe formato com 1 casa decimal.
 	 * @returns {string} String formatada.
 	 */
-	formatarNumero(valor, mostrarPorcentagem) {
-		const num = isNaN(valor) ? 0 : valor;
-		const texto = mostrarPorcentagem ? (Number.isInteger(num) ? num : num.toFixed(1)) : Number.isInteger(num) ? num : num.toFixed(2);
-		return String(texto).replace('.', ',');
+	formatarNumero(valor) {
+		const num = isNaN(valor) ? 0 : Number(valor);
+		return num.toFixed(2).replace('.', ',');
 	}
 
 	/**
@@ -112,6 +111,7 @@ export class GraficoOdontologico {
 
 	/**
 	 * Calcula a Média ou Porcentagem dos componentes (C, P, O) por dente.
+	 * Arredonda para 2 casas decimais para alinhar perfeitamente com a renderização visual.
 	 * @param {number[]} values - Contagens absolutas [C, P, O].
 	 * @param {Object} config - Configurações do gráfico.
 	 * @param {number} totalGeral - Soma acumulada de todos os componentes da amostra.
@@ -119,12 +119,14 @@ export class GraficoOdontologico {
 	 */
 	calcularValores(values, config, totalGeral) {
 		const [c, p, o] = values;
+		const casas = 2;
+
 		if (config.mostrarPorcentagem) {
 			const div = totalGeral > 0 ? totalGeral : 1;
-			return [(c / div) * 100, (p / div) * 100, (o / div) * 100];
+			return [Number(((c / div) * 100).toFixed(casas)), Number(((p / div) * 100).toFixed(casas)), Number(((o / div) * 100).toFixed(casas))];
 		}
 		const part = config.totalParticipantes || 1;
-		return [c / part, p / part, o / part];
+		return [Number((c / part).toFixed(casas)), Number((p / part).toFixed(casas)), Number((o / part).toFixed(casas))];
 	}
 
 	/**
@@ -150,7 +152,12 @@ export class GraficoOdontologico {
 			if (val > maior) maior = val;
 		});
 
-		return maior > 0 ? maior : 1;
+		if (maior === 0) return 1;
+		// Trava teto rigorosamente em 1.0 se o valor máximo real estiver muito próximo ou igual a 1
+		if (!config.mostrarPorcentagem && maior <= 1.02 && maior >= 0.98) {
+			return 1.0;
+		}
+		return Number(maior.toFixed(2));
 	}
 
 	/**
@@ -227,6 +234,7 @@ export class GraficoOdontologico {
 
 		const maxSup = this.obterMaiorValor(dadosSup, config, totalGeral);
 		const maxInf = this.obterMaiorValor(dadosInf, config, totalGeral);
+		const maxGlobal = Math.max(maxSup, maxInf);
 
 		this.desenharCabecalho(config);
 
@@ -252,10 +260,10 @@ export class GraficoOdontologico {
 
 		// Renderizar Arcadas
 		if (dadosSup.length) {
-			this.desenharArcada(dadosSup, maxSup, { posX: 80, posY: 165, baseY: 345, ehInf: false }, config, totalGeral);
+			this.desenharArcada(dadosSup, maxGlobal, { posX: 80, posY: 165, baseY: 345, ehInf: false }, config, totalGeral);
 		}
 		if (dadosInf.length) {
-			this.desenharArcada(dadosInf, maxInf, { posX: 80, posY: 455, baseY: 635, ehInf: true }, config, totalGeral);
+			this.desenharArcada(dadosInf, maxGlobal, { posX: 80, posY: 455, baseY: 635, ehInf: true }, config, totalGeral);
 		}
 
 		this.desenharLegenda(config);
@@ -290,12 +298,14 @@ export class GraficoOdontologico {
 
 		for (let i = 0; i <= 4; i++) {
 			const rot = (maxVal / 4) * i;
-			const coordY = !ehInf ? baseY - rot * escalaY : posY + rot * escalaY;
+			const valorRotulo = i === 4 ? maxVal : rot;
+			const coordY = !ehInf ? baseY - valorRotulo * escalaY : posY + valorRotulo * escalaY;
+
 			this.contexto.font = '11px Arial';
 			this.contexto.fillStyle = '#000';
 			this.contexto.textAlign = 'right';
 			this.contexto.textBaseline = 'middle';
-			this.contexto.fillText(this.formatarNumero(rot, config.mostrarPorcentagem), posX - 12, coordY);
+			this.contexto.fillText(this.formatarNumero(valorRotulo), posX - 12, coordY);
 
 			// Risquinho da régua do Eixo Y
 			this.contexto.beginPath();
@@ -324,7 +334,7 @@ export class GraficoOdontologico {
 				const ordemCaixas = ehInf ? [0, 1, 2] : [2, 1, 0];
 				ordemCaixas.forEach((idx, iter) => {
 					const caixaY = ehInf ? baseY + 12 + iter * 22 : posY - 80 + iter * 22;
-					this.desenharCaixaTexto(x, caixaY, largBarra, 19, this.cores[idx], this.formatarNumero(vals[idx], config.mostrarPorcentagem));
+					this.desenharCaixaTexto(x, caixaY, largBarra, 19, this.cores[idx], this.formatarNumero(vals[idx]));
 				});
 			} else {
 				let val = vals[0];
@@ -349,7 +359,7 @@ export class GraficoOdontologico {
 				}
 
 				const caixaY = ehInf ? baseY + 12 : posY - 28;
-				this.desenharCaixaTexto(x, caixaY, largBarra, 19, this.cores[idxCor], this.formatarNumero(val, config.mostrarPorcentagem));
+				this.desenharCaixaTexto(x, caixaY, largBarra, 19, this.cores[idxCor], this.formatarNumero(val));
 			}
 
 			// Rótulo do Dente
