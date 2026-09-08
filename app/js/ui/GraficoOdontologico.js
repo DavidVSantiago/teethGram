@@ -379,7 +379,7 @@ export class GraficoOdontologico {
 		const dist = String(config.distribuicao || '')
 			.toLowerCase()
 			.replace(/_/g, '');
-		const comp = t?.filtros?.opcoes?.permanente || {};
+		const comp = config.ehDeciduo ? t?.filtros?.opcoes?.deciduo : t?.filtros?.opcoes?.permanente;
 
 		let itens = [];
 		if (dist.includes('totalcomponente')) {
