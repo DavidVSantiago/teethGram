@@ -19,6 +19,10 @@ export class ViewManager {
         <div class="apresentacao-texto">
           <h1>TeethGram</h1>
           <p>${t.cabecalho?.descricao ?? ''}</p>
+          
+          <a href="/iframes/tools/teethgram/guia-teethgram.pdf" download="guia-teethgram.pdf" target="_blank" class="botao-download-manual">
+            ${t.rodape?.baixarManual ?? 'Baixar Manual'}
+          </a>
         </div>
 
         <div class="apresentacao-imagem">
@@ -147,10 +151,6 @@ export class ViewManager {
               <p>${t.rodape?.citacao ?? ''}</p>
             </div>
           </div>
-          
-          <a href="/iframes/tools/teethgram/guia-teethgram.pdf" download="guia-teethgram.pdf" target="_blank" class="botao-download-manual">
-            ${t.rodape?.baixarManual ?? 'Baixar Manual'}
-          </a>
 
           <p class="direitos-autorais">${t.rodape?.direitosAutorais ?? ''}</p>
         </div>

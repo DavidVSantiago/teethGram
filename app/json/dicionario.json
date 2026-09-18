@@ -1,7 +1,7 @@
 {
 	"pt-br": {
 		"cabecalho": {
-			"descricao": "Ferramenta voltada para o auxílio de pesquisadores e gestores em saúde bucal para distribuir os componentes da experiência de cárie dentária por elementos dentários de forma ilustrativa."
+			"descricao": "Ferramenta voltada para o auxílio de pesquisadores, profissionais e gestores em saúde bucal para distribuir os componentes da experiência de cárie dentária por elementos dentários de forma ilustrativa."
 		},
 		"principal": {
 			"tituloDeciduos": "Dentes Decíduos",
@@ -105,7 +105,7 @@
 	},
 	"en": {
 		"cabecalho": {
-			"descricao": "A tool designed to assist researchers and oral health managers in illustrating the distribution of dental caries experience components across dental elements."
+			"descricao": "A tool designed to assist researchers, professionals, and oral health managers in illustrating the distribution of dental caries experience components across dental elements."
 		},
 		"principal": {
 			"tituloDeciduos": "Deciduous Teeth",
@@ -209,7 +209,7 @@
 	},
 	"es": {
 		"cabecalho": {
-			"descricao": "Herramienta diseñada para ayudar a investigadores y gestores en salud bucal a ilustrar la distribución de los componentes de la experiencia de caries dental por elementos dentarios."
+			"descricao": "Herramienta diseñada para ayudar a investigadores, profesionales y gestores en salud bucal a ilustrar la distribución de los componentes de la experiencia de caries dental por elementos dentarios."
 		},
 		"principal": {
 			"tituloDeciduos": "Dientes Deciduos",
@@ -313,7 +313,7 @@
 	},
 	"fr": {
 		"cabecalho": {
-			"descricao": "Outil conçu pour aider les chercheurs et les gestionnaires de santé bucco-dentaire à illustrer la distribution des composantes de l'expérience de carie dentaire par élément dentaire."
+			"descricao": "Outil conçu pour aider les chercheurs, les professionnels et les gestionnaires de santé bucco-dentaire à illustrer la distribution des composantes de l'expérience de carie dentaire par élément dentaire."
 		},
 		"principal": {
 			"tituloDeciduos": "Dents Décidues",
