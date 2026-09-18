@@ -218,8 +218,8 @@ input[type='radio'] {
 
 	.apresentacao-texto {
 		display: grid;
-		grid-template-rows: auto auto;
-		gap: 0.5vw;
+		grid-template-rows: auto auto auto;
+		gap: 3vw;
 
 		max-width: 90%;
 		padding-left: 4vw;
@@ -234,6 +234,22 @@ input[type='radio'] {
 			font-size: 1.1vw;
 			line-height: 1.5;
 			color: var(--cor-texto-claro);
+		}
+
+		.botao-download-manual {
+			justify-self: left;
+			padding: 0.8vw 2vw;
+			font-size: 1vw;
+			font-weight: 400;
+			color: var(--cor-primaria);
+			text-decoration: none;
+			background: var(--cor-cartao);
+			border-radius: 0.5vw;
+			transition: background 0.2s ease;
+
+			&:hover {
+				background: var(--cor-fundo);
+			}
 		}
 	}
 
@@ -681,21 +697,6 @@ input[type='radio'] {
 				margin-top: 0.6vw;
 				font-size: 1vw;
 				font-weight: bold;
-			}
-		}
-
-		.botao-download-manual {
-			justify-self: center;
-			padding: 0.8vw 2vw;
-			font-size: 0.9vw;
-			color: white;
-			text-decoration: none;
-			background: var(--cor-primaria);
-			border-radius: 0.4vw;
-			transition: background 0.2s ease;
-
-			&:hover {
-				background: var(--cor-primaria-dark);
 			}
 		}
 

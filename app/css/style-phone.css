@@ -67,18 +67,25 @@
 
 		.apresentacao-texto {
 			justify-items: center;
-			gap: 3vw;
+			gap: 5vw;
 
 			max-width: 100%;
 			padding-left: 0;
 
 			h1 {
-				font-size: 6vw;
+				font-size: 8vw;
 			}
 
 			p {
 				font-size: 3.5vw;
 				line-height: 1.6;
+			}
+
+			.botao-download-manual {
+				justify-self: center;
+				padding: 2.5vw 4vw;
+				font-size: 3.5vw;
+				border-radius: 2vw;
 			}
 		}
 
@@ -339,12 +346,6 @@
 				h4 {
 					font-size: 4vw;
 				}
-			}
-
-			.botao-download-manual {
-				padding: 3vw 5vw;
-				font-size: 3.5vw;
-				border-radius: 1.2vw;
 			}
 
 			.direitos-autorais {
