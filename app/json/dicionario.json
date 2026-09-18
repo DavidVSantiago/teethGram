@@ -206,5 +206,213 @@
 			"conjuncaoE": "and",
 			"palavraComponente": "Component"
 		}
+	},
+	"es": {
+		"cabecalho": {
+			"descricao": "Herramienta diseñada para ayudar a investigadores y gestores en salud bucal a ilustrar la distribución de los componentes de la experiencia de caries dental por elementos dentarios."
+		},
+		"principal": {
+			"tituloDeciduos": "Dientes Deciduos",
+			"tituloPermanentes": "Dientes Permanentes",
+			"tituloBotoes": "Autorellenado"
+		},
+		"filtros": {
+			"rotuloIndice": "Índice",
+			"rotuloDistribuicao": "Distribución",
+			"rotuloClassificacao": "Clasificación de los Dientes",
+			"rotuloTotalParticipantes": "Total de Participantes",
+			"indice": {
+				"permanentes": "CPO-D",
+				"deciduos": "ceo-d"
+			},
+			"opcoes": {
+				"total": "Total",
+				"totalComponente": "Total distribuido por componente",
+				"permanente": {
+					"componenteC": "Componente cariado (C)",
+					"componenteP": "Componente perdido (P)",
+					"componenteO": "Componente obturado (O)"
+				},
+				"deciduo": {
+					"componenteC": "Componente cariado (c)",
+					"componenteP": "Componente extraído (e)",
+					"componenteO": "Componente obturado (o)"
+				}
+			},
+			"botoes": {
+				"baixar": "Descargar plantilla de hoja de cálculo",
+				"selecionar": "Subir hoja de cálculo completa"
+			}
+		},
+		"formularios": {
+			"superiores": "Superiores",
+			"inferiores": "Inferiores",
+			"direito": "Derecho",
+			"esquerdo": "Izquierdo",
+			"componentes": {
+				"cariado": "C",
+				"perdido": "P",
+				"obturado": "O",
+				"c_deciduo": "c",
+				"e_deciduo": "e",
+				"o_deciduo": "o"
+			}
+		},
+		"processamento": {
+			"modoDistribuicao": "Modo de Distribución",
+			"media": "Media",
+			"percentual": "Porcentaje",
+			"botaoGerar": "Generar Histograma"
+		},
+		"geracao": {
+			"titulo": "Gráfico",
+			"rotuloEixoXCentral": "Número del diente en el arco",
+			"botaoSalvarImagem": "Descargar imagen del gráfico",
+			"legenda": "Leyenda"
+		},
+		"rodape": {
+			"titulo": "Sistema de generación de histograma de condiciones dentarias",
+			"descricao": "Desarrollado por el Departamento de Ciencia y Tecnología (DCT) para el proyecto de extensión \"Programa Sorrir\" y el Grupo de Investigación \"Saúde | Bucal Coletiva/UESB/CNPq\", vinculado al Departamento de Salud I (DSI) - Universidade Estadual do Sudoeste da Bahia.",
+			"tituloAutores": "Autores",
+			"descricaoAutores": "Manoelito Ferreira Silva Júnior (ideólogo), Marília Jesus Batista de Brito Mota (ideóloga), Haroldo José Mendes (ideólogo), Dominique Muniz da Silva (programador), Eduardo Caetano de Souza Júnior (programador), William Souza Almeida (programador), Almir David Valente Santiago (prof. orientador).",
+			"comoCitar": "Cómo citar:",
+			"citacao": "Silva-Júnior M. F., Brito-Mota M. J. B., Mendes H. J., Silva D. M., Souza-Júnior E. C., Almeida W. S., Santiago A. D. V. TeethGram. Jequié, 17 de septiembre de 2025. Disponible en: https://algol.dev/tools/teethgram/. Accedido el [fecha].",
+			"baixarManual": "Descargue aquí el manual de usuario",
+			"direitosAutorais": "&copy; 2025 Teethgram. Todos los derechos reservados. v2 beta"
+		},
+		"modal": {
+			"denteLabel": "Diente",
+			"erroCampoVazio": "Campo en blanco. Ingrese 0 o un valor válido.",
+			"erroValorInvalidoForm": "Valor inválido. Ingrese un número mayor o igual a cero.",
+			"tituloIncompleto": "Información Incompleta",
+			"dicaIncompleto": "Todos los campos de dientes en el formulario deben ser completados.",
+			"tituloErro": "Error de Compatibilidad",
+			"mensagemErro": "No se identificaron datos numéricos. La hoja de cálculo parece estar <strong>completamente vacía</strong>. Verifique el archivo.",
+			"erroFiltrosGerais": "La hoja de cálculo contiene datos, pero en una <strong>combinación diferente</strong> de Índice y Clasificación. Revise los filtros en pantalla.",
+			"labelTela": "Pantalla:",
+			"labelPlanilha": "Hoja de cálculo:",
+			"dicaErro": "Asegúrese de cargar el archivo correcto para el índice seleccionado.",
+			"tituloErroImportacao": "Error de Importación",
+			"dadosInvalidos": "La hoja de cálculo contiene datos inválidos.",
+			"inconsistencias": "Inconsistencias encontradas:",
+			"dicaTitulo": "Consejo:",
+			"dicaParticipantes": "El total de participantes se lee de la celda <strong>B33</strong>. Verifique que los valores por diente no superen este límite.",
+			"erroParticipantesFalta": "El total de participantes en la celda B33 debe ser informado y mayor que cero.",
+			"erroParticipantesTotal": "Diente [DENTE]: El valor total ([VALOR]) es mayor que el número de participantes ([TOTAL]).",
+			"erroParticipantesSoma": "Diente [DENTE]: La suma (C+P+O = [SOMA]) supera el límite de participantes ([TOTAL]).",
+			"erroParticipantesComponente": "Diente [DENTE]: El valor del componente ([VALOR]) es mayor que el número de participantes ([TOTAL]).",
+			"erroDistribuicaoTrocada": "La hoja de cálculo contiene datos, pero en la <strong>Distribución</strong> opuesta. Verifique el filtro en pantalla.",
+			"erroClassificacaoTrocada": "La hoja de cálculo contiene datos, pero en la <strong>Clasificación</strong> opuesta. Verifique el filtro en pantalla.",
+			"erroIndiceTrocado": "La hoja de cálculo contiene datos, pero para el <strong>Índice</strong> opuesto. Verifique el filtro en pantalla.",
+			"erroDadosFaltantesConfig": "A la hoja de cálculo le faltan datos para la configuración seleccionada:",
+			"erroDadosFaltantesPreencher": "Complete todos los campos de la hoja de cálculo entre las celdas",
+			"erroValorInvalido": "Diente [DENTE]: la celda [CELULA] contiene un valor inválido ([VALOR]).",
+			"conjuncaoE": "y",
+			"palavraComponente": "Componente"
+		}
+	},
+	"fr": {
+		"cabecalho": {
+			"descricao": "Outil conçu pour aider les chercheurs et les gestionnaires de santé bucco-dentaire à illustrer la distribution des composantes de l'expérience de carie dentaire par élément dentaire."
+		},
+		"principal": {
+			"tituloDeciduos": "Dents Décidues",
+			"tituloPermanentes": "Dents Permanentes",
+			"tituloBotoes": "Remplissage Automatique"
+		},
+		"filtros": {
+			"rotuloIndice": "Indice",
+			"rotuloDistribuicao": "Distribution",
+			"rotuloClassificacao": "Classification des Dents",
+			"rotuloTotalParticipantes": "Nombre Total de Participants",
+			"indice": {
+				"permanentes": "CPO-D",
+				"deciduos": "ceo-d"
+			},
+			"opcoes": {
+				"total": "Total",
+				"totalComponente": "Total distribué par composante",
+				"permanente": {
+					"componenteC": "Composante caryée (C)",
+					"componenteP": "Composante perdue (P)",
+					"componenteO": "Composante obturée (O)"
+				},
+				"deciduo": {
+					"componenteC": "Composante caryée (c)",
+					"componenteP": "Composante extraite (e)",
+					"componenteO": "Composante obturée (o)"
+				}
+			},
+			"botoes": {
+				"baixar": "Télécharger le modèle de feuille de calcul",
+				"selecionar": "Importer la feuille de calcul remplie"
+			}
+		},
+		"formularios": {
+			"superiores": "Supérieures",
+			"inferiores": "Inférieures",
+			"direito": "Droit",
+			"esquerdo": "Gauche",
+			"componentes": {
+				"cariado": "C",
+				"perdido": "P",
+				"obturado": "O",
+				"c_deciduo": "c",
+				"e_deciduo": "e",
+				"o_deciduo": "o"
+			}
+		},
+		"processamento": {
+			"modoDistribuicao": "Mode de Distribution",
+			"media": "Moyenne",
+			"percentual": "Pourcentage",
+			"botaoGerar": "Générer l'Histogramme"
+		},
+		"geracao": {
+			"titulo": "Graphique",
+			"rotuloEixoXCentral": "Numéro de la dent sur l'arcade",
+			"botaoSalvarImagem": "Télécharger l'image du graphique",
+			"legenda": "Légende"
+		},
+		"rodape": {
+			"titulo": "Système de génération d'histogramme des conditions dentaires",
+			"descricao": "Développé par le Département de Science et Technologie (DCT) pour le projet d'extension \"Programa Sorrir\" et le Groupe de Recherche \"Saúde | Bucal Coletiva/UESB/CNPq\", lié au Département de Santé I (DSI) - Universidade Estadual do Sudoeste da Bahia.",
+			"tituloAutores": "Auteurs",
+			"descricaoAutores": "Manoelito Ferreira Silva Júnior (concepteur), Marília Jesus Batista de Brito Mota (conceptrice), Haroldo José Mendes (concepteur), Dominique Muniz da Silva (programmeur), Eduardo Caetano de Souza Júnior (programmeur), William Souza Almeida (programmeur), Almir David Valente Santiago (prof. référent).",
+			"comoCitar": "Comment citer :",
+			"citacao": "Silva-Júnior M. F., Brito-Mota M. J. B., Mendes H. J., Silva D. M., Souza-Júnior E. C., Almeida W. S., Santiago A. D. V. TeethGram. Jequié, 17 septembre 2025. Disponible sur : https://algol.dev/tools/teethgram/. Consulté le [date].",
+			"baixarManual": "Téléchargez le manuel d'utilisation ici",
+			"direitosAutorais": "&copy; 2025 Teethgram. Tous droits réservés. v2 beta"
+		},
+		"modal": {
+			"denteLabel": "Dent",
+			"erroCampoVazio": "Champ vide. Entrez 0 ou une valeur valide.",
+			"erroValorInvalidoForm": "Valeur invalide. Entrez un nombre supérieur ou égal à zéro.",
+			"tituloIncompleto": "Informations Incomplètes",
+			"dicaIncompleto": "Tous les champs de dents du formulaire doivent être remplis.",
+			"tituloErro": "Erreur de Compatibilité",
+			"mensagemErro": "Aucune donnée numérique n'a été identifiée. La feuille de calcul semble être <strong>complètement vide</strong>. Veuillez vérifier le fichier.",
+			"erroFiltrosGerais": "La feuille de calcul contient des données, mais dans une <strong>combinaison différente</strong> d'Indice et de Classification. Vérifiez les filtres à l'écran.",
+			"labelTela": "Écran :",
+			"labelPlanilha": "Feuille de calcul :",
+			"dicaErro": "Assurez-vous de charger le bon fichier pour l'indice sélectionné.",
+			"tituloErroImportacao": "Erreur d'Importation",
+			"dadosInvalidos": "La feuille de calcul contient des données invalides.",
+			"inconsistencias": "Incohérences trouvées :",
+			"dicaTitulo": "Astuce :",
+			"dicaParticipantes": "Le nombre total de participants est lu à partir de la cellule <strong>B33</strong>. Assurez-vous que les valeurs par dent ne dépassent pas cette limite.",
+			"erroParticipantesFalta": "Le nombre total de participants dans la cellule B33 doit être indiqué et supérieur à zéro.",
+			"erroParticipantesTotal": "Dent [DENTE] : La valeur totale ([VALOR]) est supérieure au nombre de participants ([TOTAL]).",
+			"erroParticipantesSoma": "Dent [DENTE] : La somme (C+P+O = [SOMA]) dépasse la limite de participants ([TOTAL]).",
+			"erroParticipantesComponente": "Dent [DENTE] : La valeur de la composante ([VALOR]) est supérieure au nombre de participants ([TOTAL]).",
+			"erroDistribuicaoTrocada": "La feuille de calcul contient des données, mais dans la <strong>Distribution</strong> opposée. Vérifiez le filtre à l'écran.",
+			"erroClassificacaoTrocada": "La feuille de calcul contient des données, mais dans la <strong>Classification</strong> opposée. Vérifiez le filtre à l'écran.",
+			"erroIndiceTrocado": "La feuille de calcul contient des données, mais pour l'<strong>Indice</strong> opposé. Vérifiez le filtre à l'écran.",
+			"erroDadosFaltantesConfig": "La feuille de calcul comporte des données manquantes pour la configuration sélectionnée :",
+			"erroDadosFaltantesPreencher": "Remplissez tous les champs de la feuille de calcul entre les cellules",
+			"erroValorInvalido": "Dent [DENTE] : la cellule [CELULA] contient une valeur invalide ([VALOR]).",
+			"conjuncaoE": "et",
+			"palavraComponente": "Composante"
+		}
 	}
 }
