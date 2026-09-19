@@ -700,11 +700,107 @@ input[type='radio'] {
 			}
 		}
 
+		/* ========= SEÇÃO DE ATENDIMENTO (2 COLUNAS) ========= */
+		.secao-atendimento {
+			display: flex;
+			flex-direction: column;
+			gap: 2vw;
+
+			width: 100%;
+			margin: 2vw 0;
+			padding: 2vw;
+			background: var(--cor-fundo);
+			border: 0.1vw solid var(--cor-borda);
+			border-radius: 1vw;
+
+			.atendimento-cabecalho {
+				text-align: center;
+
+				h3 {
+					margin: 0;
+					font-size: 1.4vw;
+					font-weight: bold;
+					color: var(--cor-texto);
+				}
+
+				p {
+					margin-top: 0.3vw;
+					font-size: 0.95vw;
+					color: var(--cor-texto);
+					opacity: 0.8;
+				}
+			}
+
+			.atendimento-grade {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 2vw;
+				justify-content: center;
+
+				.atendimento-card {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					text-align: center;
+					gap: 0.8vw;
+
+					padding: 1.5vw;
+					background: var(--cor-cartao);
+					border: 0.1vw solid var(--cor-borda);
+					border-radius: 0.8vw;
+					box-shadow: 0 0.1vw 0.4vw rgba(0, 0, 0, 0.03);
+					transition: transform 0.2s ease;
+
+					&:hover {
+						transform: translateY(-0.2vw);
+					}
+
+					.atendimento-icone {
+						display: flex;
+						align-items: center;
+						justify-content: center;
+
+						width: 2.5vw;
+						height: 2.5vw;
+						margin: 0 auto;
+
+						svg {
+							width: 100%;
+							height: 100%;
+							fill: var(--cor-primaria);
+						}
+					}
+
+					h4 {
+						margin: 0;
+						font-size: 1.1vw;
+						font-weight: bold;
+						color: var(--cor-primaria);
+					}
+
+					p {
+						margin: 0;
+						font-size: 0.9vw;
+						line-height: 1.4;
+						color: var(--cor-texto);
+					}
+
+					.atendimento-texto-email {
+						font-size: 0.95vw;
+						font-weight: bold;
+						color: var(--cor-primaria);
+						margin-top: auto;
+						user-select: all;
+					}
+				}
+			}
+		}
+
 		.direitos-autorais {
 			margin: 0;
-			padding-top: 0.6vw;
+			padding-top: 1vw;
 			font-size: 0.8vw;
-			color: var(--cor-texto-claro);
+			color: var(--cor-texto);
 			border-top: 0.08vw solid var(--cor-borda);
 		}
 	}
