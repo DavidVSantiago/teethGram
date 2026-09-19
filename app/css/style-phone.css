@@ -348,6 +348,52 @@
 				}
 			}
 
+			/* ========= SEÇÃO DE ATENDIMENTO (MOBILE - EMPILHADO) ========= */
+			.secao-atendimento {
+				gap: 4vw;
+				padding: 5vw;
+				border-radius: 2vw;
+
+				.atendimento-cabecalho {
+					h3 {
+						font-size: 4.5vw;
+					}
+
+					p {
+						font-size: 3.2vw;
+					}
+				}
+
+				.atendimento-grade {
+					grid-template-columns: 1fr;
+					gap: 4vw;
+
+					.atendimento-card {
+						padding: 4vw;
+						gap: 2vw;
+						border-radius: 1.5vw;
+
+						.atendimento-icone {
+							width: 8vw;
+							height: 8vw;
+						}
+
+						h4 {
+							font-size: 3.8vw;
+						}
+
+						p {
+							font-size: 3.2vw;
+						}
+
+						.atendimento-texto-email {
+							font-size: 3.2vw;
+							user-select: all;
+						}
+					}
+				}
+			}
+
 			.direitos-autorais {
 				padding-top: 4vw;
 				font-size: 3.2vw;
