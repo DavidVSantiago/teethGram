@@ -50,8 +50,8 @@ export class PlanilhaService {
 				linhaChaves: 3, // Linha 4 no Excel
 				linhas: {
 					[DentesService.COMPONENTES.CARIADO]: 4,
-					[DentesService.COMPONENTES.PERDIDO]: 5,
-					[DentesService.COMPONENTES.OBTURADO]: 6,
+					[DentesService.COMPONENTES.OBTURADO]: 5,
+					[DentesService.COMPONENTES.PERDIDO]: 6,
 					[DentesService.COMPONENTES.TOTAL]: 7,
 				},
 			},
@@ -59,8 +59,8 @@ export class PlanilhaService {
 				linhaChaves: 10, // Linha 11 no Excel
 				linhas: {
 					[DentesService.COMPONENTES.CARIADO]: 11,
-					[DentesService.COMPONENTES.PERDIDO]: 12,
-					[DentesService.COMPONENTES.OBTURADO]: 13,
+					[DentesService.COMPONENTES.OBTURADO]: 12,
+					[DentesService.COMPONENTES.PERDIDO]: 13,
 					[DentesService.COMPONENTES.TOTAL]: 14,
 				},
 			},
@@ -71,8 +71,8 @@ export class PlanilhaService {
 				linhaChaves: 19, // Linha 20 no Excel
 				linhas: {
 					[DentesService.COMPONENTES.CARIADO]: 20,
-					[DentesService.COMPONENTES.PERDIDO]: 21,
-					[DentesService.COMPONENTES.OBTURADO]: 22,
+					[DentesService.COMPONENTES.OBTURADO]: 21,
+					[DentesService.COMPONENTES.PERDIDO]: 22,
 					[DentesService.COMPONENTES.TOTAL]: 23,
 				},
 			},
@@ -80,8 +80,8 @@ export class PlanilhaService {
 				linhaChaves: 26, // Linha 27 no Excel
 				linhas: {
 					[DentesService.COMPONENTES.CARIADO]: 27,
-					[DentesService.COMPONENTES.PERDIDO]: 28,
-					[DentesService.COMPONENTES.OBTURADO]: 29,
+					[DentesService.COMPONENTES.OBTURADO]: 28,
+					[DentesService.COMPONENTES.PERDIDO]: 29,
 					[DentesService.COMPONENTES.TOTAL]: 30,
 				},
 			},
@@ -273,13 +273,13 @@ export class PlanilhaService {
 		if (componenteAlvo === this.COMPONENTE_TODOS) {
 			const linhaInicialDaArea = Math.min(
 				configCoords.linhas[DentesService.COMPONENTES.CARIADO],
-				configCoords.linhas[DentesService.COMPONENTES.PERDIDO],
 				configCoords.linhas[DentesService.COMPONENTES.OBTURADO],
+				configCoords.linhas[DentesService.COMPONENTES.PERDIDO],
 			);
 			const linhaFinalDaArea = Math.max(
 				configCoords.linhas[DentesService.COMPONENTES.CARIADO],
-				configCoords.linhas[DentesService.COMPONENTES.PERDIDO],
 				configCoords.linhas[DentesService.COMPONENTES.OBTURADO],
+				configCoords.linhas[DentesService.COMPONENTES.PERDIDO],
 			);
 			return { linhaInicialDaArea, linhaFinalDaArea };
 		}
@@ -418,20 +418,13 @@ export class PlanilhaService {
 	}
 
 	/**
-	 * Processa a extração e validação do modelo com Todos os Componentes (C, P, O).
+	 * Processa a extração e validação do modelo com Todos os Componentes (C, O, P).
 	 * @private
 	 */
 	static _processarExtracaoTodosComponentes(matriz, configCoords, col, dente, totalPart, estadoValidacao, mapaDados, listaErros) {
 		const resC = this.verificarEExtrairValorDaCelula(
 			matriz,
 			configCoords.linhas[DentesService.COMPONENTES.CARIADO],
-			col,
-			estadoValidacao,
-			dente,
-		);
-		const resP = this.verificarEExtrairValorDaCelula(
-			matriz,
-			configCoords.linhas[DentesService.COMPONENTES.PERDIDO],
 			col,
 			estadoValidacao,
 			dente,
@@ -443,23 +436,30 @@ export class PlanilhaService {
 			estadoValidacao,
 			dente,
 		);
+		const resP = this.verificarEExtrairValorDaCelula(
+			matriz,
+			configCoords.linhas[DentesService.COMPONENTES.PERDIDO],
+			col,
+			estadoValidacao,
+			dente,
+		);
 
-		const soma = resC.valor + resP.valor + resO.valor;
-		const possuiVazio = resC.foiVazio || resP.foiVazio || resO.foiVazio;
-		const possuiInvalido = resC.valorInvalido || resP.valorInvalido || resO.valorInvalido;
+		const soma = resC.valor + resO.valor + resP.valor;
+		const possuiVazio = resC.foiVazio || resO.foiVazio || resP.foiVazio;
+		const possuiInvalido = resC.valorInvalido || resO.valorInvalido || resP.valorInvalido;
 
 		if (!possuiVazio && !possuiInvalido && soma > totalPart) {
 			const msg =
 				t.modal?.erroParticipantesSoma?.replace('[DENTE]', dente)?.replace('[SOMA]', soma)?.replace('[TOTAL]', totalPart) ??
-				`Dente ${dente}: A soma (C+P+O = ${soma}) ultrapassa o limite de participantes (${totalPart}).`;
+				`Dente ${dente}: A soma (C+O+P = ${soma}) ultrapassa o limite de participantes (${totalPart}).`;
 
 			listaErros.push(msg);
 		}
 
 		mapaDados.set(dente, {
 			cariado: resC.valor,
-			perdido: resP.valor,
 			obturado: resO.valor,
+			perdido: resP.valor,
 		});
 	}
 
