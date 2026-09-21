@@ -200,8 +200,6 @@ export class I18nManager {
 				}
 			});
 		}
-
-		FormController.atualizarEstadoBotaoGerar();
 	}
 
 	/**

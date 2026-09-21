@@ -125,7 +125,26 @@ export class ViewManager {
 
         <canvas id="drawing" width="800" height="800"></canvas>
 
-        <button class="botao-gerar-imagem" id="botao-image" data-action="gerar">${t.geracao?.botaoSalvarImagem ?? 'Salvar Imagem'}</button>
+        <div class="controles-exportacao">
+          <div class="campo-grupo-exportacao">
+            <label for="formato-imagem">${t.geracao?.rotuloFormato ?? 'Formato:'}</label>
+            <select id="formato-imagem">
+              <option value="png" selected>PNG</option>
+              <option value="jpeg">JPG</option>
+            </select>
+          </div>
+
+          <div class="campo-grupo-exportacao">
+            <label for="resolucao-dpi">${t.geracao?.rotuloResolucao ?? 'Resolução / DPI:'}</label>
+            <select id="resolucao-dpi">
+              <option value="1" selected>${t.geracao?.rotuloPadrao ?? '1x (Padrão)'}</option>
+              <option value="2">${t.geracao?.rotuloAltaDefinicao ?? '2x (Alta Definição)'}</option>
+              <option value="3">${t.geracao?.rotuloUltraDefinicao ?? '3x (Ultra Definição)'}</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="botao-gerar-imagem" id="botao-image" data-action="gerar">${t.geracao?.botaoSalvarImagem ?? 'Baixar Imagem do gráfico'}</button>
       </section>
 
       <!-- ========= RODAPÉ INSTITUCIONAL ========= -->
