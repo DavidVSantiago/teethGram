@@ -305,11 +305,28 @@
 			border-radius: 1vw;
 		}
 
-		.botao-gerar-imagem {
-			justify-self: center;
-			width: 90%;
-			font-size: 3.5vw;
-			border-radius: 1.2vw;
+		/* Controles de Exportação */
+		.controles-exportacao {
+			flex-direction: column;
+			width: 100%;
+			gap: 3vw;
+
+			.campo-grupo-exportacao {
+				width: 100%;
+
+				label {
+					font-size: 3.2vw;
+				}
+
+				select {
+					width: 100%;
+					padding: 2.5vw 10vw 2.5vw 2.5vw;
+					font-size: 3.2vw;
+					border-radius: 1.5vw;
+					background-position: right 3vw center;
+					background-size: 4vw;
+				}
+			}
 		}
 	}
 

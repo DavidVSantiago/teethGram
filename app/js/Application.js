@@ -17,7 +17,7 @@ class Application {
 			'botao-baixar': () => this.baixarPlanilhaModelo(),
 			'botao-gerar': () => FormController.gerarHistograma(),
 			'botao-fechar-modal': () => UI.fecharModal(),
-			'botao-image': () => this.salvarGraficoComoPNG(),
+			'botao-image': () => this.salvarGrafico(),
 		};
 	}
 
@@ -86,10 +86,9 @@ class Application {
 	}
 
 	/**
-	 * Utilitário centralizado para disparar downloads de arquivos via navegador.
-	 *
-	 * @param {string} urlData - URL ou dados no formato DataURL.
-	 * @param {string} nomeArquivo - Nome padrão para salvar o arquivo.
+	 * Executa o disparo do download do arquivo no navegador.
+	 * @param {string} urlData - Data URL da imagem gerada.
+	 * @param {string} nomeArquivo - Nome do arquivo a ser salvo.
 	 */
 	fazerDownload(urlData, nomeArquivo) {
 		const linkDownload = document.createElement('a');
@@ -99,14 +98,36 @@ class Application {
 	}
 
 	/**
-	 * Realiza o download da imagem gerada no Canvas em formato PNG.
+	 * Realiza o download da imagem gerada no Canvas capturando o formato e a resolução (DPI) diretamente da interface.
+	 *
+	 * @param {number} qualidade - Valor entre 0 e 1 (aplicado apenas para jpeg). Default: 0.92.
 	 */
-	salvarGraficoComoPNG() {
+	salvarGrafico(qualidade = 0.92) {
 		const elementoCanvas = document.getElementById('drawing');
 		if (!elementoCanvas) return;
 
-		const imagemDataUrl = elementoCanvas.toDataURL('image/png');
-		this.fazerDownload(imagemDataUrl, 'histograma-teethgram.png');
+		// Captura os valores diretamente dos seletores da interface
+		const formatoSelecionado = document.getElementById('formato-imagem')?.value || 'png';
+		const escalaDpi = parseInt(document.getElementById('resolucao-dpi')?.value || '1', 10);
+
+		const extensao = formatoSelecionado.toLowerCase() === 'jpeg' ? 'jpg' : 'png';
+		const mimeType = extensao === 'jpg' ? 'image/jpeg' : 'image/png';
+
+		let canvasAlvo = elementoCanvas;
+
+		if (escalaDpi > 1) {
+			const canvasTemp = document.createElement('canvas');
+			canvasTemp.width = elementoCanvas.width * escalaDpi;
+			canvasTemp.height = elementoCanvas.height * escalaDpi;
+			const ctxTemp = canvasTemp.getContext('2d');
+
+			ctxTemp.drawImage(elementoCanvas, 0, 0, canvasTemp.width, canvasTemp.height);
+			canvasAlvo = canvasTemp;
+		}
+
+		const imagemDataUrl = extensao === 'jpg' ? canvasAlvo.toDataURL(mimeType, qualidade) : canvasAlvo.toDataURL(mimeType);
+
+		this.fazerDownload(imagemDataUrl, `histograma-teethgram.${extensao}`);
 	}
 
 	/**

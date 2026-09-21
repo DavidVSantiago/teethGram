@@ -60,7 +60,12 @@
 			"titulo": "Gráfico",
 			"rotuloEixoXCentral": "Número do dente no arco",
 			"botaoSalvarImagem": "Baixar Imagem do gráfico",
-			"legenda": "Legenda"
+			"legenda": "Legenda",
+			"rotuloFormato": "Formato:",
+			"rotuloResolucao": "Resolução / DPI:",
+			"rotuloPadrao": "1x (Padrão)",
+			"rotuloAltaDefinicao": "2x (Alta Definição)",
+			"rotuloUltraDefinicao": "3x (Ultra Definição)"
 		},
 		"rodape": {
 			"titulo": "Sistema de geração de histograma de condições dentárias",
@@ -164,7 +169,12 @@
 			"titulo": "Graph",
 			"rotuloEixoXCentral": "Tooth number in the arch",
 			"botaoSalvarImagem": "Download image of the graph",
-			"legenda": "Legend"
+			"legenda": "Legend",
+			"rotuloFormato": "Format:",
+			"rotuloResolucao": "Resolution / DPI:",
+			"rotuloPadrao": "1x (Standard)",
+			"rotuloAltaDefinicao": "2x (High Definition)",
+			"rotuloUltraDefinicao": "3x (Ultra Definition)"
 		},
 		"rodape": {
 			"titulo": "Dental conditions histogram generation system",
@@ -268,7 +278,12 @@
 			"titulo": "Gráfico",
 			"rotuloEixoXCentral": "Número del diente en el arco",
 			"botaoSalvarImagem": "Descargar imagen del gráfico",
-			"legenda": "Leyenda"
+			"legenda": "Leyenda",
+			"rotuloFormato": "Formato:",
+			"rotuloResolucao": "Resolución / DPI:",
+			"rotuloPadrao": "1x (Estándar)",
+			"rotuloAltaDefinicao": "2x (Alta Definición)",
+			"rotuloUltraDefinicao": "3x (Ultra Definición)"
 		},
 		"rodape": {
 			"titulo": "Sistema de generación de histograma de condiciones dentarias",
@@ -372,7 +387,12 @@
 			"titulo": "Graphique",
 			"rotuloEixoXCentral": "Numéro de la dent sur l'arcade",
 			"botaoSalvarImagem": "Télécharger l'image du graphique",
-			"legenda": "Légende"
+			"legenda": "Légende",
+			"rotuloFormato": "Format :",
+			"rotuloResolucao": "Résolution / DPI :",
+			"rotuloPadrao": "1x (Standard)",
+			"rotuloAltaDefinicao": "2x (Haute Définition)",
+			"rotuloUltraDefinicao": "3x (Ultra Définition)"
 		},
 		"rodape": {
 			"titulo": "Système de génération d'histogramme des conditions dentaires",
