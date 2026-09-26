@@ -299,7 +299,7 @@ input[type='radio'] {
 
 		.linha-formulario {
 			display: grid;
-			grid-template-columns: repeat(4, 1fr);
+			grid-template-columns: 1fr 1.3fr 1fr 1fr;
 			gap: 1.2vw;
 			margin-bottom: 1vw;
 
@@ -528,6 +528,89 @@ input[type='radio'] {
 
 				label {
 					width: 33%;
+					margin: 0;
+					padding: 0.4vw 0;
+					font-size: 0.9vw;
+					font-weight: bold;
+					text-align: center;
+					color: var(--cor-texto);
+				}
+			}
+		}
+
+		/* Card Dente para 4 Componentes */
+		.componente-dente-4 {
+			display: flex;
+			flex-direction: column;
+
+			width: 14vw;
+			background: var(--cor-cartao);
+			border: 0.1vw solid var(--cor-borda);
+			border-radius: 0.5vw;
+			box-shadow: 0 0.2vw 0.6vw rgba(0, 0, 0, 0.1);
+			overflow: hidden;
+
+			.dente-titulo {
+				margin: 0;
+				padding: 0.5vw;
+				background: var(--cor-primaria);
+
+				h3 {
+					margin: 0;
+					font-size: 1vw;
+					font-weight: bold;
+					text-align: center;
+					color: #ffffff;
+				}
+			}
+
+			.dente-corpo {
+				display: flex;
+				justify-content: space-between;
+				gap: 0.2vw;
+
+				padding: 0.8vw 0.4vw;
+				background: var(--cor-cartao);
+
+				.caixa-entrada {
+					display: flex;
+					flex: 1;
+					flex-direction: column;
+
+					input.entrada-componente {
+						width: 100%;
+						padding: 0.4vw 0;
+						font-size: 0.9vw;
+						text-align: center;
+						color: var(--cor-texto);
+						background-color: transparent;
+						border: 0.1vw solid var(--cor-borda);
+						border-radius: 0.3vw;
+						outline: none;
+
+						&:focus {
+							border-color: var(--cor-primaria);
+						}
+
+						&:disabled {
+							background-color: var(--cor-borda);
+							border-color: var(--cor-borda);
+							opacity: 0.6;
+							cursor: not-allowed;
+						}
+					}
+				}
+			}
+
+			.dente-legenda {
+				display: flex;
+				justify-content: space-around;
+
+				background: var(--cor-fundo);
+				border-top: 0.1vw solid var(--cor-borda);
+
+				label {
+					flex: 1;
 					margin: 0;
 					padding: 0.4vw 0;
 					font-size: 0.9vw;

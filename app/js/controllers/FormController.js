@@ -36,6 +36,8 @@ export class FormController {
 		DISTRIBUICAO_COMPONENTE_C: 'componente-c',
 		DISTRIBUICAO_COMPONENTE_P: 'componente-p',
 		DISTRIBUICAO_COMPONENTE_O: 'componente-o',
+		DISTRIBUICAO_3_COMPONENTES: 'componente',
+		DISTRIBUICAO_4_COMPONENTES: 'componente-4',
 		TODOS: 'TODOS',
 		CLASSIFICACAO_PADRAO: 'fdi',
 	});
@@ -117,13 +119,15 @@ export class FormController {
 
 		const quadrantes = FormRenderer.obterQuadrantes(valorIndice);
 		const ehTotal = valorDistribuicao === 'total';
+		const qtdeComponentes = valorDistribuicao === this.FORMULARIO.DISTRIBUICAO_4_COMPONENTES ? 4 : 3;
 		const configComp = !ehTotal
 			? valorIndice === 'cpo-d'
 				? FormRenderer.obterConfiguracaoCPOD()
 				: FormRenderer.obterConfiguracaoCEOD()
 			: null;
 
-		containerForm.innerHTML = FormRenderer.gerarEstruturaArcos(quadrantes, configComp);
+		containerForm.innerHTML = FormRenderer.gerarEstruturaArcos(quadrantes, configComp, qtdeComponentes);
+
 		this.estado = { indice: valorIndice, distribuicao: valorDistribuicao };
 
 		const sistemaAlvo = document.getElementById('selecao-classificacao')?.value || 'fdi';
@@ -162,6 +166,7 @@ export class FormController {
 		if (inputTotal) inputTotal.value = totalParticipantes;
 
 		const ehTotal = this.estado.distribuicao === 'total';
+		const eh4Componentes = this.estado.distribuicao === this.FORMULARIO.DISTRIBUICAO_4_COMPONENTES;
 		const configComp = this.estado.indice === 'cpo-d' ? FormRenderer.obterConfiguracaoCPOD() : FormRenderer.obterConfiguracaoCEOD();
 
 		dadosMap.forEach((valor, dente) => {
@@ -171,6 +176,10 @@ export class FormController {
 				FormRenderer.injetarValorNoInput(dente, configComp.idC, valor.cariado, classificacaoSelecionada);
 				FormRenderer.injetarValorNoInput(dente, configComp.idPE, valor.perdido, classificacaoSelecionada);
 				FormRenderer.injetarValorNoInput(dente, configComp.idO, valor.obturado, classificacaoSelecionada);
+
+				if (eh4Componentes && configComp.idCO) {
+					FormRenderer.injetarValorNoInput(dente, configComp.idCO, valor.cariado_obturado, classificacaoSelecionada);
+				}
 			} else {
 				const mapas = {
 					[DentesService.COMPONENTES.CARIADO]: configComp.idC,
@@ -191,9 +200,15 @@ export class FormController {
 		const ehTotal = distribuicao === 'total';
 
 		if (indice === 'cpo-d') {
-			return ehTotal ? PlanilhaService.TIPO_FORMULARIO.CPOD_TOTAL : PlanilhaService.TIPO_FORMULARIO.CPOD_POR_COMPONENTE;
+			if (ehTotal) return PlanilhaService.TIPO_FORMULARIO.CPOD_TOTAL;
+			if (distribuicao === this.FORMULARIO.DISTRIBUICAO_4_COMPONENTES) return PlanilhaService.TIPO_FORMULARIO.CPOD_4_COMPONENTES;
+			return PlanilhaService.TIPO_FORMULARIO.CPOD_POR_COMPONENTE;
 		}
-		return ehTotal ? PlanilhaService.TIPO_FORMULARIO.CEOD_TOTAL : PlanilhaService.TIPO_FORMULARIO.CEOD_POR_COMPONENTE;
+
+		// CEO-D
+		if (ehTotal) return PlanilhaService.TIPO_FORMULARIO.CEOD_TOTAL;
+		if (distribuicao === this.FORMULARIO.DISTRIBUICAO_4_COMPONENTES) return PlanilhaService.TIPO_FORMULARIO.CEOD_4_COMPONENTES;
+		return PlanilhaService.TIPO_FORMULARIO.CEOD_POR_COMPONENTE;
 	}
 
 	/**
@@ -247,22 +262,26 @@ export class FormController {
 			const alvoArcada = ehInferior ? dadosInferiores : dadosSuperiores;
 
 			if (!alvoArcada[chaveRotulo]) {
-				alvoArcada[chaveRotulo] = { c: 0, p: 0, o: 0 };
+				alvoArcada[chaveRotulo] = { c: 0, p: 0, o: 0, co: 0 };
 			}
 
 			if (ehTotal) {
 				alvoArcada[chaveRotulo].c = val;
 			} else {
 				const comp = partes[0].toLowerCase();
+
 				if (comp === 'c') alvoArcada[chaveRotulo].c = val;
 				else if (comp === 'p' || comp === 'e') alvoArcada[chaveRotulo].p = val;
 				else if (comp === 'o') alvoArcada[chaveRotulo].o = val;
+				else if (comp === 'co') alvoArcada[chaveRotulo].co = val;
 			}
 		});
 
 		const configGrafico = {
 			classificacao: config.sistemaClassificacao.toUpperCase(),
-			distribuicao: MAPA_DISTRIBUICAO_GRAFICO[this.estado.distribuicao] || 'total_componentes',
+			distribuicao:
+				MAPA_DISTRIBUICAO_GRAFICO[this.estado.distribuicao] ||
+				(this.estado.distribuicao === this.FORMULARIO.DISTRIBUICAO_4_COMPONENTES ? 'total_4_componentes' : 'total_componentes'),
 			mostrarPorcentagem: modoDistribuicao === 'percentual',
 			totalParticipantes: config.totalParticipantes,
 			indice: config.indice,
@@ -298,7 +317,7 @@ export class FormController {
 
 	/**
 	 * Analisa a lista de inputs do DOM e retorna uma lista formatada com as pendências/erros,
-	 * garantindo a conversão do identificador de acordo com o sistema ativo (FDI/ADA).
+	 * ignorando campos que estejam desabilitados (modo de componente único).
 	 * @param {HTMLInputElement[]} inputs - Lista de elementos input do formulário.
 	 * @returns {Array<{dente: string, motivo: string}>} Lista de erros identificados.
 	 * @private
@@ -311,9 +330,12 @@ export class FormController {
 		const ehADA = config.sistemaClassificacao.toUpperCase() === 'ADA';
 
 		inputs.forEach((input) => {
+			// Ignora inputs que estão desabilitados (ex: componentes inativos na visualização atual)
+			if (input.disabled) return;
+
 			const texto = input.value.trim();
 
-			// Extração determinística do ID nativo FDI (evita dependência da árvore DOM para rótulos)
+			// Extração determinística do ID nativo FDI
 			const denteFDI = input.id.split('-').pop().trim();
 			const identificador = ehADA ? DentesService.converterFDIParaADA(denteFDI) : denteFDI;
 			const labelDente = `${t.modal?.denteLabel ?? 'Dente'} ${identificador}`;
