@@ -21,6 +21,8 @@ export class PlanilhaService {
 		CEOD_TOTAL: 2,
 		CPOD_POR_COMPONENTE: 3,
 		CPOD_TOTAL: 4,
+		CPOD_4_COMPONENTES: 5,
+		CEOD_4_COMPONENTES: 6,
 	});
 
 	/**
@@ -38,7 +40,7 @@ export class PlanilhaService {
 	 * O comentário lateral indica a linha e coluna equivalente visível no Microsoft Excel.
 	 */
 	static COORDENADAS_PLANILHA = Object.freeze({
-		LINHA_PARTICIPANTES: 32, // Linha 33 no Excel
+		LINHA_PARTICIPANTES: 36, // Linha 37 no Excel
 		COLUNA_PARTICIPANTES: 1, // Coluna B no Excel
 
 		COL_INICIO_DENTES: 1, // Todos os blocos começam na Coluna B
@@ -50,39 +52,43 @@ export class PlanilhaService {
 				linhaChaves: 3, // Linha 4 no Excel
 				linhas: {
 					[DentesService.COMPONENTES.CARIADO]: 4,
-					[DentesService.COMPONENTES.OBTURADO]: 5,
-					[DentesService.COMPONENTES.PERDIDO]: 6,
-					[DentesService.COMPONENTES.TOTAL]: 7,
+					[DentesService.COMPONENTES.CARIADO_OBTURADO]: 5,
+					[DentesService.COMPONENTES.OBTURADO]: 6,
+					[DentesService.COMPONENTES.PERDIDO]: 7,
+					[DentesService.COMPONENTES.TOTAL]: 8,
 				},
 			},
 			CEOD: {
-				linhaChaves: 10, // Linha 11 no Excel
+				linhaChaves: 11, // Linha 12 no Excel
 				linhas: {
-					[DentesService.COMPONENTES.CARIADO]: 11,
-					[DentesService.COMPONENTES.OBTURADO]: 12,
-					[DentesService.COMPONENTES.PERDIDO]: 13,
-					[DentesService.COMPONENTES.TOTAL]: 14,
+					[DentesService.COMPONENTES.CARIADO]: 12,
+					[DentesService.COMPONENTES.CARIADO_OBTURADO]: 13,
+					[DentesService.COMPONENTES.OBTURADO]: 14,
+					[DentesService.COMPONENTES.PERDIDO]: 15,
+					[DentesService.COMPONENTES.TOTAL]: 16,
 				},
 			},
 		},
 
 		ADA: {
 			CPOD: {
-				linhaChaves: 19, // Linha 20 no Excel
+				linhaChaves: 21, // Linha 22 no Excel
 				linhas: {
-					[DentesService.COMPONENTES.CARIADO]: 20,
-					[DentesService.COMPONENTES.OBTURADO]: 21,
-					[DentesService.COMPONENTES.PERDIDO]: 22,
-					[DentesService.COMPONENTES.TOTAL]: 23,
+					[DentesService.COMPONENTES.CARIADO]: 22,
+					[DentesService.COMPONENTES.CARIADO_OBTURADO]: 23,
+					[DentesService.COMPONENTES.OBTURADO]: 24,
+					[DentesService.COMPONENTES.PERDIDO]: 25,
+					[DentesService.COMPONENTES.TOTAL]: 26,
 				},
 			},
 			CEOD: {
-				linhaChaves: 26, // Linha 27 no Excel
+				linhaChaves: 29, // Linha 30 no Excel
 				linhas: {
-					[DentesService.COMPONENTES.CARIADO]: 27,
-					[DentesService.COMPONENTES.OBTURADO]: 28,
-					[DentesService.COMPONENTES.PERDIDO]: 29,
-					[DentesService.COMPONENTES.TOTAL]: 30,
+					[DentesService.COMPONENTES.CARIADO]: 30,
+					[DentesService.COMPONENTES.CARIADO_OBTURADO]: 31,
+					[DentesService.COMPONENTES.OBTURADO]: 32,
+					[DentesService.COMPONENTES.PERDIDO]: 33,
+					[DentesService.COMPONENTES.TOTAL]: 34,
 				},
 			},
 		},
@@ -151,9 +157,14 @@ export class PlanilhaService {
 	 * @returns {{ totalParticipantes: number, dados: Map<string, any> }} Dados e participantes consolidados.
 	 */
 	static extrairDados(matriz, tipoFormulario, classificacao, componenteAlvo) {
-		const ehIndiceCEOD = tipoFormulario === this.TIPO_FORMULARIO.CEOD_TOTAL || tipoFormulario === this.TIPO_FORMULARIO.CEOD_POR_COMPONENTE;
+		const ehIndiceCEOD =
+			tipoFormulario === this.TIPO_FORMULARIO.CEOD_TOTAL ||
+			tipoFormulario === this.TIPO_FORMULARIO.CEOD_POR_COMPONENTE ||
+			tipoFormulario === this.TIPO_FORMULARIO.CEOD_4_COMPONENTES;
 
 		const ehModeloTotal = tipoFormulario === this.TIPO_FORMULARIO.CEOD_TOTAL || tipoFormulario === this.TIPO_FORMULARIO.CPOD_TOTAL;
+		const eh4Componentes =
+			tipoFormulario === this.TIPO_FORMULARIO.CPOD_4_COMPONENTES || tipoFormulario === this.TIPO_FORMULARIO.CEOD_4_COMPONENTES;
 
 		const configSistema = classificacao === this.CLASSIFICACAO_ADA ? this.COORDENADAS_PLANILHA.ADA : this.COORDENADAS_PLANILHA.FDI;
 		const configCoords = ehIndiceCEOD ? configSistema.CEOD : configSistema.CPOD;
@@ -170,7 +181,7 @@ export class PlanilhaService {
 		const colInicial = this.COORDENADAS_PLANILHA.COL_INICIO_DENTES;
 		const colFinal = ehIndiceCEOD ? this.COORDENADAS_PLANILHA.COL_FIM_CEOD : this.COORDENADAS_PLANILHA.COL_FIM_CPOD;
 
-		const { linhaInicialDaArea, linhaFinalDaArea } = this.obterLinhaDaArea(configCoords, ehModeloTotal, componenteAlvo);
+		const { linhaInicialDaArea, linhaFinalDaArea } = this.obterLinhaDaArea(configCoords, ehModeloTotal, componenteAlvo, eh4Componentes);
 
 		const mapaDados = new Map();
 		const listaErros = [];
@@ -188,6 +199,17 @@ export class PlanilhaService {
 
 			if (ehModeloTotal) {
 				this._processarExtracaoTotal(matriz, configCoords, col, chaveDente, totalParticipantes, estadoValidacao, mapaDados, listaErros);
+			} else if (eh4Componentes) {
+				this._processarExtracao4Componentes(
+					matriz,
+					configCoords,
+					col,
+					chaveDente,
+					totalParticipantes,
+					estadoValidacao,
+					mapaDados,
+					listaErros,
+				);
 			} else if (componenteAlvo === this.COMPONENTE_TODOS) {
 				this._processarExtracaoTodosComponentes(
 					matriz,
@@ -219,6 +241,7 @@ export class PlanilhaService {
 				this.montarMensagemDeErro({
 					ehIndiceCEOD,
 					ehModeloTotal,
+					eh4Componentes,
 					componenteAlvo,
 					classificacao,
 					colunaInicial: colInicial,
@@ -262,12 +285,29 @@ export class PlanilhaService {
 	 * @param {Object} configCoords - Mapeamento de linhas e colunas.
 	 * @param {boolean} ehModeloTotal - Se o modelo é do tipo Total.
 	 * @param {string} componenteAlvo - Nome do componente selecionado.
+	 * @param {boolean} eh4Componentes - Se o modelo opera com 4 componentes.
 	 * @returns {{ linhaInicialDaArea: number, linhaFinalDaArea: number }}
 	 */
-	static obterLinhaDaArea(configCoords, ehModeloTotal, componenteAlvo) {
+	static obterLinhaDaArea(configCoords, ehModeloTotal, componenteAlvo, eh4Componentes) {
 		if (ehModeloTotal) {
 			const linha = configCoords.linhas[DentesService.COMPONENTES.TOTAL];
 			return { linhaInicialDaArea: linha, linhaFinalDaArea: linha };
+		}
+
+		if (eh4Componentes) {
+			const linhaInicialDaArea = Math.min(
+				configCoords.linhas[DentesService.COMPONENTES.CARIADO],
+				configCoords.linhas[DentesService.COMPONENTES.OBTURADO],
+				configCoords.linhas[DentesService.COMPONENTES.PERDIDO],
+				configCoords.linhas[DentesService.COMPONENTES.CARIADO_OBTURADO],
+			);
+			const linhaFinalDaArea = Math.max(
+				configCoords.linhas[DentesService.COMPONENTES.CARIADO],
+				configCoords.linhas[DentesService.COMPONENTES.OBTURADO],
+				configCoords.linhas[DentesService.COMPONENTES.PERDIDO],
+				configCoords.linhas[DentesService.COMPONENTES.CARIADO_OBTURADO],
+			);
+			return { linhaInicialDaArea, linhaFinalDaArea };
 		}
 
 		if (componenteAlvo === this.COMPONENTE_TODOS) {
@@ -325,7 +365,7 @@ export class PlanilhaService {
 
 	/**
 	 * Monta a mensagem de erro para dados faltantes usando o idioma ativo da interface.
-	 * @param {{ ehIndiceCEOD: boolean, ehModeloTotal: boolean, componenteAlvo: string, classificacao: string, colunaInicial: number, colunaFinal: number, linhaInicialDaArea: number, linhaFinalDaArea: number }} contexto - Metadados da operação.
+	 * @param {{ ehIndiceCEOD: boolean, ehModeloTotal: boolean, eh4Componentes: boolean, componenteAlvo: string, classificacao: string, colunaInicial: number, colunaFinal: number, linhaInicialDaArea: number, linhaFinalDaArea: number }} contexto - Metadados da operação.
 	 * @returns {string} String com marcação HTML pronta para exibição no modal.
 	 */
 	static montarMensagemDeErro(contexto) {
@@ -333,7 +373,9 @@ export class PlanilhaService {
 
 		let stringDistribuicao = t.filtros?.opcoes?.total ?? 'Total';
 
-		if (!contexto.ehModeloTotal) {
+		if (contexto.eh4Componentes) {
+			stringDistribuicao = t.filtros?.opcoes?.total4Componentes ?? 'Total por 4 Componentes';
+		} else if (!contexto.ehModeloTotal) {
 			if (contexto.componenteAlvo === this.COMPONENTE_TODOS) {
 				stringDistribuicao = t.filtros?.opcoes?.totalComponente ?? 'Todos os Componentes';
 			} else {
@@ -344,6 +386,7 @@ export class PlanilhaService {
 						? (t.formularios?.componentes?.e_deciduo ?? 'Extraído')
 						: (t.formularios?.componentes?.perdido ?? 'Perdido'),
 					[DentesService.COMPONENTES.OBTURADO]: t.formularios?.componentes?.obturado ?? 'Obturado',
+					[DentesService.COMPONENTES.CARIADO_OBTURADO]: t.formularios?.componentes?.cariado_obturado ?? 'C/O',
 				};
 
 				const nomeComponenteTraduzido = mapaNomesComponentes[contexto.componenteAlvo] ?? contexto.componenteAlvo;
@@ -464,7 +507,61 @@ export class PlanilhaService {
 	}
 
 	/**
-	 * Processa a extração e validação do modelo por Componente Único (somente C, P ou O).
+	 * Processa a extração e validação do modelo com 4 Componentes (C, O, P e C/O).
+	 * @private
+	 */
+	static _processarExtracao4Componentes(matriz, configCoords, col, dente, totalPart, estadoValidacao, mapaDados, listaErros) {
+		const resC = this.verificarEExtrairValorDaCelula(
+			matriz,
+			configCoords.linhas[DentesService.COMPONENTES.CARIADO],
+			col,
+			estadoValidacao,
+			dente,
+		);
+		const resO = this.verificarEExtrairValorDaCelula(
+			matriz,
+			configCoords.linhas[DentesService.COMPONENTES.OBTURADO],
+			col,
+			estadoValidacao,
+			dente,
+		);
+		const resP = this.verificarEExtrairValorDaCelula(
+			matriz,
+			configCoords.linhas[DentesService.COMPONENTES.PERDIDO],
+			col,
+			estadoValidacao,
+			dente,
+		);
+		const resCO = this.verificarEExtrairValorDaCelula(
+			matriz,
+			configCoords.linhas[DentesService.COMPONENTES.CARIADO_OBTURADO],
+			col,
+			estadoValidacao,
+			dente,
+		);
+
+		const soma = resC.valor + resO.valor + resP.valor + resCO.valor;
+		const possuiVazio = resC.foiVazio || resO.foiVazio || resP.foiVazio || resCO.foiVazio;
+		const possuiInvalido = resC.valorInvalido || resO.valorInvalido || resP.valorInvalido || resCO.valorInvalido;
+
+		if (!possuiVazio && !possuiInvalido && soma > totalPart) {
+			const msg =
+				t.modal?.erroParticipantesSoma?.replace('[DENTE]', dente)?.replace('[SOMA]', soma)?.replace('[TOTAL]', totalPart) ??
+				`Dente ${dente}: A soma (C+O+P+C/O = ${soma}) ultrapassa o limite de participantes (${totalPart}).`;
+
+			listaErros.push(msg);
+		}
+
+		mapaDados.set(dente, {
+			cariado: resC.valor,
+			obturado: resO.valor,
+			perdido: resP.valor,
+			cariado_obturado: resCO.valor,
+		});
+	}
+
+	/**
+	 * Processa a extração e validação do modelo por Componente Único (somente C, P, O ou C/O).
 	 * @private
 	 */
 	static _processarExtracaoComponenteUnico(matriz, configCoords, col, dente, compAlvo, totalPart, estadoValidacao, mapaDados, listaErros) {

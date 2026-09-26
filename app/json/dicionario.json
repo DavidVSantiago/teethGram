@@ -19,16 +19,19 @@
 			},
 			"opcoes": {
 				"total": "Total",
-				"totalComponente": "Total distribuído por componente",
+				"totalComponente": "Total distribuído por 3 componentes",
+				"total4Componentes": "Total distribuído por 4 componentes",
 				"permanente": {
 					"componenteC": "Componente cariado (C)",
 					"componenteP": "Componente perdido (P)",
-					"componenteO": "Componente obturado (O)"
+					"componenteO": "Componente obturado (O)",
+					"componenteCO": "Componente obturado/cariado (C/O)"
 				},
 				"deciduo": {
 					"componenteC": "Componente cariado (c)",
 					"componenteP": "Componente extraído (e)",
-					"componenteO": "Componente obturado (o)"
+					"componenteO": "Componente obturado (o)",
+					"componenteCO": "Componente obturado/cariado (c/o)"
 				}
 			},
 			"botoes": {
@@ -45,9 +48,11 @@
 				"cariado": "C",
 				"perdido": "P",
 				"obturado": "O",
+				"cariado_obturado": "C/O",
 				"c_deciduo": "c",
 				"e_deciduo": "e",
-				"o_deciduo": "o"
+				"o_deciduo": "o",
+				"co_deciduo": "c/o"
 			}
 		},
 		"processamento": {
@@ -128,16 +133,19 @@
 			},
 			"opcoes": {
 				"total": "Total",
-				"totalComponente": "Total distributed by component",
+				"totalComponente": "Total distributed by 3 components",
+				"total4Componentes": "Total distributed by 4 components",
 				"permanente": {
 					"componenteC": "Decayed component (D)",
 					"componenteP": "Missing component (M)",
-					"componenteO": "Filled component (F)"
+					"componenteO": "Filled component (F)",
+					"componenteCO": "Filled/decayed component (F/D)"
 				},
 				"deciduo": {
 					"componenteC": "Decayed component (d)",
 					"componenteP": "Missing component (m)",
-					"componenteO": "Filled component (f)"
+					"componenteO": "Filled component (f)",
+					"componenteCO": "Filled/decayed component (f/d)"
 				}
 			},
 			"botoes": {
@@ -154,9 +162,11 @@
 				"cariado": "D",
 				"perdido": "M",
 				"obturado": "F",
+				"cariado_obturado": "F/D",
 				"c_deciduo": "d",
 				"e_deciduo": "m",
-				"o_deciduo": "f"
+				"o_deciduo": "f",
+				"co_deciduo": "f/d"
 			}
 		},
 		"processamento": {
@@ -237,16 +247,19 @@
 			},
 			"opcoes": {
 				"total": "Total",
-				"totalComponente": "Total distribuido por componente",
+				"totalComponente": "Total distribuido por 3 componentes",
+				"total4Componentes": "Total distribuido por 4 componentes",
 				"permanente": {
 					"componenteC": "Componente cariado (C)",
 					"componenteP": "Componente perdido (P)",
-					"componenteO": "Componente obturado (O)"
+					"componenteO": "Componente obturado (O)",
+					"componenteCO": "Componente obturado/cariado (C/O)"
 				},
 				"deciduo": {
 					"componenteC": "Componente cariado (c)",
 					"componenteP": "Componente extraído (e)",
-					"componenteO": "Componente obturado (o)"
+					"componenteO": "Componente obturado (o)",
+					"componenteCO": "Componente obturado/cariado (c/o)"
 				}
 			},
 			"botoes": {
@@ -263,9 +276,11 @@
 				"cariado": "C",
 				"perdido": "P",
 				"obturado": "O",
+				"cariado_obturado": "C/O",
 				"c_deciduo": "c",
 				"e_deciduo": "e",
-				"o_deciduo": "o"
+				"o_deciduo": "o",
+				"co_deciduo": "c/o"
 			}
 		},
 		"processamento": {
@@ -346,16 +361,19 @@
 			},
 			"opcoes": {
 				"total": "Total",
-				"totalComponente": "Total distribué par composante",
+				"totalComponente": "Total distribué par 3 composantes",
+				"total4Componentes": "Total distribué par 4 composantes",
 				"permanente": {
 					"componenteC": "Composante caryée (C)",
 					"componenteP": "Composante perdue (P)",
-					"componenteO": "Composante obturée (O)"
+					"componenteO": "Composante obturée (O)",
+					"componenteCO": "Composante obturée/caryée (C/O)"
 				},
 				"deciduo": {
 					"componenteC": "Composante caryée (c)",
 					"componenteP": "Composante extraite (e)",
-					"componenteO": "Composante obturée (o)"
+					"componenteO": "Composante obturée (o)",
+					"componenteCO": "Composante obturée/caryée (c/o)"
 				}
 			},
 			"botoes": {
@@ -372,9 +390,11 @@
 				"cariado": "C",
 				"perdido": "P",
 				"obturado": "O",
+				"cariado_obturado": "C/O",
 				"c_deciduo": "c",
 				"e_deciduo": "e",
-				"o_deciduo": "o"
+				"o_deciduo": "o",
+				"co_deciduo": "c/o"
 			}
 		},
 		"processamento": {

@@ -58,7 +58,8 @@ export class ViewManager {
                 <option value="componente-p">${t.filtros?.opcoes?.permanente?.componenteP ?? 'Componente P'}</option>
                 <option value="componente-o">${t.filtros?.opcoes?.permanente?.componenteO ?? 'Componente O'}</option>
                 <option value="total" selected>${t.filtros?.opcoes?.total ?? 'Total'}</option>
-                <option value="componente">${t.filtros?.opcoes?.totalComponente ?? 'Total por Componente'}</option>
+                <option value="componente">${t.filtros?.opcoes?.totalComponente ?? 'Total por 3 Componentes'}</option>
+                <option value="componente-4">${t.filtros?.opcoes?.total4Componentes ?? 'Total por 4 Componentes'}</option>
               </select>
             </div>
 

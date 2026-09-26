@@ -3,7 +3,7 @@ import { t } from '../I18nManager.js';
 
 /**
  * Renderiza o Gráfico Odontológico (CPO-D / ceod) em HTML5 Canvas.
- * Suporta as classificações FDI e ADA e diferentes distribuições visuais (C, P, O, Total).
+ * Suporta as classificações FDI e ADA e diferentes distribuições visuais (C, P, O, Total e Total 4 Componentes).
  * Suporta renderização responsiva adaptando-se a unidades relativas.
  */
 export class GraficoOdontologico {
@@ -15,7 +15,7 @@ export class GraficoOdontologico {
 		this.seletorCanvas = seletorCanvas;
 		this.larguraBase = 800;
 		this.alturaBase = 800;
-		this.cores = ['#ff6360', '#6261fb', '#68b766', '#52525B']; // C, O, P, Total
+		this.cores = ['#ff6360', '#6261fb', '#68b766', '#f59e0b', '#52525B'];
 		this.canvas = null;
 		this.contexto = null;
 		this.conectarCanvas();
@@ -105,28 +105,37 @@ export class GraficoOdontologico {
 
 		return entradas.map(([dente, c]) => ({
 			label: dente,
-			values: [c.c || 0, c.o || 0, c.p !== undefined ? c.p : c.e || 0],
+			values: [c.c || 0, c.o || 0, c.p !== undefined ? c.p : c.e || 0, c.co || 0],
 		}));
 	}
 
 	/**
-	 * Calcula a Média ou Porcentagem dos componentes (C, O, P) por dente.
-	 * Arredonda para 2 casas decimais para alinhar perfeitamente com a renderização visual.
-	 * @param {number[]} values - Contagens absolutas [C, O, P].
+	 * Calcula a Média ou Porcentagem dos componentes (C, O, P, CO) por dente.
+	 * @param {number[]} values - Contagens absolutas [C, O, P, CO].
 	 * @param {Object} config - Configurações do gráfico.
 	 * @param {number} totalGeral - Soma acumulada de todos os componentes da amostra.
-	 * @returns {number[]} Array com valores calculados [C, O, P].
+	 * @returns {number[]} Array com valores calculados [C, O, P, CO].
 	 */
 	calcularValores(values, config, totalGeral) {
-		const [c, o, p] = values;
+		const [c, o, p, co = 0] = values;
 		const casas = 2;
 
 		if (config.mostrarPorcentagem) {
 			const div = totalGeral > 0 ? totalGeral : 1;
-			return [Number(((c / div) * 100).toFixed(casas)), Number(((o / div) * 100).toFixed(casas)), Number(((p / div) * 100).toFixed(casas))];
+			return [
+				Number(((c / div) * 100).toFixed(casas)),
+				Number(((o / div) * 100).toFixed(casas)),
+				Number(((p / div) * 100).toFixed(casas)),
+				Number(((co / div) * 100).toFixed(casas)),
+			];
 		}
 		const part = config.totalParticipantes || 1;
-		return [Number((c / part).toFixed(casas)), Number((o / part).toFixed(casas)), Number((p / part).toFixed(casas))];
+		return [
+			Number((c / part).toFixed(casas)),
+			Number((o / part).toFixed(casas)),
+			Number((p / part).toFixed(casas)),
+			Number((co / part).toFixed(casas)),
+		];
 	}
 
 	/**
@@ -143,17 +152,20 @@ export class GraficoOdontologico {
 		let maior = 0;
 
 		dados.forEach((d) => {
-			const [vC, vO, vP] = this.calcularValores(d.values, config, totalGeral);
+			const [vC, vO, vP, vCO] = this.calcularValores(d.values, config, totalGeral);
 			let val = vC + vO + vP;
+
+			if (dist.includes('4componentes')) val += vCO;
+
 			if (dist === 'c') val = vC;
 			else if (dist === 'p' || dist === 'e') val = vP;
 			else if (dist === 'o') val = vO;
+			else if (dist === 'co') val = vCO;
 
 			if (val > maior) maior = val;
 		});
 
 		if (maior === 0) return 1;
-		// Trava teto rigorosamente em 1.0 se o valor máximo real estiver muito próximo ou igual a 1
 		if (!config.mostrarPorcentagem && maior <= 1.02 && maior >= 0.98) {
 			return 1.0;
 		}
@@ -229,7 +241,7 @@ export class GraficoOdontologico {
 
 		let totalGeral = 0;
 		[...dadosSup, ...dadosInf].forEach((d) => {
-			totalGeral += d.values[0] + d.values[1] + d.values[2];
+			totalGeral += d.values[0] + d.values[1] + d.values[2] + (d.values[3] || 0);
 		});
 
 		const maxSup = this.obterMaiorValor(dadosSup, config, totalGeral);
@@ -238,7 +250,7 @@ export class GraficoOdontologico {
 
 		this.desenharCabecalho(config);
 
-		// Rótulo Eixo Y Rotacionado (Centralizado na altura inteira do gráfico)
+		// Rótulo Eixo Y Rotacionado
 		const rotuloY = config.mostrarPorcentagem ? t?.processamento?.percentual : t?.processamento?.media;
 		if (rotuloY) {
 			this.contexto.save();
@@ -287,7 +299,9 @@ export class GraficoOdontologico {
 		const dist = String(config.distribuicao || '')
 			.toLowerCase()
 			.replace(/_/g, '');
-		const ehEmpilhado = dist.includes('totalcomponente');
+
+		const ehEmpilhado = dist.includes('totalcomponente') || dist.includes('total4componentes');
+		const qtdeComponentesEmpilhados = dist.includes('4componentes') ? 4 : 3;
 
 		// Eixo Y e Réguas
 		this.contexto.beginPath();
@@ -321,7 +335,9 @@ export class GraficoOdontologico {
 			const vals = this.calcularValores(dado.values, config, totalGeral);
 
 			if (ehEmpilhado) {
-				[0, 1, 2].forEach((idx) => {
+				const indices = qtdeComponentesEmpilhados === 4 ? [0, 1, 2, 3] : [0, 1, 2];
+
+				indices.forEach((idx) => {
 					if (vals[idx] > 0) {
 						const h = vals[idx] * escalaY;
 						if (!ehInf) y -= h;
@@ -331,10 +347,16 @@ export class GraficoOdontologico {
 					}
 				});
 
-				const ordemCaixas = ehInf ? [0, 1, 2] : [2, 1, 0];
+				const ordemCaixas = ehInf ? indices : [...indices].reverse();
+
+				const alturaCaixa = qtdeComponentesEmpilhados === 4 ? 18 : 19;
+				const espacoCaixa = qtdeComponentesEmpilhados === 4 ? 20 : 22;
+				const offsetSup = qtdeComponentesEmpilhados === 4 ? 86 : 80;
+
 				ordemCaixas.forEach((idx, iter) => {
-					const caixaY = ehInf ? baseY + 12 + iter * 22 : posY - 80 + iter * 22;
-					this.desenharCaixaTexto(x, caixaY, largBarra, 19, this.cores[idx], this.formatarNumero(vals[idx]));
+					const caixaY = ehInf ? baseY + 12 + iter * espacoCaixa : posY - offsetSup + iter * espacoCaixa;
+
+					this.desenharCaixaTexto(x, caixaY, largBarra, alturaCaixa, this.cores[idx], this.formatarNumero(vals[idx]));
 				});
 			} else {
 				let val = vals[0];
@@ -346,9 +368,12 @@ export class GraficoOdontologico {
 				} else if (dist === 'o') {
 					val = vals[1];
 					idxCor = 1;
-				} else if (dist === 'total') {
-					val = vals[0] + vals[1] + vals[2];
+				} else if (dist === 'co') {
+					val = vals[3];
 					idxCor = 3;
+				} else if (dist === 'total') {
+					val = vals[0] + vals[1] + vals[2] + vals[3];
+					idxCor = 4;
 				}
 
 				if (val > 0) {
@@ -362,7 +387,6 @@ export class GraficoOdontologico {
 				this.desenharCaixaTexto(x, caixaY, largBarra, 19, this.cores[idxCor], this.formatarNumero(val));
 			}
 
-			// Rótulo do Dente
 			this.contexto.font = 'bold 13px Arial';
 			this.contexto.fillStyle = '#000';
 			this.contexto.textAlign = 'center';
@@ -372,7 +396,7 @@ export class GraficoOdontologico {
 	}
 
 	/**
-	 * Renderiza a legenda informativa no rodapé do Canvas.
+	 * Renderiza a legenda informativa no rodapé do Canvas com espaçamento otimizado para não cortar.
 	 * @param {Object} config - Configurações dinâmicas de exibição.
 	 */
 	desenharLegenda(config) {
@@ -382,16 +406,24 @@ export class GraficoOdontologico {
 		const comp = config.ehDeciduo ? t?.filtros?.opcoes?.deciduo : t?.filtros?.opcoes?.permanente;
 
 		let itens = [];
-		if (dist.includes('totalcomponente')) {
+		if (dist.includes('4componentes')) {
 			itens = [
-				{ t: comp.componenteC || 'Cariados', c: this.cores[0] },
-				{ t: comp.componenteO || 'Obturados', c: this.cores[1] },
-				{ t: comp.componenteP || 'Perdidos', c: this.cores[2] },
+				{ t: comp?.componenteC || 'Cariados', c: this.cores[0] },
+				{ t: comp?.componenteO || 'Obturados', c: this.cores[1] },
+				{ t: comp?.componenteP || 'Perdidos', c: this.cores[2] },
+				{ t: comp?.componenteCO || comp?.componenteObturadoCariado || 'Obt/Cariados', c: this.cores[3] },
 			];
-		} else if (dist === 'c') itens = [{ t: comp.componenteC || 'Cariados', c: this.cores[0] }];
-		else if (dist === 'o') itens = [{ t: comp.componenteO || 'Obturados', c: this.cores[1] }];
-		else if (dist === 'p' || dist === 'e') itens = [{ t: comp.componenteP || 'Perdidos', c: this.cores[2] }];
-		else if (dist === 'total') itens = [{ t: t?.filtros?.opcoes?.total || 'Total', c: this.cores[3] }];
+		} else if (dist.includes('totalcomponente')) {
+			itens = [
+				{ t: comp?.componenteC || 'Cariados', c: this.cores[0] },
+				{ t: comp?.componenteO || 'Obturados', c: this.cores[1] },
+				{ t: comp?.componenteP || 'Perdidos', c: this.cores[2] },
+			];
+		} else if (dist === 'c') itens = [{ t: comp?.componenteC || 'Cariados', c: this.cores[0] }];
+		else if (dist === 'o') itens = [{ t: comp?.componenteO || 'Obturados', c: this.cores[1] }];
+		else if (dist === 'p' || dist === 'e') itens = [{ t: comp?.componenteP || 'Perdidos', c: this.cores[2] }];
+		else if (dist === 'co') itens = [{ t: comp?.componenteCO || 'Obt/Cariados', c: this.cores[3] }];
+		else if (dist === 'total') itens = [{ t: t?.filtros?.opcoes?.total || 'Total', c: this.cores[4] }];
 
 		if (!itens.length) return;
 
@@ -399,9 +431,9 @@ export class GraficoOdontologico {
 		this.contexto.fillStyle = '#111827';
 		this.contexto.textAlign = 'center';
 		this.contexto.textBaseline = 'middle';
-		this.contexto.fillText(t?.geracao?.legenda || 'Legenda', 400, 742);
+		this.contexto.fillText(t?.geracao?.legenda || 'Legenda', 400, 750);
 
-		this.contexto.font = 'bold 13px Arial';
+		this.contexto.font = 'bold 12px Arial';
 
 		// Mapeia itens calculando a largura dos textos apenas uma vez
 		const itensComLargura = itens.map((item) => ({
@@ -409,7 +441,8 @@ export class GraficoOdontologico {
 			larguraTexto: this.contexto.measureText(item.t || '').width,
 		}));
 
-		const largTotal = itensComLargura.reduce((acc, item) => acc + 22 + item.larguraTexto, 0) + (itens.length - 1) * 30;
+		const espacamentoEntreItens = itens.length >= 4 ? 18 : 30;
+		const largTotal = itensComLargura.reduce((acc, item) => acc + 18 + item.larguraTexto, 0) + (itens.length - 1) * espacamentoEntreItens;
 		let x = 400 - largTotal / 2;
 
 		this.contexto.textAlign = 'left';
@@ -417,10 +450,10 @@ export class GraficoOdontologico {
 
 		itensComLargura.forEach((item) => {
 			this.contexto.fillStyle = item.c;
-			this.contexto.fillRect(x, 765, 14, 14);
+			this.contexto.fillRect(x, 765, 12, 12);
 			this.contexto.fillStyle = '#111827';
-			this.contexto.fillText(item.t || '', x + 22, 772);
-			x += 22 + item.larguraTexto + 30;
+			this.contexto.fillText(item.t || '', x + 18, 771);
+			x += 18 + item.larguraTexto + espacamentoEntreItens;
 		});
 	}
 }
