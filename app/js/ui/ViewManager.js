@@ -20,7 +20,7 @@ export class ViewManager {
           <h1>TeethGram</h1>
           <p>${t.cabecalho?.descricao ?? ''}</p>
           
-          <a href="/iframes/tools/teethgram/guia-teethgram.pdf" download="guia-teethgram.pdf" target="_blank" class="botao-download-manual">
+          <a href="assets/pdfs/guia-teethgram.pdf" download="guia-teethgram.pdf" target="_blank" class="botao-download-manual">
             ${t.rodape?.baixarManual ?? 'Baixar Manual'}
           </a>
         </div>
