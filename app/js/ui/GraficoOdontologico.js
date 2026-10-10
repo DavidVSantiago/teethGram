@@ -15,7 +15,7 @@ export class GraficoOdontologico {
 		this.seletorCanvas = seletorCanvas;
 		this.larguraBase = 800;
 		this.alturaBase = 800;
-		this.cores = ['#ff6360', '#6261fb', '#68b766', '#f59e0b', '#52525B'];
+		this.cores = ['#ff6360', '#f59e0b', '#6261fb', '#68b766', '#52525B'];
 		this.canvas = null;
 		this.contexto = null;
 		this.conectarCanvas();
@@ -105,36 +105,36 @@ export class GraficoOdontologico {
 
 		return entradas.map(([dente, c]) => ({
 			label: dente,
-			values: [c.c || 0, c.o || 0, c.p !== undefined ? c.p : c.e || 0, c.co || 0],
+			values: [c.c || 0, c.co || 0, c.o || 0, c.p !== undefined ? c.p : c.e || 0],
 		}));
 	}
 
 	/**
-	 * Calcula a Média ou Porcentagem dos componentes (C, O, P, CO) por dente.
-	 * @param {number[]} values - Contagens absolutas [C, O, P, CO].
+	 * Calcula a Média ou Porcentagem dos componentes por dente.
+	 * @param {number[]} values - Contagens absolutas [C, O/C, O, P].
 	 * @param {Object} config - Configurações do gráfico.
 	 * @param {number} totalGeral - Soma acumulada de todos os componentes da amostra.
-	 * @returns {number[]} Array com valores calculados [C, O, P, CO].
+	 * @returns {number[]} Array com valores calculados.
 	 */
 	calcularValores(values, config, totalGeral) {
-		const [c, o, p, co = 0] = values;
+		const [c, co = 0, o, p] = values;
 		const casas = 2;
 
 		if (config.mostrarPorcentagem) {
 			const div = totalGeral > 0 ? totalGeral : 1;
 			return [
 				Number(((c / div) * 100).toFixed(casas)),
+				Number(((co / div) * 100).toFixed(casas)),
 				Number(((o / div) * 100).toFixed(casas)),
 				Number(((p / div) * 100).toFixed(casas)),
-				Number(((co / div) * 100).toFixed(casas)),
 			];
 		}
 		const part = config.totalParticipantes || 1;
 		return [
 			Number((c / part).toFixed(casas)),
+			Number((co / part).toFixed(casas)),
 			Number((o / part).toFixed(casas)),
 			Number((p / part).toFixed(casas)),
-			Number((co / part).toFixed(casas)),
 		];
 	}
 
@@ -152,7 +152,7 @@ export class GraficoOdontologico {
 		let maior = 0;
 
 		dados.forEach((d) => {
-			const [vC, vO, vP, vCO] = this.calcularValores(d.values, config, totalGeral);
+			const [vC, vCO, vO, vP] = this.calcularValores(d.values, config, totalGeral);
 			let val = vC + vO + vP;
 
 			if (dist.includes('4componentes')) val += vCO;
@@ -335,7 +335,7 @@ export class GraficoOdontologico {
 			const vals = this.calcularValores(dado.values, config, totalGeral);
 
 			if (ehEmpilhado) {
-				const indices = qtdeComponentesEmpilhados === 4 ? [0, 1, 2, 3] : [0, 1, 2];
+				const indices = qtdeComponentesEmpilhados === 4 ? [0, 1, 2, 3] : [0, 2, 3];
 
 				indices.forEach((idx) => {
 					if (vals[idx] > 0) {
@@ -363,14 +363,14 @@ export class GraficoOdontologico {
 				let idxCor = 0;
 
 				if (dist === 'p' || dist === 'e') {
-					val = vals[2];
-					idxCor = 2;
-				} else if (dist === 'o') {
-					val = vals[1];
-					idxCor = 1;
-				} else if (dist === 'co') {
 					val = vals[3];
 					idxCor = 3;
+				} else if (dist === 'o') {
+					val = vals[2];
+					idxCor = 2;
+				} else if (dist === 'co') {
+					val = vals[1];
+					idxCor = 1;
 				} else if (dist === 'total') {
 					val = vals[0] + vals[1] + vals[2] + vals[3];
 					idxCor = 4;
@@ -409,20 +409,20 @@ export class GraficoOdontologico {
 		if (dist.includes('4componentes')) {
 			itens = [
 				{ t: comp?.componenteC || 'Cariados', c: this.cores[0] },
-				{ t: comp?.componenteO || 'Obturados', c: this.cores[1] },
-				{ t: comp?.componenteP || 'Perdidos', c: this.cores[2] },
-				{ t: comp?.componenteCO || comp?.componenteObturadoCariado || 'Obt/Cariados', c: this.cores[3] },
+				{ t: comp?.componenteCO || comp?.componenteObturadoCariado || 'Obt/Cariados', c: this.cores[1] },
+				{ t: comp?.componenteO || 'Obturados', c: this.cores[2] },
+				{ t: comp?.componenteP || 'Perdidos', c: this.cores[3] },
 			];
 		} else if (dist.includes('totalcomponente')) {
 			itens = [
 				{ t: comp?.componenteC || 'Cariados', c: this.cores[0] },
-				{ t: comp?.componenteO || 'Obturados', c: this.cores[1] },
-				{ t: comp?.componenteP || 'Perdidos', c: this.cores[2] },
+				{ t: comp?.componenteO || 'Obturados', c: this.cores[2] },
+				{ t: comp?.componenteP || 'Perdidos', c: this.cores[3] },
 			];
 		} else if (dist === 'c') itens = [{ t: comp?.componenteC || 'Cariados', c: this.cores[0] }];
-		else if (dist === 'o') itens = [{ t: comp?.componenteO || 'Obturados', c: this.cores[1] }];
-		else if (dist === 'p' || dist === 'e') itens = [{ t: comp?.componenteP || 'Perdidos', c: this.cores[2] }];
-		else if (dist === 'co') itens = [{ t: comp?.componenteCO || 'Obt/Cariados', c: this.cores[3] }];
+		else if (dist === 'co') itens = [{ t: comp?.componenteCO || 'Obt/Cariados', c: this.cores[1] }];
+		else if (dist === 'o') itens = [{ t: comp?.componenteO || 'Obturados', c: this.cores[2] }];
+		else if (dist === 'p' || dist === 'e') itens = [{ t: comp?.componenteP || 'Perdidos', c: this.cores[3] }];
 		else if (dist === 'total') itens = [{ t: t?.filtros?.opcoes?.total || 'Total', c: this.cores[4] }];
 
 		if (!itens.length) return;
