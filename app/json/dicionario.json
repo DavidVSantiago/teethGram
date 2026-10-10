@@ -25,13 +25,13 @@
 					"componenteC": "Componente cariado (C)",
 					"componenteP": "Componente perdido (P)",
 					"componenteO": "Componente obturado (O)",
-					"componenteCO": "Componente obturado/cariado (C/O)"
+					"componenteCO": "Componente obturado/cariado (O/C)"
 				},
 				"deciduo": {
 					"componenteC": "Componente cariado (c)",
 					"componenteP": "Componente extraído (e)",
 					"componenteO": "Componente obturado (o)",
-					"componenteCO": "Componente obturado/cariado (c/o)"
+					"componenteCO": "Componente obturado/cariado (o/c)"
 				}
 			},
 			"botoes": {
@@ -48,11 +48,11 @@
 				"cariado": "C",
 				"perdido": "P",
 				"obturado": "O",
-				"cariado_obturado": "C/O",
+				"cariado_obturado": "O/C",
 				"c_deciduo": "c",
 				"e_deciduo": "e",
 				"o_deciduo": "o",
-				"co_deciduo": "c/o"
+				"co_deciduo": "o/c"
 			}
 		},
 		"processamento": {
@@ -98,10 +98,10 @@
 			"dadosInvalidos": "A planilha possui dados inválidos.",
 			"inconsistencias": "Inconsistências encontradas:",
 			"dicaTitulo": "Dica:",
-			"dicaParticipantes": "O total de participantes é lido da célula <strong>B33</strong>. Verifique se os valores por dente superam este limite.",
-			"erroParticipantesFalta": "O total de participantes na célula B33 deve ser informado e maior que zero.",
+			"dicaParticipantes": "O total de participantes é lido da célula <strong>B37</strong>. Verifique se os valores por dente superam este limite.",
+			"erroParticipantesFalta": "O total de participantes na célula B37 deve ser informado e maior que zero.",
 			"erroParticipantesTotal": "Dente [DENTE]: O valor total ([VALOR]) é maior que o número de participantes ([TOTAL]).",
-			"erroParticipantesSoma": "Dente [DENTE]: A soma (C+P+O = [SOMA]) ultrapassa o limite de participantes ([TOTAL]).",
+			"erroParticipantesSoma": "Dente [DENTE]: A soma ultrapassa o limite de participantes ([TOTAL]).",
 			"erroParticipantesComponente": "Dente [DENTE]: O valor do componente ([VALOR]) é maior que o número de participantes ([TOTAL]).",
 			"erroDistribuicaoTrocada": "A planilha carregada possui dados, mas na <strong>Distribuição</strong> oposta. Verifique o filtro na tela.",
 			"erroClassificacaoTrocada": "A planilha possui dados, mas na <strong>Classificação</strong> oposta. Verifique o filtro na tela.",
@@ -212,10 +212,10 @@
 			"dadosInvalidos": "The spreadsheet contains invalid data.",
 			"inconsistencias": "Inconsistencies found:",
 			"dicaTitulo": "Tip:",
-			"dicaParticipantes": "The total number of participants is read from cell <strong>B33</strong>. Ensure the values per tooth do not exceed this limit.",
-			"erroParticipantesFalta": "The total number of participants in cell B33 must be provided and greater than zero.",
+			"dicaParticipantes": "The total number of participants is read from cell <strong>B37</strong>. Ensure the values per tooth do not exceed this limit.",
+			"erroParticipantesFalta": "The total number of participants in cell B37 must be provided and greater than zero.",
 			"erroParticipantesTotal": "Tooth [DENTE]: The total value ([VALOR]) is greater than the number of participants ([TOTAL]).",
-			"erroParticipantesSoma": "Tooth [DENTE]: The sum (D+M+F = [SOMA]) exceeds the participant limit ([TOTAL]).",
+			"erroParticipantesSoma": "Tooth [DENTE]: The sum exceeds the participant limit ([TOTAL]).",
 			"erroParticipantesComponente": "Tooth [DENTE]: The component value ([VALOR]) is greater than the number of participants ([TOTAL]).",
 			"erroDistribuicaoTrocada": "The spreadsheet contains data, but in the opposite <strong>Distribution</strong>. Check the screen filter.",
 			"erroClassificacaoTrocada": "The spreadsheet contains data, but in the opposite <strong>Classification</strong>. Check the screen filter.",
@@ -253,13 +253,13 @@
 					"componenteC": "Componente cariado (C)",
 					"componenteP": "Componente perdido (P)",
 					"componenteO": "Componente obturado (O)",
-					"componenteCO": "Componente obturado/cariado (C/O)"
+					"componenteCO": "Componente obturado/cariado (O/C)"
 				},
 				"deciduo": {
 					"componenteC": "Componente cariado (c)",
 					"componenteP": "Componente extraído (e)",
 					"componenteO": "Componente obturado (o)",
-					"componenteCO": "Componente obturado/cariado (c/o)"
+					"componenteCO": "Componente obturado/cariado (o/c)"
 				}
 			},
 			"botoes": {
@@ -276,11 +276,11 @@
 				"cariado": "C",
 				"perdido": "P",
 				"obturado": "O",
-				"cariado_obturado": "C/O",
+				"cariado_obturado": "O/C",
 				"c_deciduo": "c",
 				"e_deciduo": "e",
 				"o_deciduo": "o",
-				"co_deciduo": "c/o"
+				"co_deciduo": "o/c"
 			}
 		},
 		"processamento": {
@@ -326,10 +326,10 @@
 			"dadosInvalidos": "La hoja de cálculo contiene datos inválidos.",
 			"inconsistencias": "Inconsistencias encontradas:",
 			"dicaTitulo": "Consejo:",
-			"dicaParticipantes": "El total de participantes se lee de la celda <strong>B33</strong>. Verifique que los valores por diente no superen este límite.",
-			"erroParticipantesFalta": "El total de participantes en la celda B33 debe ser informado y mayor que cero.",
+			"dicaParticipantes": "El total de participantes se lee de la celda <strong>B37</strong>. Verifique que los valores por diente no superen este límite.",
+			"erroParticipantesFalta": "El total de participantes en la celda B37 debe ser informado y mayor que cero.",
 			"erroParticipantesTotal": "Diente [DENTE]: El valor total ([VALOR]) es mayor que el número de participantes ([TOTAL]).",
-			"erroParticipantesSoma": "Diente [DENTE]: La suma (C+P+O = [SOMA]) supera el límite de participantes ([TOTAL]).",
+			"erroParticipantesSoma": "Diente [DENTE]: La suma supera el límite de participantes ([TOTAL]).",
 			"erroParticipantesComponente": "Diente [DENTE]: El valor del componente ([VALOR]) es mayor que el número de participantes ([TOTAL]).",
 			"erroDistribuicaoTrocada": "La hoja de cálculo contiene datos, pero en la <strong>Distribución</strong> opuesta. Verifique el filtro en pantalla.",
 			"erroClassificacaoTrocada": "La hoja de cálculo contiene datos, pero en la <strong>Clasificación</strong> opuesta. Verifique el filtro en pantalla.",
@@ -367,13 +367,13 @@
 					"componenteC": "Composante caryée (C)",
 					"componenteP": "Composante perdue (P)",
 					"componenteO": "Composante obturée (O)",
-					"componenteCO": "Composante obturée/caryée (C/O)"
+					"componenteCO": "Composante obturée/caryée (O/C)"
 				},
 				"deciduo": {
 					"componenteC": "Composante caryée (c)",
 					"componenteP": "Composante extraite (e)",
 					"componenteO": "Composante obturée (o)",
-					"componenteCO": "Composante obturée/caryée (c/o)"
+					"componenteCO": "Composante obturée/caryée (o/c)"
 				}
 			},
 			"botoes": {
@@ -390,11 +390,11 @@
 				"cariado": "C",
 				"perdido": "P",
 				"obturado": "O",
-				"cariado_obturado": "C/O",
+				"cariado_obturado": "O/C",
 				"c_deciduo": "c",
 				"e_deciduo": "e",
 				"o_deciduo": "o",
-				"co_deciduo": "c/o"
+				"co_deciduo": "o/c"
 			}
 		},
 		"processamento": {
@@ -440,10 +440,10 @@
 			"dadosInvalidos": "La feuille de calcul contient des données invalides.",
 			"inconsistencias": "Incohérences trouvées :",
 			"dicaTitulo": "Astuce :",
-			"dicaParticipantes": "Le nombre total de participants est lu à partir de la cellule <strong>B33</strong>. Assurez-vous que les valeurs par dent ne dépassent pas cette limite.",
-			"erroParticipantesFalta": "Le nombre total de participants dans la cellule B33 doit être indiqué et supérieur à zéro.",
+			"dicaParticipantes": "Le nombre total de participants est lu à partir de la cellule <strong>B37</strong>. Assurez-vous que les valeurs par dent ne dépassent pas cette limite.",
+			"erroParticipantesFalta": "Le nombre total de participants dans la cellule B37 doit être indiqué et supérieur à zéro.",
 			"erroParticipantesTotal": "Dent [DENTE] : La valeur totale ([VALOR]) est supérieure au nombre de participants ([TOTAL]).",
-			"erroParticipantesSoma": "Dent [DENTE] : La somme (C+P+O = [SOMA]) dépasse la limite de participants ([TOTAL]).",
+			"erroParticipantesSoma": "Dent [DENTE] : La somme dépasse la limite de participants ([TOTAL]).",
 			"erroParticipantesComponente": "Dent [DENTE] : La valeur de la composante ([VALOR]) est supérieure au nombre de participants ([TOTAL]).",
 			"erroDistribuicaoTrocada": "La feuille de calcul contient des données, mais dans la <strong>Distribution</strong> opposée. Vérifiez le filtre à l'écran.",
 			"erroClassificacaoTrocada": "La feuille de calcul contient des données, mais dans la <strong>Classification</strong> opposée. Vérifiez le filtre à l'écran.",

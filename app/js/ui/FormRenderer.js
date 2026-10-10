@@ -77,7 +77,8 @@ export class FormRenderer {
 	}
 
 	/**
-	 * Gera o HTML de um cartão de dente dedicado para 4 componentes em linha horizontal.
+	 * Gera o HTML de um cartão de dente dedicado para 4 componentes em linha horizontal,
+	 * seguindo a ordem correta: C -> O/C -> O -> P (Cariado, Obturado/Cariado, Obturado, Perdido).
 	 * @param {string} numero - O identificador do dente (FDI ou ADA).
 	 * @param {{ idC: string, idPE: string, idO: string, idCO: string, rotulos: { C: string, P: string, O: string, CO: string } }} config
 	 * @returns {string} String contendo o HTML do cartão.
@@ -94,20 +95,20 @@ export class FormRenderer {
             <input class="${this.CLASSES_INPUT.COMPONENTE}" type="number" id="${idC}-${numero}" name="${idC}-${numero}" min="0" />
           </div>
           <div class="caixa-entrada">
-            <input class="${this.CLASSES_INPUT.COMPONENTE}" type="number" id="${idPE}-${numero}" name="${idPE}-${numero}" min="0" />
+            <input class="${this.CLASSES_INPUT.COMPONENTE}" type="number" id="${idCO}-${numero}" name="${idCO}-${numero}" min="0" />
           </div>
           <div class="caixa-entrada">
             <input class="${this.CLASSES_INPUT.COMPONENTE}" type="number" id="${idO}-${numero}" name="${idO}-${numero}" min="0" />
           </div>
           <div class="caixa-entrada">
-            <input class="${this.CLASSES_INPUT.COMPONENTE}" type="number" id="${idCO}-${numero}" name="${idCO}-${numero}" min="0" />
+            <input class="${this.CLASSES_INPUT.COMPONENTE}" type="number" id="${idPE}-${numero}" name="${idPE}-${numero}" min="0" />
           </div>
         </div>
         <footer class="dente-legenda">
           <label for="${idC}-${numero}">${rotulos.C}</label>
-          <label for="${idPE}-${numero}">${rotulos.P}</label>
-          <label for="${idO}-${numero}">${rotulos.O}</label>
           <label for="${idCO}-${numero}">${rotulos.CO}</label>
+          <label for="${idO}-${numero}">${rotulos.O}</label>
+          <label for="${idPE}-${numero}">${rotulos.P}</label>
         </footer>
       `,
 		});
@@ -249,7 +250,7 @@ export class FormRenderer {
 				C: t.formularios?.componentes?.cariado ?? 'C',
 				P: t.formularios?.componentes?.perdido ?? 'P',
 				O: t.formularios?.componentes?.obturado ?? 'O',
-				CO: t.formularios?.componentes?.cariado_obturado ?? 'C/O',
+				CO: t.formularios?.componentes?.cariado_obturado ?? 'O/C',
 			},
 		};
 	}
@@ -268,7 +269,7 @@ export class FormRenderer {
 				C: t.formularios?.componentes?.c_deciduo ?? 'c',
 				P: t.formularios?.componentes?.e_deciduo ?? 'e',
 				O: t.formularios?.componentes?.o_deciduo ?? 'o',
-				CO: t.formularios?.componentes?.co_deciduo ?? 'c/o',
+				CO: t.formularios?.componentes?.co_deciduo ?? 'o/c',
 			},
 		};
 	}
