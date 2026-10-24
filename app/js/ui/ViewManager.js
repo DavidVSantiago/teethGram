@@ -175,8 +175,8 @@ export class ViewManager {
           <!-- ========= SEÇÃO DE ATENDIMENTO / CONTATO ========= -->
           <div class="secao-atendimento">
             <div class="atendimento-cabecalho">
-              <h3>Atendimento</h3>
-              <p>Entre em contato com a equipe do TeethGram</p>
+              <h3>${t.rodape?.atendimento?.titulo ?? ''}</h3>
+              <p>${t.rodape?.atendimento?.subtitulo ?? ''}</p>
             </div>
 
             <div class="atendimento-grade">
@@ -185,8 +185,8 @@ export class ViewManager {
                 <span class="atendimento-icone">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M112 128C85.5 128 64 149.5 64 176C64 191.1 71.1 205.3 83.2 214.4L291.2 370.4C308.3 383.2 331.7 383.2 348.8 370.4L556.8 214.4C568.9 205.3 576 191.1 576 176C576 149.5 554.5 128 528 128L112 128zM64 260L64 448C64 483.3 92.7 512 128 512L512 512C547.3 512 576 483.3 576 448L576 260L377.6 408.8C343.5 434.4 296.5 434.4 262.4 408.8L64 260z"/></svg>
                 </span>
-                <h4>Contato Principal</h4>
-                <p>Para dúvidas gerais, suporte e informações institucionais.</p>
+                <h4>${t.rodape?.atendimento?.contatoPrincipalTitulo ?? ''}</h4>
+                <p>${t.rodape?.atendimento?.contatoPrincipalDescricao ?? ''}</p>
                 <span class="atendimento-texto-email">manoelito.junior@uesb.edu.br</span>
               </div>
 
@@ -195,8 +195,8 @@ export class ViewManager {
                 <span class="atendimento-icone">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M112 128C85.5 128 64 149.5 64 176C64 191.1 71.1 205.3 83.2 214.4L291.2 370.4C308.3 383.2 331.7 383.2 348.8 370.4L556.8 214.4C568.9 205.3 576 191.1 576 176C576 149.5 554.5 128 528 128L112 128zM64 260L64 448C64 483.3 92.7 512 128 512L512 512C547.3 512 576 483.3 576 448L576 260L377.6 408.8C343.5 434.4 296.5 434.4 262.4 408.8L64 260z"/></svg>
                 </span>
-                <h4>Programa Sorrir / Projeto</h4>
-                <p>Canal dedicado para assuntos vinculados ao Programa Sorrir e UESB.</p>
+                <h4>${t.rodape?.atendimento?.programaSorrirTitulo ?? ''}</h4>
+                <p>${t.rodape?.atendimento?.programaSorrirDescricao ?? ''}</p>
                 <span class="atendimento-texto-email">sorrir@uesb.edu.br</span>
               </div>
             </div>
