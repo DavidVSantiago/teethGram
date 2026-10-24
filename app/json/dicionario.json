@@ -80,6 +80,14 @@
 			"comoCitar": "Como citar:",
 			"citacao": "Silva-Júnior M. F., Brito-Mota M. J. B., Mendes H. J., Silva D. M., Souza-Júnior E. C., Almeida W. S., Santiago A. D. V. TeethGram. Jequié, 17 de Setembro de 2025. Disponível em: https://algol.dev/tools/teethgram/. Acessado em [data].",
 			"baixarManual": "Baixe aqui o manual do usuário",
+			"atendimento": {
+				"titulo": "Atendimento",
+				"subtitulo": "Entre em contato com a equipe do TeethGram",
+				"contatoPrincipalTitulo": "Contato Principal",
+				"contatoPrincipalDescricao": "Para dúvidas gerais, suporte e informações institucionais.",
+				"programaSorrirTitulo": "Programa Sorrir / Projeto",
+				"programaSorrirDescricao": "Canal dedicado para assuntos vinculados ao Programa Sorrir e UESB."
+			},
 			"direitosAutorais": "&copy; 2025 Teethgram. Todos os direitos reservados. v2 beta"
 		},
 		"modal": {
@@ -194,6 +202,14 @@
 			"comoCitar": "How to cite:",
 			"citacao": "Silva-Júnior M. F., Brito-Mota M. J. B., Mendes H. J., Silva D. M., Souza-Júnior E. C., Almeida W. S., Santiago A. D. V. TeethGram. Jequié, September 17, 2025. Available at: https://algol.dev/tools/teethgram/. Accessed on [date].",
 			"baixarManual": "Download the user manual here",
+			"atendimento": {
+				"titulo": "Support",
+				"subtitulo": "Get in touch with the TeethGram team",
+				"contatoPrincipalTitulo": "Main Contact",
+				"contatoPrincipalDescricao": "For general questions, support, and institutional information.",
+				"programaSorrirTitulo": "Sorrir Program / Project",
+				"programaSorrirDescricao": "Dedicated channel for matters related to the Sorrir Program and UESB."
+			},
 			"direitosAutorais": "&copy; 2025 Teethgram. All rights reserved. v2 beta"
 		},
 		"modal": {
@@ -308,6 +324,14 @@
 			"comoCitar": "Cómo citar:",
 			"citacao": "Silva-Júnior M. F., Brito-Mota M. J. B., Mendes H. J., Silva D. M., Souza-Júnior E. C., Almeida W. S., Santiago A. D. V. TeethGram. Jequié, 17 de septiembre de 2025. Disponible en: https://algol.dev/tools/teethgram/. Accedido el [fecha].",
 			"baixarManual": "Descargue aquí el manual de usuario",
+			"atendimento": {
+				"titulo": "Soporte",
+				"subtitulo": "Ponte en contacto con el equipo de TeethGram",
+				"contatoPrincipalTitulo": "Contacto Principal",
+				"contatoPrincipalDescricao": "Para dudas generales, soporte e información institucional.",
+				"programaSorrirTitulo": "Programa Sorrir / Proyecto",
+				"programaSorrirDescricao": "Canal dedicado para asuntos vinculados al Programa Sorrir y UESB."
+			},
 			"direitosAutorais": "&copy; 2025 Teethgram. Todos los derechos reservados. v2 beta"
 		},
 		"modal": {
@@ -422,6 +446,14 @@
 			"comoCitar": "Comment citer :",
 			"citacao": "Silva-Júnior M. F., Brito-Mota M. J. B., Mendes H. J., Silva D. M., Souza-Júnior E. C., Almeida W. S., Santiago A. D. V. TeethGram. Jequié, 17 septembre 2025. Disponible sur : https://algol.dev/tools/teethgram/. Consulté le [date].",
 			"baixarManual": "Téléchargez le manuel d'utilisation ici",
+			"atendimento": {
+				"titulo": "Assistance",
+				"subtitulo": "Contactez l'équipe de TeethGram",
+				"contatoPrincipalTitulo": "Contact Principal",
+				"contatoPrincipalDescricao": "Pour les questions générales, l'assistance et les informations institutionnelles.",
+				"programaSorrirTitulo": "Programme Sorrir / Projet",
+				"programaSorrirDescricao": "Canal dédié aux sujets liés au Programme Sorrir et à l'UESB."
+			},
 			"direitosAutorais": "&copy; 2025 Teethgram. Tous droits réservés. v2 beta"
 		},
 		"modal": {
